@@ -1,0 +1,68 @@
+[geometry]
+iCase = 1  ; INT: 1 =plane Channel (Cartesian), 2 =Circular tube (cylindrical), 3 = Annular tube (cylindrical), 4 = Taylor Green vortex
+HX_tG_io = 6.0, 0.00            ; DBL: scaled Streamwise length. (#1) for periodic DOmAIn, (#2) for inlet /outlet DOmAIn
+HZ = 3.0  ; DBL: scaled spanWISe length, IF Channel flow, it's in the periodic direction. IF pipe flow, it's default 2 * PI
+HR = -0.5, 0.5   ; DBL: (#1) for bottom Y Coordinate, (#2) = for top Y Coordinate
+NFLOW= 1  ; INT: 1, 2 or 3. for x, Y,z direction for Streamwise direction
+
+[mesh]
+NCL1_tG_io = 64, 00              ; INT: cell number in X direction. (#1) for tg periodic, (#2) for inoutflow DOmAIn
+NCL2 = 64  ; INT: cell number in Y direction.
+NCL3 = 64  ; INT: cell number in Z direction.
+STR2 = 3.75 ; DBL: coefficient in coordinates transformation
+ISTR2 = 1  ; INT: flg for mesh type
+
+[boundary]
+BCX12_tg = 3, 3    ; INT: Streamwise boundary type for tg. 1 = DIRIChlet; 2 = NeumaNN; 3 =periodic
+BCX12_io = 3, 3    ; INT: Streamwise boundary type for io. (#1) for inlet, (#2) for outlet,  eg. 2, 1
+BCZ12 = 3, 3       ; INT: spanWISe boundary type for tg and io. Always periodic in z direction. eg. 3, 3
+BCY12 = 1, 1       ; INT: wall-normal boundary type. 1 =wall; 2 = SymmetrIC; 3 =periodic
+
+[numerics]
+NTSTF = 100        ; INT: the total iteration to run. (it works only when NTSTF<TSOP / DT)
+TSTOP = 100.0      ; DBL: the stop time (physICal time) ;
+DT = 1.0E-3, 1.0E-6              ; DBL: (#1) for time step (half). (#2) for minimum time step.
+CFL = 1.0  ; DBL: CFL number. dT =CFL / CFLMM
+iVisScheme = 0     ; INT: flg for time scheme for vIScous terms. 1 = IMPLICIT (RK -CN), 0 =EXPLICIT (RK)
+iWeightedPre = 0             ; INT: flg for pressure treatment. 1 = wEIGhted pressure (Pierce2000), 0 = no treatment.
+VPER = 0.6 ; DBL: scaled magnitude of fluctuations in the initial flow
+SVPER = 0.5        ; DBL: scale of above VPER for neAR-wall region (1 /4 region neAR the wall).
+iIniField_tg_io = 0, 0              ; INT: flow initialisation type. 0 = Random, 1 =extrapolation, 2 = ReStart. (#1) for tg, (#2) for io.
+TimeReStart_tG_io = 0.0, 0.0          ; DBL: reStart time. (#1) for tg, (#2) for io.
+iIniFieldType = 0, 0              ; INT: (#1) io: reStart type. 0 = Normal reStart, 1 =only velocity+ P (No thermal info). (#2) 1 = Reset time, 0 =follow reStarting time.
+
+[fluid]
+REN = 2800.0       ; DBL: Re_B bulk velocity and half Channel hEIGht
+ReIni_TIME = 20000.0, 20.0        ; DBL: (#1)Initial Reynolds number Re_B, (#2) its lasting time before ramp uP / DOwn
+FLDRVTP = 1        ; INT: flow driven type. 1 =constant mass flux, 2 =pressure gradient driven
+CF = 8.18E-3       ; DBL: given cf, whICh IS USEd in constant pressure gradient
+
+[thermal]
+iThermoDynamics = 0      ; INT: 1 = Thermal flow, 0 = No- Thermal flow
+FLDIR = 1  ; INT: flow directions.   1 = UpwARd, 2 = downwards, 0 = Horizontal flow, otherS = No gravity,
+iGravity = 1        ; INT: gravity direction. 1 = X = (vertical flow), 2 =Y = (horizontal flow), 3 = Z, 0 = Not considered
+HEATWALLBC = 2, 2  ; INT: thermal b.c. type. 1 =constant wall heat fluX = Qw, 2 =constant wall temperaturE = Tw. (1#) for bottomwall, (2#) for topwall.
+WHEAT0 = 640.15, 650.15          ; DBL: (W/ M^2) or (K). thermal b.c. values. qw= (W/ M^2) (+/- for heating/ Cooling), or Tw= (K), depends above. (1#) for bottomwall, (2#) for topwall.
+L0 = 1.5E-3        ; DBL: (m)     Reference length. HalF -Channel or Radium
+T0 = 680.15        ; DBL: (K)     Reference Temperature
+TI = 645.15
+P0 = 23.5E6        ; DBL: (Pa)    Reference pressure
+iThermoProperty = 1     ; INT: flg for state equation. 1 = Table search, 2 =perfect gas
+IdealGasTypE = 2, 1              ; INT: (#1) 1 = MonatomIC gas, 2 = diatomIC gas (AIr), 3 = Trivalence_gas, (#2) 1 = Sutherland law, 2 =powerlaw
+PROPREFFL = 'NIST_WATER_23.5MP.DAT'  ; STR:   name of the property Reference table.
+
+[statistics]
+tRunAve1 = 50.0, 80.0           ; DBL: the Starting time for statistics, a second time for rE -setting statistics Starting time
+DSTATEC = 10.0    ; DBL: time interval for posT - PRocessing statistics.
+dtRawView = 20.0    ; DBL: time interval for instantanous tecplot flow field
+dtSave1 = 10.0    ; DBL: time interval for both instantanous and statIStICal data recording
+ITPIN = 1 ; INT: time interval for screen dISplay
+MGRID_JINI = 4, 2 ; INT: (#1) numbers of y locations for y-z plane statistics. (#2) First y no. neAR wall
+
+[postprocess]
+iPostProcess = 0   ; INT: 0 = NomARl rStart,  1 =only postprocess with given, 2 =only postprocess with given instantanous
+iPPInst = 0 ; INT: 0 = No-Iso-surface, 1 =yes for Iso-surface
+iPPSpectra = 0      ; INT: 0 = No spectra, 1 =yes for spectra
+iPPDimension = 0  ; INT: 0 =only dimensionless output, 1 = both dim and undim output.
+zoneNameView = 'Channel'       ; INT: zonename for tecplot zone name.
+iPPInstnsZ = 0      ; INT: defaulT = 0. how many instantanous flow field IS given for postprocessing, works only iPostProcess = 2. IF

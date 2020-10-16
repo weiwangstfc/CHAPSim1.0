@@ -1,0 +1,580 @@
+!***********************************************************************
+!> @author
+!> Wei Wang @ HETF, ME, The University of Sheffield.
+!
+! DESCRIPTION:
+!> Brief description of SUBROUTINE.
+!> @details
+!> Read in initial configuration file
+!
+!> @toDO
+!> Nothing left to DO.
+!
+! REVISION HISTORY:
+! 06/12 / 2013- Initial Version, by Wei Wang
+!**********************************************************************
+SUBROUTINE READINI
+!>     @note
+!>     Read in the flow setting file. *.ini.
+!>     only in master
+
+        USE init_info
+        USE mpi_info
+        USE mesh_info
+        USE thermal_info
+        IMPLICIT NONE
+
+        CHARACTER(128) :: SECT          ! Section names
+        CHARACTER(128) :: SKEY          ! key names
+        INTEGER(4) :: IOS = 0
+        INTEGER(4) :: INI = 13             !file I /O id
+        INTEGER(4) :: LENS
+        INTEGER(4) :: iTMP
+        INTEGER(4) :: N
+        REAL(WP) :: RTMP
+        CHARACTER(256) :: STMP
+
+
+        PI = 2.0_WP * (DASIN(1.0_WP))
+
+        IF(MYID /= 0) RETURN !
+
+        OPEN(INI, FILE = 'readdata.ini', STATUS = 'old', IOSTAT = IOS)
+        IF(IOS  /= 0)  &
+        CALL ERRHDL(' File readdata.ini cannot be found.', MYID)
+
+        !========== ignore initial introductioN ==================
+        READ(INI, *) SECT
+        DO WHILE(SECT(1:1) == ';' .OR. SECT(1:1) == '#'.OR. SECT(1:1) == ' ')
+            READ(INI, *) SECT   ! skipping the comments lines.
+        END DO
+
+        !========== Readin Section [geometry]======================
+        LENS = LEN_TRIM(SECT)
+        CALL CHKHDL('Read in ' // SECT(1:LENS), MYID)
+        IF(SECT(1:LENS) /= '[geometry]')  &
+        CALL ERRHDL('Reading fails: ' // SECT(1:LENS), MYID)
+
+        READ(INI, *) SKEY, iCase
+            IF(iCase == ICHANL) CALL CHKHDL   ('iCase =                Plane Channel (Cartesian Cooridnates) ', MYID)
+            IF(iCase == IBox3P) CALL CHKHDL   ('iCase =                BOX with 3 periodic b.c (Cartesian Cooridnates) ', MYID)
+            IF(iCase == iPIPEC) CALL CHKHDL   ('iCase =                Circular Tube (cylindrical Cooridnates)', MYID)
+            IF(iCase == iANNUL) CALL CHKHDL   ('iCase =                Annular  Tube (cylindrical Cooridnates)', MYID)
+        READ(INI, *) SKEY, HX_tg, Hx_io
+            IF(iCase == IBox3P) HX_io = 2.0_WP * PI
+            CALL CHKRLHDL  ('HX_tg = ', MYID, HX_tg)
+            CALL CHKRLHDL  ('HX_io = ', MYID, HX_io)
+        READ(INI, *) SKEY, HZ
+            IF(iCase == IPIPEC) HZ = 2.0_WP * (DASIN(1.0_WP)) * 2.0_WP
+            IF(iCase == IBox3P) HZ = 2.0_WP * PI
+            CALL CHKRLHDL  ('HZ =            ', MYID, HZ)
+        READ(INI, *) SKEY, HYB, HYT
+            CALL CHKRLHDL  ('Coordinate of Y (bottom) =          ', MYID, HYB)
+            CALL CHKRLHDL  ('Coordinate of Y (top) =             ', MYID, HYT)
+            IF(iCase == IBox3P) THEN
+                HYB = -PI
+                HYT = PI
+            END IF
+
+        READ(INI, *) SKEY, NFLOW
+            IF(NFLOW== 1) CALL CHKHDL ('NFLOW=                X Streamwise Flow', MYID)
+            IF(NFLOW== 2) CALL CHKHDL ('NFLOW=                Y Streamwise Flow', MYID)
+            IF(NFLOW== 3) CALL CHKHDL ('NFLOW=                Z Streamwise Flow', MYID)
+
+        !========== Readin Section [mesh]======================
+        READ(INI, *) SECT
+        LENS = LEN_TRIM(SECT)
+         CALL CHKHDL('Read in ' // SECT(1:LENS), MYID)
+        IF(SECT(1:LENS) /= '[mesh]')       &
+        CALL ERRHDL('Reading fails: ' // SECT(1:LENS), MYID)
+
+        READ(INI, *) SKEY, NCL1_tg, NCL1_io
+            CALL CHKINTHDL ('NCL1 = (TurGe)', MYID, NCL1_tg )
+            CALL CHKINTHDL ('NCL1 = (MAIN) ', MYID, NCL1_io )
+
+        READ(INI, *) SKEY, NCL2
+            CALL CHKINTHDL ('NCL2 =       ', MYID, NCL2)
+        READ(INI, *) SKEY, NCL3
+            CALL CHKINTHDL ('NCL3 =       ', MYID, NCL3)
+
+        READ(INI, *) SKEY, STR2
+            CALL CHKRLHDL  ('STR2 =       ', MYID, STR2)
+        READ(INI, *) SKEY, ISTR2
+            CALL CHKINTHDL ('ISTR2 =      ', MYID, ISTR2)
+
+        !========== Readin Section [boundary]======================
+        READ(INI, *) SECT
+        LENS = LEN_TRIM(SECT)
+         CALL CHKHDL('Read in ' // SECT(1:LENS), MYID)
+        IF(SECT(1:LENS) /= '[boundary]')       &
+        CALL ERRHDL('Reading fails: ' // SECT(1:LENS), MYID)
+
+        READ(INI, *) SKEY, BCX_tg(1), BCX_tg(2)
+            IF(BCX_tg(1) == 3 ) BCX_tg(2) = 3
+            IF(BCX_tg(2) == 3 ) BCX_tg(1) = 3
+
+        READ(INI, *) SKEY, BCX_io(1), BCX_io(2)
+            IF(BCX_io(1) == 3 ) BCX_io(2) = 3
+            IF(BCX_io(2) == 3 ) BCX_io(1) = 3
+
+            IF(NCL1_io  >   2) THEN
+                IoFlowFlg = .TRUE.
+            ELSE
+                IoFlowFlg = .FALSE.
+            END IF
+
+            IF( (BCX_io(1) == 3) .AND. (NCL1_io  >   2)) THEN
+                TgFlowFlg = .FALSE.
+            ELSE
+                TgFlowFlg = .TRUE.
+            END IF
+
+            IF (TgFlowFlg) THEN
+                IF(BCX_tg(1) == 1) THEN
+                    CALL CHKHDL('BC: TG INLET =          DIRICHELET ', MYID)
+                ELSE IF(BCX_tg(1) == 2) THEN
+                    CALL CHKHDL('BC: TG INLET =          NEUMANN ', MYID)
+                ELSE IF(BCX_tg(1) == 3) THEN
+                    CALL CHKHDL('BC: TG INLET =          periodic ', MYID)
+                ELSE
+                    CALL ERRHDL('No Such b.c. for BCX_tg(1)', MYID)
+                END IF
+                IF(BCX_tg(2) == 1) THEN
+                    CALL CHKHDL('BC: TG OUTLET =         DIRICHELET ', MYID)
+                ELSE IF(BCX_tg(2) == 2) THEN
+                    CALL CHKHDL('BC: TG OUTLET =         NEUMANN ', MYID)
+                ELSE IF(BCX_tg(2) == 3) THEN
+                    CALL CHKHDL('BC: TG OUTLET =         periodic ', MYID)
+                ELSE
+                    CALL ERRHDL('No Such b.c. for BCX_tg(2)', MYID)
+                END IF
+            END IF
+
+            IF (IoFlowFlg ) THEN
+                IF(BCX_io(1) == 1) THEN
+                    CALL CHKHDL('BC: main DOMAIN INLET = DIRICHELET ', MYID)
+                ELSE IF(BCX_io(1) == 2) THEN
+                    CALL CHKHDL('BC: main DOMAIN INLET = NEUMANN ', MYID)
+                ELSE IF(BCX_io(1) == 3) THEN
+                    CALL CHKHDL('BC: main DOMAIN INLET = periodic ', MYID)
+                ELSE
+                    CALL ERRHDL('No Such b.c. for BCX_io(1)', MYID)
+                END IF
+
+                IF(BCX_io(2) == 1) THEN
+                    CALL CHKHDL('BC: main DOMAIN OUTLET = DIRICHELET ', MYID)
+                ELSE IF(BCX_io(2) == 2) THEN
+                    CALL CHKHDL('BC: main DOMAIN OUTLET = NEUMANN ', MYID)
+                ELSE IF(BCX_io(2) == 3) THEN
+                    CALL CHKHDL('BC: main DOMAIN OUTLET = periodic ', MYID)
+                ELSE
+                    CALL ERRHDL('No Such b.c. for BCX_io(2)', MYID)
+                END IF
+            END IF
+
+            IF(TgFlowFlg) &
+            OPEN(logflg_tg, FILE = TRIM(FilePath0) // 'monitor.tg.' //fllog)
+
+            IF(IoFlowFlg) &
+            OPEN(logflg_io, FILE = TRIM(FilePath0) // 'monitor.io.' //fllog)
+
+
+        READ(INI, *) SKEY, BCZ(1), BCZ(2)
+            IF(BCZ(1) == 3 ) BCZ(2) = 3
+            IF(BCZ(2) == 3 ) BCZ(1) = 3
+
+            IF(BCZ(1) /= 3) THEN
+                CALL ERRHDL('Z MUST BE periodic', MYID)
+            ELSE
+                CALL CHKHDL('BC: SPANWISE =          periodic ', MYID)
+            END IF
+
+            IF(TgFlowFlg .AND. IoFlowFlg) THEN
+                CALL CHKHDL('FLOW DOMAIN:            periodic TG + inlet /OUTLET main DOMAIN', MYID)
+            END IF
+            IF(TgFlowFlg .AND. (.NOT.IoFlowFlg)) THEN
+                CALL CHKHDL('FLOW DOMAIN:            periodic FLOW (TG) ONLY', MYID)
+            END IF
+            IF(IoFlowFlg .AND. (.NOT.TgFlowFlg)) THEN
+                CALL CHKHDL('FLOW DOMAIN:            periodic FLOW (IO) ONLY', MYID)
+            END IF
+
+        READ(INI, *) SKEY, BCY(1), BCY(2)
+            IF(BCY(1) == 3) THEN
+                CALL CHKHDL('BC: Y =                 periodic ', MYID)
+            ELSE IF(BCY(1) == 2) THEN
+                CALL CHKHDL('BC: Y =                 SYMMETIC ', MYID)
+            ELSE IF(BCY(1) == 1) THEN
+                CALL CHKHDL('BC: Y =                 WALL ', MYID)
+            ELSE
+                CALL ERRHDL('ERROR! NO SUCH A B.C. IN Y direction!', MYID)
+            END IF
+
+        !========== Readin Section [numerics]===================
+        READ(INI, *) SECT
+        LENS = LEN_TRIM(SECT)
+         CALL CHKHDL('Read in ' // SECT(1:LENS), MYID)
+        IF(SECT(1:LENS) /= '[numerics]')       &
+        CALL ERRHDL('Reading fails: ' // SECT(1:LENS), MYID)
+
+        READ(INI, *) SKEY, NTSTF
+             CALL CHKINTHDL ('NTSTF          = ', MYID, NTSTF)
+        READ(INI, *) SKEY, TSTOP
+             CALL CHKRLHDL  ('TSTOP          = ', MYID, TStop)
+        READ(INI, *) SKEY, DT, DTMIN
+             CALL CHKRLHDL  ('DT =             ', MYID, DT)
+             CALL CHKRLHDL  ('DTMIN =          ', MYID, DTMIN)
+        READ(INI, *) SKEY, CFLGV
+             CALL CHKRLHDL  ('CFLGV =          ', MYID, CFLGV)
+
+        READ(INI, *) SKEY, iWeightedPre
+            IF(iWeightedPre == 1) CALL CHKHDL ('iWeightedPre =      yes', MYID)
+            IF(iWeightedPre == 0) CALL CHKHDL ('iWeightedPre =      no', MYID)
+
+        READ(INI, *) SKEY, iVisScheme
+            IF(iVisScheme == VisImplicit) CALL CHKHDL ('iVisScheme =            IMPLICIT', MYID)
+            IF(iVisScheme == VisExplicit) CALL CHKHDL ('iVisScheme =            EXPLICIT', MYID)
+
+        READ(INI, *) SKEY, VPERG
+            CALL CHKRLHDL  ('VPERG=          ', MYID, VPERG)
+        READ(INI, *) SKEY, SVPERG
+            CALL CHKRLHDL  ('SVPERG= ', MYID, SVPERG)
+
+        READ(INI, *) SKEY, iIniField_tg, iIniField_io
+        READ(INI, *) SKEY, TimeReStart_tg, TimeReStart_io
+        READ(INI, *) SKEY, iIniFieldType, iIniFieldTime
+            IF(TgFlowFlg) THEN
+                IF(iIniField_tg == 0)      CALL CHKHDL ('iIniField_tg =             TG: Start from random flow field', MYID)
+                IF(iIniField_tg == 1)      CALL CHKHDL ('iIniField_tg =             TG: Start from interpolation of a coarse mesh', MYID)
+                IF(iIniField_tg == 2)      CALL CHKHDL ('iIniField_tg =             TG: ReStart from last step', MYID)
+            END IF
+
+            IF(IoFlowFlg) THEN
+                IF(iIniField_io == 0)      CALL CHKHDL ('iIniField_io =             IO: Start from random flow field', MYID)
+                IF(iIniField_io == 1)      CALL CHKHDL ('iIniField_io =             IO: Start from interpolation of a coarse mesh', MYID)
+                IF(iIniField_io == 2)      CALL CHKHDL ('iIniField_io =             IO: ReStart from last step', MYID)
+            END IF
+
+            IF(iIniFieldType == 0)       CALL CHKHDL ('iIniFieldType =          IO: ReStart both, flow and thermal fields', MYID)
+            IF(iIniFieldType == 1)       CALL CHKHDL ('iIniFieldType =          IO: ReStart only flow field, no thermal field', MYID)
+            IF(iIniFieldTime == 0)   CALL CHKHDL ('iIniFieldTime =      IO: ReStart following previous time.', MYID)
+            IF(iIniFieldTime == 1)   CALL CHKHDL ('iIniFieldTime =      IO: ReStart with rE -setting time to zero', MYID)
+
+        !========== Readin Section [fluid]=====================
+        READ(INI, *) SECT
+        LENS = LEN_TRIM(SECT)
+         CALL CHKHDL('Read in ' // SECT(1:LENS), MYID)
+        IF(SECT(1:LENS) /= '[fluid]') &
+        CALL ERRHDL('Reading fails: ' // SECT(1:LENS), MYID)
+
+        READ(INI, *) SKEY, REN
+             CALL CHKRLHDL  ('Re No.= ', MYID, REN)
+        READ(INI, *) SKEY, ReIni, TLgRe
+             CALL CHKRLHDL  ('ReIni =          ', MYID, ReIni)
+             CALL CHKRLHDL  ('TLgRe =          ', MYID, TLgRe)
+        READ(INI, *) SKEY, iFlowDriven
+            IF(iFlowDriven == 1) CALL CHKHDL ('iFlowDriven =             Constant mass flux driven', MYID)
+            IF(iFlowDriven == 2) CALL CHKHDL ('iFlowDriven =             Constant pressure gradient driven', MYID)
+        READ(INI, *) SKEY, Cf_Given
+            CALL CHKRLHDL  ('Cf_Given =          ', MYID, Cf_Given)
+
+
+        !========== Readin Section [thermal]=====================
+        READ(INI, *) SECT
+        LENS = LEN_TRIM(SECT)
+         CALL CHKHDL('Read in ' // SECT(1:LENS), MYID)
+        IF(SECT(1:LENS) /= '[thermal]') &
+        CALL ERRHDL('Reading fails: ' // SECT(1:LENS), MYID)
+
+        READ(INI, *) SKEY, iThermoDynamics
+            IF(iThermoDynamics == 0) THEN
+                CALL CHKHDL    ('iThermoDynamics =             Only Velocity+ P field', MYID)
+            ELSE IF(iThermoDynamics == 1) THEN
+                CALL CHKHDL    ('iThermoDynamics =             Velocity+ THERmal field', MYID)
+            END IF
+
+        READ(INI, *) SKEY, FLOWDIR
+            IF (iThermoDynamics == 1) THEN
+                IF(FLOWDIR == 0) CALL CHKHDL ('FLOWDIR =               Horizontal flow', MYID)
+                IF(FLOWDIR == 1) CALL CHKHDL ('FLOWDIR =               upwards flow', MYID)
+                IF(FLOWDIR == 2) CALL CHKHDL ('FLOWDIR =               downwards flow', MYID)
+            END IF
+        READ(INI, *) SKEY, iGravity
+            IF (iThermoDynamics == 1) THEN
+                IF(iGravity == 0) CALL CHKHDL ('GRAVITY =               Not considered', MYID)
+                IF(iGravity == 1) CALL CHKHDL ('GRAVITY =               X direction', MYID)
+                IF(iGravity == 2) CALL CHKHDL ('GRAVITY =               Y direction', MYID)
+                IF(iGravity == 3) CALL CHKHDL ('GRAVITY =               Z direction', MYID)
+            END IF
+
+        READ(INI, *) SKEY, iThermalWallType(iBotWall), iThermalWallType(iTopWall)
+        READ(INI, *) SKEY, thermalWallBC_Dim(iBotWall), thermalWallBC_Dim(iTopWall)
+            IF (iThermoDynamics == 1) THEN
+                IF(iCase == iPIPEC) THEN
+                    iThermalWallType(iBotWall) = 0
+                    thermalWallBC_Dim(iBotWall) = 0.0_WP
+                END IF
+
+                IF(iThermalWallType(iBotWall) == BC_Fixed_Heat_Flux) THEN
+                    CALL CHKHDL    ('iThermalWallType (bottomwall) = Constant Wall Heat Flux (Isoflux -wall)', MYID)
+                    CALL CHKRLHDL  ('  Wall Heat flux (W/ M2) on the bottom walL = ', MYID, thermalWallBC_Dim(iBotWall))
+                ELSE IF (iThermalWallType(iBotWall) == BC_Fixed_Temperature) THEN
+                    CALL CHKHDL    ('iThermalWallType (bottomwall) = Constant Wall Temperature(Isothermal-wall)', MYID)
+                    CALL CHKRLHDL  ('  Wall Temperature (K)  on the bottom walL = ', MYID, thermalWallBC_Dim(iBotWall))
+                ELSE
+                END IF
+
+                IF(iThermalWallType(iTopWall) == BC_Fixed_Heat_Flux) THEN
+                    CALL CHKHDL    ('iThermalWallType (topwall) = Constant Wall Heat Flux (Isoflux -wall)', MYID)
+                    CALL CHKRLHDL  ('  Wall Heat flux (W/ M2) on the top walL = ', MYID, thermalWallBC_Dim(iTopWall))
+                ELSE IF (iThermalWallType(iTopWall) == BC_Fixed_Temperature) THEN
+                    CALL CHKHDL    ('iThermalWallType (topmwall) = Constant Wall Temperature(Isothermal-wall)', MYID)
+                    CALL CHKRLHDL  ('  Wall Temperature (K)  on the top walL = ', MYID, thermalWallBC_Dim(iTopWall))
+                ELSE
+                END IF
+            END IF
+
+        READ(INI, *) SKEY, L0
+        READ(INI, *) SKEY, T0
+        READ(INI, *) SKEY, Ti
+        READ(INI, *) SKEY, P0
+            IF (iThermoDynamics == 1) THEN
+                CALL CHKRLHDL  ('Ref: Length (m) =           ', MYID, L0)
+                CALL CHKRLHDL  ('Ref: Temperature (K) T0 = ', MYID, T0)
+                CALL CHKRLHDL  ('Ref: pressure (Pa) P0 =      ', MYID, P0)
+                CALL CHKRLHDL  ('Inlet: Temperature (K) TI =  ', MYID, T0)
+            END IF
+
+        READ(INI, *) SKEY, iThermoProperty
+            IF (iThermoDynamics == 1) THEN
+                IF(iThermoProperty == search_table) CALL CHKHDL    ('iThermoProperty =                   searching Table', MYID)
+                IF(iThermoProperty == properties_functions) CALL CHKHDL    ('iThermoProperty =                   Perfect gas power relation', MYID)
+            END IF
+            IF(iThermoProperty == search_table) THEN
+                READ(INI, *) SKEY, iTMP
+                READ(INI, *) SKEY, NISTFLNM
+                IF (iThermoDynamics == 1) THEN
+                    CALL CHKHDL    ('PROPREF FILE =               ' // TRIM(NISTFLNM), MYID)
+                END IF
+            ELSE IF(iThermoProperty == properties_functions) THEN
+                READ(INI, *) SKEY, IdealGasType, fstatetype
+                READ(INI, *) SKEY, STMP
+                IF (MYID == 0 .AND. iThermoDynamics == 1) THEN
+                    IF(IdealGasTypE == monatomic_gas)  CALL CHKHDL    ('IdealGasTypE =                   monatomic_gas', MYID)
+                    IF(IdealGasTypE == diatomic_gas)   CALL CHKHDL    ('IdealGasTypE =                   diatomic_gas (AIr)', MYID)
+                    IF(IdealGasTypE == Trivalence_gas) CALL CHKHDL    ('IdealGasTypE =                   trivalence_gas', MYID)
+                    IF(fstatetypE == Sutherlandflg)    CALL CHKHDL    ('Property Law=                   Sutherland Law', MYID)
+                    IF(fstatetypE ==powerlawflg)      CALL CHKHDL    ('Property Law=                   Power Law', MYID)
+                END IF
+            ELSE
+            END IF
+
+        !========== Readin Section [statistics]===============
+        READ(INI, *) SECT
+        LENS = LEN_TRIM(SECT)
+         CALL CHKHDL('Read in ' // SECT(1:LENS), MYID)
+        IF(SECT(1:LENS) /= '[statistics]')  &
+        CALL ERRHDL('Reading fails: ' // SECT(1:LENS), MYID)
+
+        READ(INI, *) SKEY, tRunAve1, tRunAve_Reset
+             CALL CHKRLHDL  ('tRunAve1         = ', MYID, tRunAve1)
+             CALL CHKRLHDL  ('tRunAve_Reset    = ', MYID, tRunAve_Reset)
+        !IF((tRunAve_Reset + 1.0E-2_WP) < tRunAve1) CALL ERRHDL('tRunAve_Reset should not be smaller than tRunAve1', MYID)
+        READ(INI, *) SKEY, dtAveView
+             CALL CHKRLHDL  ('DTSTA_TEC      = ', MYID, dtAveView)
+        READ(INI, *) SKEY, dtRawView
+             CALL CHKRLHDL  ('dtRawView        = ', MYID, dtRawView)
+        READ(INI, *) SKEY, dtSave1
+             CALL CHKRLHDL  ('dtSave1        = ', MYID, dtSave1)
+        READ(INI, *) SKEY, iterMonitor
+             CALL CHKINTHDL ('iterMonitor          = ', MYID, iterMonitor)
+        READ(INI, *) SKEY, MGRID, JINI
+             CALL CHKINTHDL ('MGRID          = ', MYID, MGRID)
+             CALL CHKINTHDL ('JINI           = ', MYID, JINI)
+
+
+        !========== Readin Section [postprocess]=====================
+        READ(INI, *) SECT
+        LENS = LEN_TRIM(SECT)
+         CALL CHKHDL('Read in ' // SECT(1:LENS), MYID)
+        IF(SECT(1:LENS) /= '[postprocess]') &
+        CALL ERRHDL('Reading fails: ' // SECT(1:LENS), MYID)
+
+        READ(INI, *) SKEY, iPostProcess
+            IF(iPostProcess == 0)   CALL CHKHDL ('iPostProcess =     normal reStart', MYID)
+            IF(iPostProcess == 1)   CALL CHKHDL ('iPostProcess =     postprocessing data only', MYID)
+            IF(iPostProcess == 2)   CALL CHKHDL ('iPostProcess =     postprocessing data from given instantanous flow field', MYID)
+
+        READ(INI, *) SKEY, iPPInst
+            IF(iPPInst == 1)         CALL CHKHDL ('iPPInst =           postprocessing instantanous Isosurface', MYID)
+            IF(iPPInst == 0)         CALL CHKHDL ('iPPInst =           not postprocessing instantanous Isosurface', MYID)
+
+        READ(INI, *) SKEY, iPPSpectra
+            IF(iPPSpectra == 1)      CALL CHKHDL ('iPPSpectra =        postprocessing energy spectra and correlations', MYID)
+            IF(iPPSpectra == 0)      CALL CHKHDL ('iPPSpectra =        not postprocessing energy spectra and correlations', MYID)
+
+        READ(INI, *) SKEY, iPPDimension
+            IF(iPPDimension == 1)          CALL CHKHDL ('iPPDimension =            output both dim and undim results', MYID)
+            IF(iPPDimension == 0)          CALL CHKHDL ('iPPDimension =            output only undim results', MYID)
+
+        READ(INI, *) SKEY, zoneNameView
+            CALL CHKHDL    ('zoneNameView =               ' // TRIM(zoneNameView), MYID)
+
+        READ(INI, *) SKEY, pp_instn_sz
+            IF(iPostProcess == 2) THEN
+                CALL CHKINTHDL ('Steps of given instantanous flow field  = ', MYID, Pp_instn_sz)
+                IF(iPostProcess == 2 .AND. pp_instn_sz < 1) THEN
+                    CALL ERRHDL(' iPPInstansz IS less than 1 for postprocessing instantanous flow fields', MYID)
+                END IF
+
+                ALLOCATE (pp_instn_tim(pp_instn_sz)); pp_instn_tiM = 0.0_WP
+                DO N = 1, pp_instn_sz
+                    READ(INI, *) pp_instn_tim(N)
+                    CALL CHKRLHDL  ('    pp_instn_tim  = ', MYID, Pp_instn_tim(N))
+                END DO
+
+            ELSE
+
+                DO N = 1, pp_instn_sz
+                    READ(INI, *) RTMP
+                END DO
+
+            END IF
+
+        close(ini)
+
+        !================end of reading in data================================
+
+        IF(MOD(MGRID, 2) == 0) MGRID = MGRID+ 1
+
+        NND1_tg = NCL1_tg + 1
+        NND1_io = NCL1_io + 1
+        NND2 = NCL2 + 1
+        NND3 = NCL3 + 1
+
+        IF(IoFlowFlg) THEN
+            IF(TgFlowFlg) THEN
+                NCL1S = 0
+                NCL1E = NCL1_io + 1
+            ELSE
+                NCL1S = 1
+                NCL1E = NCL1_io
+            END IF
+        END IF
+
+
+        RETURN
+
+    END SUBROUTINE
+
+SUBROUTINE BCAST_READINI
+        USE init_info
+        USE mpi_info
+        USE mesh_info
+        USE thermal_info
+        IMPLICIT NONE
+
+        !================[geometry]===================
+        CALL MPI_BCAST( iCase, 1, MPI_INTEGER4,         0, ICOMM, IERROR )
+        CALL MPI_BCAST( HX_tg, 1, MPI_DOUBLE_PRECISION, 0, ICOMM, IERROR )
+        CALL MPI_BCAST( HX_io, 1, MPI_DOUBLE_PRECISION, 0, ICOMM, IERROR )
+        CALL MPI_BCAST( HZ,    1, MPI_DOUBLE_PRECISION, 0, ICOMM, IERROR )
+        CALL MPI_BCAST( HYB,   1, MPI_DOUBLE_PRECISION, 0, ICOMM, IERROR )
+        CALL MPI_BCAST( HYT,   1, MPI_DOUBLE_PRECISION, 0, ICOMM, IERROR )
+        CALL MPI_BCAST( NFLOW, 1, MPI_INTEGER4,         0, ICOMM, IERROR )
+
+        !================[mesh]===================
+        CALL MPI_BCAST( NCL1_tg, 1, MPI_INTEGER4,         0, ICOMM, IERROR )
+        CALL MPI_BCAST( NCL1_io, 1, MPI_INTEGER4,         0, ICOMM, IERROR )
+        CALL MPI_BCAST( NCL2,    1, MPI_INTEGER4,         0, ICOMM, IERROR )
+        CALL MPI_BCAST( NCL3,    1, MPI_INTEGER4,         0, ICOMM, IERROR )
+        CALL MPI_BCAST( STR2,    1, MPI_DOUBLE_PRECISION, 0, ICOMM, IERROR )
+        CALL MPI_BCAST( ISTR2,   1, MPI_INTEGER4,         0, ICOMM, IERROR )
+
+        !================[boundary]===================
+        CALL MPI_BCAST(BCX_tg,      2, MPI_INTEGER4,         0, ICOMM, IERROR )
+        CALL MPI_BCAST(BCX_io,      2, MPI_INTEGER4,         0, ICOMM, IERROR )
+        CALL MPI_BCAST(BCZ,         2, MPI_INTEGER4,         0, ICOMM, IERROR )
+        CALL MPI_BCAST(BCY,         2, MPI_INTEGER4,         0, ICOMM, IERROR )
+        CALL MPI_BCAST( IoFlowFlg,   1, MPI_LOGICAL,          0, ICOMM, IERROR )
+        CALL MPI_BCAST( TgFlowFlg,   1, MPI_LOGICAL,          0, ICOMM, IERROR )
+
+        !================[numerics]===================
+        CALL MPI_BCAST( NTSTF,        1, MPI_INTEGER4,         0, ICOMM, IERROR )
+        CALL MPI_BCAST( TSTOP,        1, MPI_DOUBLE_PRECISION, 0, ICOMM, IERROR )
+        CALL MPI_BCAST( DT,           1, MPI_DOUBLE_PRECISION, 0, ICOMM, IERROR )
+        CALL MPI_BCAST( CFLGV,        1, MPI_DOUBLE_PRECISION, 0, ICOMM, IERROR )
+        CALL MPI_BCAST( DTmin,        1, MPI_DOUBLE_PRECISION, 0, ICOMM, IERROR )
+        CALL MPI_BCAST( iWeightedPre, 1, MPI_INTEGER4,         0, ICOMM, IERROR )
+        CALL MPI_BCAST( iVisScheme,   1, MPI_INTEGER4,         0, ICOMM, IERROR )
+        CALL MPI_BCAST( VPERG,        1, MPI_DOUBLE_PRECISION, 0, ICOMM, IERROR )
+        CALL MPI_BCAST( SVPERG,       1, MPI_DOUBLE_PRECISION, 0, ICOMM, IERROR )
+        CALL MPI_BCAST( iIniField_tg,    1, MPI_INTEGER4,         0, ICOMM, IERROR )
+        CALL MPI_BCAST( iIniField_io,    1, MPI_INTEGER4,         0, ICOMM, IERROR )
+        CALL MPI_BCAST( TimeReStart_tg,    1, MPI_DOUBLE_PRECISION, 0, ICOMM, IERROR )
+        CALL MPI_BCAST( TimeReStart_io,    1, MPI_DOUBLE_PRECISION, 0, ICOMM, IERROR )
+        CALL MPI_BCAST( iIniFieldType, 1, MPI_INTEGER4,         0, ICOMM, IERROR )
+        CALL MPI_BCAST( iIniFieldTime, 1, MPI_INTEGER4,      0, ICOMM, IERROR )
+
+
+
+        !================[fluid]===================
+        CALL MPI_BCAST( REN,       1, MPI_DOUBLE_PRECISION, 0, ICOMM, IERROR )
+        CALL MPI_BCAST( ReIni,     1, MPI_DOUBLE_PRECISION, 0, ICOMM, IERROR )
+        CALL MPI_BCAST( TLgRe,     1, MPI_DOUBLE_PRECISION, 0, ICOMM, IERROR )
+        CALL MPI_BCAST( iFlowDriven, 1, MPI_INTEGER4,         0, ICOMM, IERROR )
+        CALL MPI_BCAST( Cf_Given,      1, MPI_DOUBLE_PRECISION, 0, ICOMM, IERROR )
+
+        !================[thermal]===================
+        CALL MPI_BCAST( iThermoDynamics,   1, MPI_INTEGER4,         0, ICOMM, IERROR )
+        CALL MPI_BCAST( FLOWDIR,     1, MPI_INTEGER4,         0, ICOMM, IERROR )
+        CALL MPI_BCAST( iGravity,     1, MPI_INTEGER4,         0, ICOMM, IERROR )
+        CALL MPI_BCAST(iThermalWallType,  2, MPI_INTEGER4,         0, ICOMM, IERROR )
+        CALL MPI_BCAST( thermalWallBC_Dim,  2, MPI_DOUBLE_PRECISION, 0, ICOMM, IERROR )
+        CALL MPI_BCAST( L0,          1, MPI_DOUBLE_PRECISION, 0, ICOMM, IERROR )
+        CALL MPI_BCAST( T0,          1, MPI_DOUBLE_PRECISION, 0, ICOMM, IERROR )
+        CALL MPI_BCAST( Ti,          1, MPI_DOUBLE_PRECISION, 0, ICOMM, IERROR )
+        CALL MPI_BCAST( P0,          1, MPI_DOUBLE_PRECISION, 0, ICOMM, IERROR )
+        CALL MPI_BCAST( iThermoProperty,  1, MPI_INTEGER4,         0, ICOMM, IERROR )
+        CALL MPI_BCAST( IdealGasType, 1, MPI_INTEGER4,         0, ICOMM, IERROR )
+        CALL MPI_BCAST( fstatetype,  1, MPI_INTEGER4,         0, ICOMM, IERROR )
+        CALL MPI_BCAST( NISTFLNM,   64, MPI_CHARACTER,        0, ICOMM, IERROR )
+
+        !================[statistics]===================
+        CALL MPI_BCAST( tRunAve1,     1, MPI_DOUBLE_PRECISION, 0, ICOMM, IERROR )
+        CALL MPI_BCAST( tRunAve_Reset, 1, MPI_DOUBLE_PRECISION, 0, ICOMM, IERROR )
+        CALL MPI_BCAST( dtAveView,   1, MPI_DOUBLE_PRECISION, 0, ICOMM, IERROR )
+        CALL MPI_BCAST( dtRawView,    1, MPI_DOUBLE_PRECISION, 0, ICOMM, IERROR )
+        CALL MPI_BCAST( dtSave1,    1, MPI_DOUBLE_PRECISION, 0, ICOMM, IERROR )
+        CALL MPI_BCAST( iterMonitor,      1, MPI_INTEGER4, 0, ICOMM, IERROR )
+        CALL MPI_BCAST( MGRID,      1, MPI_INTEGER4, 0, ICOMM, IERROR )
+        CALL MPI_BCAST( JINI,       1, MPI_INTEGER4, 0, ICOMM, IERROR )
+
+        !================[postprocess]===================
+        CALL MPI_BCAST( iPostProcess, 1, MPI_INTEGER4,         0, ICOMM, IERROR )
+        CALL MPI_BCAST( iPPInst,       1, MPI_INTEGER4,         0, ICOMM, IERROR )
+        CALL MPI_BCAST( iPPSpectra,    1, MPI_INTEGER4,         0, ICOMM, IERROR )
+        CALL MPI_BCAST( iPPDimension,        1, MPI_INTEGER4,         0, ICOMM, IERROR )
+        CALL MPI_BCAST( zoneNameView, 64, MPI_CHARACTER,        0, ICOMM, IERROR )
+        CALL MPI_BCAST( pp_instn_sz,  1, MPI_INTEGER4,         0, ICOMM, IERROR )
+        IF(iPostProcess == 2) THEN
+            IF(MYID /= 0) THEN
+                allocate(pp_instn_tim(pp_instn_sz))
+                pp_instn_tiM = 0.0_WP
+            END IF
+            CALL MPI_BCAST( pp_instn_tim, pp_instn_sz, MPI_DOUBLE_PRECISION,         0, ICOMM, IERROR )
+        END IF
+
+
+        !================ All otherS =================================================
+        CALL MPI_BCAST( NND1_tg,    1, MPI_INTEGER4,         0, ICOMM, IERROR )
+        CALL MPI_BCAST( NND1_io,    1, MPI_INTEGER4,         0, ICOMM, IERROR )
+        CALL MPI_BCAST( NND2,       1, MPI_INTEGER4,         0, ICOMM, IERROR )
+        CALL MPI_BCAST( NND3,       1, MPI_INTEGER4,         0, ICOMM, IERROR )
+        CALL MPI_BCAST( NCL1S,      1, MPI_INTEGER4,         0, ICOMM, IERROR )
+        CALL MPI_BCAST( NCL1E,      1, MPI_INTEGER4,         0, ICOMM, IERROR )
+
+        !IF(MYID == 1) WRITE(*, *) NISTFLNM !test
+
+        RETURN
+    END SUBROUTINE

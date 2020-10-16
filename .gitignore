@@ -1,3 +1,11 @@
+# folders
+bin/
+docs/
+obj/
+scripts/
+test_cases/
+test_loops/
+
 # Prerequisites
 *.d
 

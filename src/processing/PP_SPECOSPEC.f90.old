@@ -1,0 +1,1234 @@
+    MODULE SPECO_info
+        USE cpARam 
+        
+        INTEGER(4) :: N1MH
+        INTEGER(4) :: N3MH
+        INTEGER(4) :: N1MD
+        INTEGER(4) :: N3MD
+    
+        REAL(WP), ALLOCATABLE :: RHS   (:, :, :)
+        
+        REAL(WP), ALLOCATABLE :: ENEJTF(:, :)
+        REAL(WP), ALLOCATABLE :: ENEJME(:, :)
+        
+        REAL(WP), ALLOCATABLE :: ENE1MA(:)
+        REAL(WP), ALLOCATABLE :: ENE3MA(:)
+        
+        REAL(WP), ALLOCATABLE :: EN1IK (:, :, :)
+        REAL(WP), ALLOCATABLE :: EN3KI (:, :, :)
+        
+        REAL(WP), ALLOCATABLE :: ENE1(:, :)
+        REAL(WP), ALLOCATABLE :: ENE3(:, :)
+        
+        REAL(WP), ALLOCATABLE :: CORX1(:, :)
+        REAL(WP), ALLOCATABLE :: CORX3(:, :)
+        
+        REAL(WP), ALLOCATABLE :: R11X1(:, :)
+        REAL(WP), ALLOCATABLE :: R22X1(:, :)
+        REAL(WP), ALLOCATABLE :: R33X1(:, :)
+        REAL(WP), ALLOCATABLE :: R44X1(:, :)
+        REAL(WP), ALLOCATABLE :: R12X1(:, :)
+        REAL(WP), ALLOCATABLE :: R13X1(:, :)
+        REAL(WP), ALLOCATABLE :: R23X1(:, :)
+        
+        REAL(WP), ALLOCATABLE :: R11X3(:, :)
+        REAL(WP), ALLOCATABLE :: R22X3(:, :)
+        REAL(WP), ALLOCATABLE :: R33X3(:, :)
+        REAL(WP), ALLOCATABLE :: R44X3(:, :)
+        REAL(WP), ALLOCATABLE :: R12X3(:, :)
+        REAL(WP), ALLOCATABLE :: R13X3(:, :)
+        REAL(WP), ALLOCATABLE :: R23X3(:, :)
+        
+        REAL(WP), ALLOCATABLE :: ENE1TO(:, :)
+        REAL(WP), ALLOCATABLE :: ENE2TO(:, :)
+        REAL(WP), ALLOCATABLE :: ENE3TO(:, :)
+        REAL(WP), ALLOCATABLE :: ENE4TO(:, :)
+        REAL(WP), ALLOCATABLE :: EN12TO(:, :)
+        REAL(WP), ALLOCATABLE :: EN13TO(:, :)
+        REAL(WP), ALLOCATABLE :: EN23TO(:, :)
+        
+        REAL(WP), ALLOCATABLE :: ENE1ZO(:, :)
+        REAL(WP), ALLOCATABLE :: ENE2ZO(:, :)
+        REAL(WP), ALLOCATABLE :: ENE3ZO(:, :)
+        REAL(WP), ALLOCATABLE :: ENE4ZO(:, :)
+        REAL(WP), ALLOCATABLE :: EN12ZO(:, :)
+        REAL(WP), ALLOCATABLE :: EN13ZO(:, :)
+        REAL(WP), ALLOCATABLE :: EN23ZO(:, :)
+        
+        REAL(WP), ALLOCATABLE :: UU11(:, :)
+        REAL(WP), ALLOCATABLE :: UU22(:, :)
+        REAL(WP), ALLOCATABLE :: UU33(:, :)
+        REAL(WP), ALLOCATABLE :: UU44(:, :)
+        REAL(WP), ALLOCATABLE :: UU55(:, :)
+        REAL(WP), ALLOCATABLE :: UU66(:, :)
+        REAL(WP), ALLOCATABLE :: UU77(:, :)
+        REAL(WP), ALLOCATABLE :: UU88(:, :)
+        
+        REAL(WP), ALLOCATABLE :: WW11(:, :)
+        REAL(WP), ALLOCATABLE :: WW22(:, :)
+        REAL(WP), ALLOCATABLE :: WW33(:, :)
+        REAL(WP), ALLOCATABLE :: WW44(:, :)
+        REAL(WP), ALLOCATABLE :: WW55(:, :)
+        REAL(WP), ALLOCATABLE :: WW66(:, :)
+        REAL(WP), ALLOCATABLE :: WW77(:, :)
+        REAL(WP), ALLOCATABLE :: WW88(:, :)
+        
+        REAL(WP), ALLOCATABLE :: WORK_UU11(:, :)
+        REAL(WP), ALLOCATABLE :: WORK_UU22(:, :)
+        REAL(WP), ALLOCATABLE :: WORK_UU33(:, :)
+        REAL(WP), ALLOCATABLE :: WORK_UU44(:, :)
+        REAL(WP), ALLOCATABLE :: WORK_UU55(:, :)
+        REAL(WP), ALLOCATABLE :: WORK_UU66(:, :)
+        REAL(WP), ALLOCATABLE :: WORK_UU77(:, :)
+        REAL(WP), ALLOCATABLE :: WORK_UU88(:, :)
+        
+        REAL(WP), ALLOCATABLE :: WORK_WW11(:, :)
+        REAL(WP), ALLOCATABLE :: WORK_WW22(:, :)
+        REAL(WP), ALLOCATABLE :: WORK_WW33(:, :)
+        REAL(WP), ALLOCATABLE :: WORK_WW44(:, :)
+        REAL(WP), ALLOCATABLE :: WORK_WW55(:, :)
+        REAL(WP), ALLOCATABLE :: WORK_WW66(:, :)
+        REAL(WP), ALLOCATABLE :: WORK_WW77(:, :)
+        REAL(WP), ALLOCATABLE :: WORK_WW88(:, :)
+
+    END MODULE
+
+SUBROUTINE SPECO_ALLOCATE
+        USE mesh_info
+        USE SPECO_info
+        IMPLICIT NONE
+    
+         !===========u'=u-<u>=======================================
+        ALLOCATE ( RHS(NCL1_io, N2DO(0), NCL3) ) ; RHS = 0.0_WP 
+        
+        !=========== ENErgy in each direction ( not USEd ) ======================
+        ! IN PHYSICAL SPACE
+        ALLOCATE ( ENEJTF(NDV + 1, N2DO(0)) ) ; ENEJTF = 0.0_WP  ! <u'u'>_zx
+        ALLOCATE ( ENEJME(NDV + 1, N2DO(0)) ) ; ENEJME = 0.0_WP  ! <u'>_zx  ? not zero?
+        
+        ! IN WAVE NUMBER SPACE
+        ALLOCATE ( ENE1MA(NDV + 1        ) ) ; ENE1MA = 0.0_WP  ! 
+        ALLOCATE ( ENE3MA(NDV + 1        ) ) ; ENE3MA = 0.0_WP  ! 
+        
+        !==========================
+        ! IN WAVE NUMBER SPACE
+        !EN1IK = Streamwise INVERSE FFT X1 of u'_ndv
+        !EN3KI = SPANWISE   INVERSE FFT X3 of u'_ndv
+        ALLOCATE ( EN1IK(NDV + 1, N1MD, NCL3   )) ; EN1IK = 0.0_WP
+        ALLOCATE ( EN3KI(NDV + 1, N3MD, NCL1_io)) ; EN3KI = 0.0_WP
+        
+        !=================================================
+        ! IN WAVE NUMBER SPACE
+        ALLOCATE ( ENE1(NCL2, NCL1_io)) ; ENE1(:, :) = 0.0_WP !E(k_x)
+        ALLOCATE ( ENE3(NCL2, NCL3   )) ; ENE3(:, :) = 0.0_WP !E(k_z)
+        
+        !=================================================
+        ! IN PHYSICAL SPACE
+        ALLOCATE ( CORX1(NCL2, NCL1_io)) ; CORX1(:, :) = 0.0_WP 
+        ALLOCATE ( CORX3(NCL2, NCL3   )) ; CORX3(:, :) = 0.0_WP
+        
+        !========CORRELATION ===========================
+        ! IN PHYSICAL SPACE
+        ! CORRELATIONo R(IJ)X(K) = Velocity_i and Velocity_J along the direction K
+        ALLOCATE ( R11X1(NCL2, NCL1_io) ) ; R11X1(:, :) = 0.0_WP 
+        ALLOCATE ( R22X1(NCL2, NCL1_io) ) ; R22X1(:, :) = 0.0_WP 
+        ALLOCATE ( R33X1(NCL2, NCL1_io) ) ; R33X1(:, :) = 0.0_WP 
+        ALLOCATE ( R44X1(NCL2, NCL1_io) ) ; R44X1(:, :) = 0.0_WP 
+        ALLOCATE ( R12X1(NCL2, NCL1_io) ) ; R12X1(:, :) = 0.0_WP 
+        ALLOCATE ( R13X1(NCL2, NCL1_io) ) ; R13X1(:, :) = 0.0_WP 
+        ALLOCATE ( R23X1(NCL2, NCL1_io) ) ; R23X1(:, :) = 0.0_WP 
+        
+        ALLOCATE ( R11X3(NCL2, NCL3) ) ; R11X3(:, :) = 0.0_WP 
+        ALLOCATE ( R22X3(NCL2, NCL3) ) ; R22X3(:, :) = 0.0_WP 
+        ALLOCATE ( R33X3(NCL2, NCL3) ) ; R33X3(:, :) = 0.0_WP 
+        ALLOCATE ( R44X3(NCL2, NCL3) ) ; R44X3(:, :) = 0.0_WP 
+        ALLOCATE ( R12X3(NCL2, NCL3) ) ; R12X3(:, :) = 0.0_WP 
+        ALLOCATE ( R13X3(NCL2, NCL3) ) ; R13X3(:, :) = 0.0_WP 
+        ALLOCATE ( R23X3(NCL2, NCL3) ) ; R23X3(:, :) = 0.0_WP 
+        
+        !===============
+        ! IN WAVE NUMBER SPACE
+        ALLOCATE ( ENE1TO(NCL2, NCL1_io) ) ; ENE1TO(:, :) = 0.0_WP 
+        ALLOCATE ( ENE2TO(NCL2, NCL1_io) ) ; ENE2TO(:, :) = 0.0_WP 
+        ALLOCATE ( ENE3TO(NCL2, NCL1_io) ) ; ENE3TO(:, :) = 0.0_WP 
+        ALLOCATE ( ENE4TO(NCL2, NCL1_io) ) ; ENE4TO(:, :) = 0.0_WP 
+        ALLOCATE ( EN12TO(NCL2, NCL1_io) ) ; EN12TO(:, :) = 0.0_WP 
+        ALLOCATE ( EN13TO(NCL2, NCL1_io) ) ; EN13TO(:, :) = 0.0_WP 
+        ALLOCATE ( EN23TO(NCL2, NCL1_io) ) ; EN23TO(:, :) = 0.0_WP 
+        
+        !=============
+        ! IN WAVE NUMBER SPACE
+        ALLOCATE ( ENE1ZO(NCL2, NCL3) ) ; ENE1ZO(:, :) = 0.0_WP 
+        ALLOCATE ( ENE2ZO(NCL2, NCL3) ) ; ENE2ZO(:, :) = 0.0_WP 
+        ALLOCATE ( ENE3ZO(NCL2, NCL3) ) ; ENE3ZO(:, :) = 0.0_WP  
+        ALLOCATE ( ENE4ZO(NCL2, NCL3) ) ; ENE4ZO(:, :) = 0.0_WP 
+        ALLOCATE ( EN12ZO(NCL2, NCL3) ) ; EN12ZO(:, :) = 0.0_WP 
+        ALLOCATE ( EN13ZO(NCL2, NCL3) ) ; EN13ZO(:, :) = 0.0_WP 
+        ALLOCATE ( EN23ZO(NCL2, NCL3) ) ; EN23ZO(:, :) = 0.0_WP 
+
+        !=============
+        ! IN WAVE NUMBER SPACE
+        ALLOCATE ( UU11(NCL2, NCL1_io) ) ; UU11(:, :) = 0.0_WP 
+        ALLOCATE ( UU22(NCL2, NCL1_io) ) ; UU22(:, :) = 0.0_WP
+        ALLOCATE ( UU33(NCL2, NCL1_io) ) ; UU33(:, :) = 0.0_WP
+        ALLOCATE ( UU44(NCL2, NCL1_io) ) ; UU44(:, :) = 0.0_WP
+        ALLOCATE ( UU55(NCL2, NCL1_io) ) ; UU55(:, :) = 0.0_WP
+        ALLOCATE ( UU66(NCL2, NCL1_io) ) ; UU66(:, :) = 0.0_WP
+        ALLOCATE ( UU77(NCL2, NCL1_io) ) ; UU77(:, :) = 0.0_WP
+        ALLOCATE ( UU88(NCL2, NCL1_io) ) ; UU88(:, :) = 0.0_WP
+        
+        ALLOCATE ( WW11(NCL2, NCL3) ) ; WW11(:, :) = 0.0_WP 
+        ALLOCATE ( WW22(NCL2, NCL3) ) ; WW22(:, :) = 0.0_WP
+        ALLOCATE ( WW33(NCL2, NCL3) ) ; WW33(:, :) = 0.0_WP
+        ALLOCATE ( WW44(NCL2, NCL3) ) ; WW44(:, :) = 0.0_WP
+        ALLOCATE ( WW55(NCL2, NCL3) ) ; WW55(:, :) = 0.0_WP
+        ALLOCATE ( WW66(NCL2, NCL3) ) ; WW66(:, :) = 0.0_WP
+        ALLOCATE ( WW77(NCL2, NCL3) ) ; WW77(:, :) = 0.0_WP
+        ALLOCATE ( WW88(NCL2, NCL3) ) ; WW88(:, :) = 0.0_WP
+        
+        !=============
+        ! IN WAVE NUMBER SPACE
+        ALLOCATE ( WORK_UU11(NCL2, NCL1_io) ) ; WORK_UU11(:, :) = 0.0_WP 
+        ALLOCATE ( WORK_UU22(NCL2, NCL1_io) ) ; WORK_UU22(:, :) = 0.0_WP
+        ALLOCATE ( WORK_UU33(NCL2, NCL1_io) ) ; WORK_UU33(:, :) = 0.0_WP
+        ALLOCATE ( WORK_UU44(NCL2, NCL1_io) ) ; WORK_UU44(:, :) = 0.0_WP
+        ALLOCATE ( WORK_UU55(NCL2, NCL1_io) ) ; WORK_UU55(:, :) = 0.0_WP
+        ALLOCATE ( WORK_UU66(NCL2, NCL1_io) ) ; WORK_UU66(:, :) = 0.0_WP
+        ALLOCATE ( WORK_UU77(NCL2, NCL1_io) ) ; WORK_UU77(:, :) = 0.0_WP
+        ALLOCATE ( WORK_UU88(NCL2, NCL1_io) ) ; WORK_UU88(:, :) = 0.0_WP
+        
+        ALLOCATE ( WORK_WW11(NCL2, NCL3) ) ; WORK_WW11(:, :) = 0.0_WP 
+        ALLOCATE ( WORK_WW22(NCL2, NCL3) ) ; WORK_WW22(:, :) = 0.0_WP
+        ALLOCATE ( WORK_WW33(NCL2, NCL3) ) ; WORK_WW33(:, :) = 0.0_WP
+        ALLOCATE ( WORK_WW44(NCL2, NCL3) ) ; WORK_WW44(:, :) = 0.0_WP
+        ALLOCATE ( WORK_WW55(NCL2, NCL3) ) ; WORK_WW55(:, :) = 0.0_WP
+        ALLOCATE ( WORK_WW66(NCL2, NCL3) ) ; WORK_WW66(:, :) = 0.0_WP
+        ALLOCATE ( WORK_WW77(NCL2, NCL3) ) ; WORK_WW77(:, :) = 0.0_WP
+        ALLOCATE ( WORK_WW88(NCL2, NCL3) ) ; WORK_WW88(:, :) = 0.0_WP
+        
+    
+        RETURN
+    END SUBROUTINE
+    
+    
+SUBROUTINE SPECO_DEALLOCATE
+        USE SPECO_info
+        IMPLICIT NONE
+    
+         !===========u'=u-<u>=======================================
+        DEALLOCATE ( RHS )
+        
+        !=========== ENErgy in each direction ( not USEd ) ======================
+        DEALLOCATE ( ENEJTF )
+        DEALLOCATE ( ENEJME )
+        
+        DEALLOCATE ( ENE1MA )
+        DEALLOCATE ( ENE3MA )
+        
+        !==========
+        ! IN WAVE NUMBER SPACE
+        !EN1IK = Streamwise INVERSE FFT X1 of u'_ndv
+        !EN3KI = SPANWISE   INVERSE FFT X3 of u'_ndv
+        DEALLOCATE ( EN1IK )
+        DEALLOCATE ( EN3KI )
+        
+        !=================================================
+        ! IN WAVE NUMBER SPACE
+        DEALLOCATE ( ENE1 )
+        DEALLOCATE ( ENE3 )
+        
+        !=================================================
+        DEALLOCATE ( CORX1 )
+        DEALLOCATE ( CORX3 )
+        
+        !========CORRELATION ===========================
+        ! CORRELATIONo R(IJ)X(K) = Velocity_i and Velocity_J along the direction K
+        DEALLOCATE ( R11X1 )
+        DEALLOCATE ( R22X1 )
+        DEALLOCATE ( R33X1 )
+        DEALLOCATE ( R44X1 )
+        DEALLOCATE ( R12X1 )
+        DEALLOCATE ( R13X1 )
+        DEALLOCATE ( R23X1 )
+        
+        DEALLOCATE ( R11X3 )
+        DEALLOCATE ( R22X3 ) 
+        DEALLOCATE ( R33X3 )
+        DEALLOCATE ( R44X3 )
+        DEALLOCATE ( R12X3 )
+        DEALLOCATE ( R13X3 ) 
+        DEALLOCATE ( R23X3 )
+        
+        !===============
+        DEALLOCATE ( ENE1TO )
+        DEALLOCATE ( ENE2TO )
+        DEALLOCATE ( ENE3TO )
+        DEALLOCATE ( ENE4TO )
+        DEALLOCATE ( EN12TO )
+        DEALLOCATE ( EN13TO )
+        DEALLOCATE ( EN23TO )
+ 
+        !=============
+        DEALLOCATE ( ENE1ZO )
+        DEALLOCATE ( ENE2ZO ) 
+        DEALLOCATE ( ENE3ZO )
+        DEALLOCATE ( ENE4ZO )
+        DEALLOCATE ( EN12ZO )
+        DEALLOCATE ( EN13ZO )
+        DEALLOCATE ( EN23ZO )
+        
+
+        !=============
+        DEALLOCATE ( UU11 )
+        DEALLOCATE ( UU22 )
+        DEALLOCATE ( UU33 )
+        DEALLOCATE ( UU44 )
+        DEALLOCATE ( UU55 )
+        DEALLOCATE ( UU66 )
+        DEALLOCATE ( UU77 )
+        DEALLOCATE ( UU88 )
+        
+        DEALLOCATE ( WW11 )
+        DEALLOCATE ( WW22 )
+        DEALLOCATE ( WW33 )
+        DEALLOCATE ( WW44 )
+        DEALLOCATE ( WW55 )
+        DEALLOCATE ( WW66 )
+        DEALLOCATE ( WW77 )
+        DEALLOCATE ( WW88 )
+        
+        !=============
+        DEALLOCATE ( WORK_UU11 )
+        DEALLOCATE ( WORK_UU22 )
+        DEALLOCATE ( WORK_UU33 )
+        DEALLOCATE ( WORK_UU44 )
+        DEALLOCATE ( WORK_UU55 )
+        DEALLOCATE ( WORK_UU66 )
+        DEALLOCATE ( WORK_UU77 )
+        DEALLOCATE ( WORK_UU88 )
+        
+        DEALLOCATE ( WORK_WW11 )
+        DEALLOCATE ( WORK_WW22 )
+        DEALLOCATE ( WORK_WW33 )
+        DEALLOCATE ( WORK_WW44 )
+        DEALLOCATE ( WORK_WW55 )
+        DEALLOCATE ( WORK_WW66 )
+        DEALLOCATE ( WORK_WW77 )
+        DEALLOCATE ( WORK_WW88 )
+    
+        RETURN
+    END SUBROUTINE
+    
+!==================== main codE ============================================
+
+SUBROUTINE PP_SPECOSPEC
+    !   Refer to: Page 213, Chapter 9.9e in Orland book.
+        USE mesh_info
+        USE init_info
+        USE flow_info
+        USE thermal_info
+        USE SPECO_info
+        USE postprocess_info
+        USE WRT_INFO
+        
+        IMPLICIT NONE
+        
+        REAL(WP) :: VARINST(NCL1S : NCL1E, 1 : N2DO(0), NCL3, NDV + 1)
+        REAL(WP) :: VARAVRG(NCL2, NDV + 1)
+        REAL(WP) :: DVDL_CCT(NDV, NDV)
+        
+        INTEGER(4) :: I, J, K
+        
+        !==========COMMON =======================
+        N3MH = NCL3 / 2 + 1
+        N3MD= NCL3 + 2
+        N1MH = NCL1_io / 2 + 1
+        N1MD= NCL1_io + 2
+        CALL PP_wall_thermal_shear(flgxz)
+        
+        !========OUTPUT FLOW VELOCITY CORRECTION ========================
+        DO J = 1, N2DO(MYID)
+            DO I = 1, NCL1_io
+                DO K = 1, NCL3
+                    VARINST(I, J, K, 1) = Q_io(I, J, K, 1)
+                    VARINST(I, J, K, 2) = (Q_io(I, J, K, 2) + Q_io(I, J + 1, K, 2)) * YND2CL
+                    VARINST(I, J, K, 3) = Q_io(I, J, K, 3)
+                    VARINST(I, J, K, 4) = VARINST(I, J, K, 1) * VARINST(I, J, K, 1) + &
+                                      VARINST(I, J, K, 2) * VARINST(I, J, K, 2) + &
+                                      VARINST(I, J, K, 3) * VARINST(I, J, K, 3)
+                END DO
+            END DO
+            VARAVRG(J, 1) = U1xzL_io(J, 1)
+            VARAVRG(J, 2) = U1xzL_io(J, 2)
+            VARAVRG(J, 3) = U1xzL_io(J, 3)
+            VARAVRG(J, 4) = U2xzL_io(J, 1) + U2xzL_io(J, 4) + U2xzL_io(J,6)
+        END DO
+        
+        
+        IF(MYID == 0) CALL CHKRLHDL('16.IO: postprocessing spectra data (FLOW) at', MYID, PhyTIME_io)
+        CALL SPECO_ALLOCATE
+        CALL SPECO_CORR_ENEG(VARINST, VARAVRG)
+        CALL SPECO_WRITE_PROFILE('FLOW')
+        CALL SPECO_WRITE_Contour('FLOW')
+        CALL SPECO_DEALLOCATE
+        IF(MYID == 0) CALL CHKRLHDL('IO: finished postprocessing spectra data (FLOW) at', MYID, PhyTIME_io)
+        
+        
+        !========OUTPUT FLOW ENSTROPHY CORRECTION ========================
+        DO J = 1, N2DO(MYID)
+            DO I = 1, NCL1_io
+                DO K = 1, NCL3
+                    CALL INST_Qio_Gradient_CellCentred(I, J, K, DVDL_CCT)
+                    VARINST(I, J, K, 1) = DVDL_CCT(3, 2) - DVDL_CCT(2, 3)
+                    VARINST(I, J, K, 2) = DVDL_CCT(1, 3) - DVDL_CCT(3, 1)
+                    VARINST(I, J, K, 3) = DVDL_CCT(2, 1) - DVDL_CCT(1, 2)
+                    VARINST(I, J, K, 4) = VARINST(I, J, K, 1) * VARINST(I, J, K, 1) + &
+                                      VARINST(I, J, K, 2) * VARINST(I, J, K, 2) + &
+                                      VARINST(I, J, K, 3) * VARINST(I, J, K, 3)
+                END DO
+            END DO
+            VARAVRG(J, 1) = DVDL1xzL_io(J, 3, 2) - DVDL1xzL_io(J, 2, 3)
+            VARAVRG(J, 2) = DVDL1xzL_io(J, 1, 3) - DVDL1xzL_io(J, 3, 1)
+            VARAVRG(J, 3) = DVDL1xzL_io(J, 2, 1) - DVDL1xzL_io(J, 1, 2)
+            VARAVRG(J, 4) = VARAVRG(J, 1) * VARAVRG(J, 1) + &
+                             VARAVRG(J, 2) * VARAVRG(J, 2) + &
+                             VARAVRG(J, 3) * VARAVRG(J, 3)
+        END DO
+        
+        
+        IF(MYID == 0) CALL CHKRLHDL('16.IO: postprocessing spectra data (ENSTROPHY) at', MYID, PhyTIME_io)
+        CALL SPECO_ALLOCATE
+        CALL SPECO_CORR_ENEG(VARINST, VARAVRG)
+        CALL SPECO_WRITE_PROFILE('ESTP')
+        CALL SPECO_WRITE_Contour('ESTP')
+        CALL SPECO_DEALLOCATE
+        IF(MYID == 0) CALL CHKRLHDL('IO: finished postprocessing spectra data (ENSTROPHY) at', MYID, PhyTIME_io)
+        
+    
+        !========OUTPUT THERMAL CORRECTION ========================
+        IF(iThermoDynamics == 1) THEN
+            DO J = 1, N2DO(MYID)
+                DO I = 1, NCL1_io
+                    DO K = 1, NCL3
+                        VARINST(I, J, K, 1) = DENSITY    (I, J, K)
+                        VARINST(I, J, K, 2) = ENTHALPY   (I, J, K)
+                        VARINST(I, J, K, 3) = TEMPERATURE(I, J, K)
+                        VARINST(I, J, K, 4) = DH       (I, J, K)
+                    END DO
+                END DO
+                VARAVRG(J, 1) = D1XzL_io(J)
+                VARAVRG(J, 2) = H1XzL_io(J)
+                VARAVRG(J, 3) = T1XzL_io(J)
+                VARAVRG(J, 4) = DHXzL_io(J)
+            END DO
+            IF(MYID == 0) CALL CHKRLHDL('16.IO: postprocessing spectra data (HEAT) at', MYID, PhyTIME_io)
+            CALL SPECO_ALLOCATE
+            CALL SPECO_CORR_ENEG(VARINST, VARAVRG)
+            CALL SPECO_WRITE_PROFILE('HEAT')
+            CALL SPECO_WRITE_Contour('HEAT')
+            CALL SPECO_DEALLOCATE
+            IF(MYID == 0) CALL CHKRLHDL('IO: finished postprocessing spectra data (HEAT) at', MYID, PhyTIME_io)
+        END IF
+        
+        
+        RETURN
+    END SUBROUTINE
+
+    
+!=============================================================================================
+SUBROUTINE SPECO_WRITE_PROFILE(STR)
+    !   Refer to: Page 213, Chapter 9.9e in Orland book.
+        USE mesh_info
+        USE init_info
+        USE SPECO_info
+        USE postprocess_info
+        USE WRT_INFO
+        
+        IMPLICIT NONE
+        CHARACTER(4), INTENT(IN) :: STR
+        
+        CHARACTER(15) :: PNTIM
+        CHARACTER(15) :: PNLOC
+        INTEGER(4) :: DFLG(MGRID)
+        CHARACTER(256) :: FLNAME
+        REAL(WP) :: Ret_ave, U_tau_ave
+        REAL(WP) :: AKE
+        
+        INTEGER(4) :: N, JJ, L, KC, IC
+        
+        IF(MYID /= 0) RETURN
+        !========== Test for a ASCII outpuT ==============
+        Ret_ave  = 0.5_WP * (Ret_io(1) + Ret_io(2)) !;WRITE(*, *) Ret_ave, Ret_io(1), Ret_io(2) !test
+        U_tau_avE = 0.5_WP * (Utaw_io(1) + Utaw_io(2))
+        DO N = 1, MGRID
+            JJ = JGMOV(N)
+            DFLG(N) = 100 + N
+            
+            WRITE(PNTIM, '(1ES15.9)') PhyTIME_io
+            WRITE(PNLOC, '(1I3.3)')   N
+            
+            !==============correlationS ======================================
+            DO L = 1, 2
+                IF(L == 1) THEN
+                    FLNAME = TRIM(FilePath5) // 'Result.IO.Spectral.' // TRIM(STR) // '.2PCorrelation.X.T'  &
+                            // TRIM(PNTIM) // '.YLC' // TRIM(PNLOC) // '.plt'
+                    OPEN(DFLG(N), FILE = TRIM(ADJUSTL(FLNAME)))
+                    WRITE(DFLG(N), '(A)') 'TITLE = " Correlation (Streamwise sepARation)" '
+                    WRITE(DFLG(N), '(A, A, A)') 'variables = "1X", "R11", "R22", "R33", "R44", "R12", "R13", "R23"'  
+                    WRITE(DFLG(N), '(A, 1ES13.5, A, 1ES13.5, A)') &
+                        'ZONE T = "Rkk(X) at Y / Delta= ', YCC(JJ), &
+                        ' y+= ', (1.0_WP - DABS(YCC(JJ))) * REN * U_tau_ave, ' " '
+            
+                    DO IC = 1, N1MH
+                        WRITE(DFLG(N), '(8ES13.5)') 0.5_WP * ( XND_io(IC) + XND_io(IC + 1) ), &
+                                    R11X1 (JJ, IC), R22X1 (JJ, IC), R33X1 (JJ, IC), R44X1 (JJ, IC), &
+                                    R12X1 (JJ, IC), R13X1 (JJ, IC), R23X1 (JJ, IC)
+                    END DO
+                    CLOSE(DFLG(N))
+                END IF
+                
+                IF(L == 2) THEN
+                    FLNAME = TRIM(FilePath5) // 'Result.IO.Spectral.' // TRIM(STR) // '.2PCorrelation.Z.T'  &
+                            // TRIM(PNTIM) // '.YLC' // TRIM(PNLOC) // '.plt'
+                    OPEN(DFLG(N), FILE = TRIM(ADJUSTL(FLNAME)))
+                    WRITE(DFLG(N), '(A)') 'TITLE = " Correlation (SpanWISe sepARation)" '
+                    WRITE(DFLG(N), '(A, A, A)') 'variables = "1Z", "R11", "R22", "R33", "R44", "R12", "R13", "R23"'  
+                    WRITE(DFLG(N), '(A, 1ES13.5, A, 1ES13.5, A)') &
+                        'ZONE T = "Rkk(Z) at Y / Delta= ', YCC(JJ), &
+                        ' y+= ', (1.0_WP - DABS(YCC(JJ))) * REN * U_tau_ave, ' " '
+            
+                    DO KC = 1, N3MH
+                        WRITE(DFLG(N), '(8ES13.5)') 0.5_WP * ( ZND(KC) + ZND(KC + 1) ), &
+                                R11X3 (JJ, KC), R22X3 (JJ, KC), R33X3 (JJ, KC), R44X3 (JJ, KC), &
+                                R12X3 (JJ, KC), R13X3 (JJ, KC), R23X3 (JJ, KC)
+                    END DO
+                    CLOSE(DFLG(N))
+                
+                END IF
+            END DO
+            
+            !============== ENErgy espectra ======================================
+            DO L = 1, 2
+                IF(L == 1) THEN
+                    FLNAME = TRIM(FilePath5) // 'Result.IO.Spectral.' // TRIM(STR) // '.energy.Xwavenumber.T'  &
+                            // TRIM(PNTIM) // '.YLC' // TRIM(PNLOC) // '.plt'
+                    OPEN(DFLG(N), FILE = TRIM(ADJUSTL(FLNAME)))
+                    WRITE(DFLG(N), '(A)') 'TITLE = " energy.spectra (Streamwise)" '
+                    WRITE(DFLG(N), '(A, A, A)') 'variables = "1IC", "2WaveNumberX", "3E11", "4E22", "5E33", "6E44"'  
+                    WRITE(DFLG(N), '(A, 1ES13.5, A, 1ES13.5, A)') &
+                        'ZONE T = "Ekk(K1) at Y / Delta= ', YCC(JJ), &
+                        ' y+= ', (1.0_WP - DABS(YCC(JJ))) * REN * U_tau_ave, ' " '
+                    DO IC = 1, N1MH
+                        AKE = ( DBLE(IC- 1) * 2.0_WP * PI /HX_io ) / Ret_ave
+                        WRITE(DFLG(N), '(1I8.1, 5ES13.5)') IC, AKE, &
+                                ENE1TO(JJ, IC) * Ret_ave, ENE2TO(JJ, IC) * Ret_ave, ENE3TO(JJ, IC) * Ret_ave, ENE4TO(JJ, IC) * Ret_ave
+                    END DO
+                    CLOSE(DFLG(N))
+                END IF
+                
+                IF(L == 2) THEN
+                    FLNAME = TRIM(FilePath5) // 'Result.IO.Spectral.' // TRIM(STR) // '.energy.Zwavenumber.T'  &
+                            // TRIM(PNTIM) // '.YLC' // TRIM(PNLOC) // '.plt'
+                    OPEN(DFLG(N), FILE = TRIM(ADJUSTL(FLNAME)))
+                    WRITE(DFLG(N), '(A)') 'TITLE = " energy.spectra (spanWISe)" '
+                    WRITE(DFLG(N), '(A, A, A)') 'variables = "1KC", "2WaveNumberZ", "3E11", "4E22", "5E33", "6E44"'  
+                    WRITE(DFLG(N), '(A, 1ES13.5, A, 1ES13.5, A)') &
+                        'ZONE T = "Ekk(X3) at Y / Delta= ', YCC(JJ), &
+                        ' y+= ', (1.0_WP - DABS(YCC(JJ))) * REN * U_tau_ave, ' " '
+                    DO KC = 1, N3MH
+                        AKE = ( DBLE(KC - 1) * 2.0_WP * PI /HZ ) / Ret_ave
+                        WRITE(DFLG(N), '(1I8.1, 5ES13.5)') KC, AKE, &
+                            ENE1ZO(JJ, KC) * Ret_ave, ENE2ZO(JJ, KC) * Ret_ave, ENE3ZO(JJ, KC) * Ret_ave, ENE4ZO(JJ, KC) * Ret_ave
+                    END DO
+                    CLOSE(DFLG(N))
+                END IF
+            END DO
+            
+        END DO
+            
+        
+        RETURN
+    END SUBROUTINE
+    
+    
+!=============================================================================================
+SUBROUTINE SPECO_WRITE_Contour(STR)
+    !   Refer to: Page 213, Chapter 9.9e in Orland book.
+        USE mesh_info
+        USE init_info
+        USE SPECO_info
+        USE postprocess_info
+        USE WRT_INFO
+        
+        IMPLICIT NONE
+        CHARACTER(4), INTENT(IN) :: STR
+        
+        CHARACTER(15) :: PNTIM
+        CHARACTER(15) :: PNLOC
+        INTEGER(4) :: Dflg = 101
+        CHARACTER(256) :: FLNAME
+        REAL(WP) :: Ret_ave, U_tau_ave
+        REAL(WP) :: AKE
+        REAL(WP) :: yplus
+         
+        INTEGER(4) :: N, JJ, L, KC, IC, JJM, JJC
+        
+        IF(MYID /= 0) RETURN
+        
+        !========== Test for a ASCII outpuT ==============
+        Ret_ave  = 0.5_WP * (Ret_io(1) + Ret_io(2)) !;WRITE(*, *) Ret_ave, Ret_io(1), Ret_io(2) !test
+        U_tau_avE = 0.5_WP * (Utaw_io(1) + Utaw_io(2))
+        
+        !===============plane y-Z =====================
+        FLNAME = TRIM(FilePath5) // 'Result.IO.Spectral.' // TRIM(STR) // '.Contours.Z.' // TRIM(PNTIM) // '.plt' 
+        OPEN (DFLG, FILE = TRIM(ADJUSTL(FLNAME)))
+
+        WRITE(DFLG, '(A)') 'TITLE = "DNS FLOW YZ -plane"'
+        WRITE(DFLG, '(A)', AdvancE = "no") 'variables = "X", "Y", "Z", "Y+", "WaveNo3", '
+        WRITE(DFLG, '(A)'          ) &
+                '"R11X3","R22X3","R33X3","R44X3","R12X3","R13X3","R23X3","ENE1X3","ENE2X3","ENE3X3","ENE4X3"'
+        
+        WRITE(DFLG, '(A, 1I11.1, 1ES13.5, A, 1I4.1, A, 1I4.1, A, 1I4.1, A)') 'ZONE T = " ', ITERG, PhyTIME, &
+            ' ", I = ', 1, ', J = ', NND2, ', K = ', N3MH, ', F =POINT'
+        
+        
+        DO KC = 1, N3MH
+            AKE = ( DBLE(KC - 1) * 2.0_WP * PI /HZ ) / Ret_ave
+            DO JJ = 1, NND2
+                JJM = JGMV(JJ)
+                JJC = JJ
+                ypluS = (1.0_WP - DABS(YND(JJ))) * REN * U_tau_ave
+                
+                IF(JJ == 1)    JJM = 1
+                IF(JJ == NND2) JJC = NCL2
+                WRITE(DFLG, '(16ES15.7)') 0.0_WP, YND(JJ),ZND(KC), yplus, AKE, &
+                     0.5* ( R11X3 (JJC, KC) + R11X3 (JJM, KC) ), &
+                     0.5* ( R22X3 (JJC, KC) + R22X3 (JJM, KC) ), &
+                     0.5* ( R33X3 (JJC, KC) + R33X3 (JJM, KC) ), &
+                     0.5* ( R44X3 (JJC, KC) + R44X3 (JJM, KC) ), &
+                     0.5* ( R12X3 (JJC, KC) + R12X3 (JJM, KC) ), &
+                     0.5* ( R13X3 (JJC, KC) + R13X3 (JJM, KC) ), &
+                     0.5* ( R23X3 (JJC, KC) + R23X3 (JJM, KC) ), &
+                     0.5* ( ENE1ZO(JJC, KC) + ENE1ZO(JJM, KC) ) * Ret_ave, &
+                     0.5* ( ENE2ZO(JJC, KC) + ENE2ZO(JJM, KC) ) * Ret_ave, &
+                     0.5* ( ENE3ZO(JJC, KC) + ENE3ZO(JJM, KC) ) * Ret_ave, &
+                     0.5* ( ENE4ZO(JJC, KC) + ENE4ZO(JJM, KC) ) * Ret_ave
+            END DO
+        END DO
+        CLOSE(DFLG)
+        !===============plane X - Y =====================
+        FLNAME = TRIM(FilePath5) // 'Result.IO.Spectral.' // TRIM(STR) // '.Contours.X.' // TRIM(PNTIM) // '.plt' 
+        OPEN (DFLG, FILE = TRIM(ADJUSTL(FLNAME)))
+        
+        WRITE(DFLG, '(A)') 'TITLE = "DNS FLOW YX -plane"'
+        WRITE(DFLG, '(A)', AdvancE = "no") 'variables = "X", "Y", "Z", "Y+", "WaveNo3", '
+        WRITE(DFLG, '(A)'          ) &
+            '"R11X1","R22X1","R33X1","R44X1", "R12X1","R13X1","R23X1","ENE1X1","ENE2X1","ENE3X1","ENE4X1"'
+        
+        WRITE(DFLG, '(A, 1I11.1, 1ES13.5, A, 1I4.1, A, 1I4.1, A, 1I4.1, A)') 'ZONE T = " ', ITERG,PhyTIME, &
+            ' ", I = ', N1MH, ', J = ', NND2, ', K = ', 1, ', F =POINT'
+        DO JJ = 1, NND2
+            ypluS = (1.0_WP - DABS(YND(JJ))) * REN * U_tau_ave
+            JJM = JGMV(JJ)
+            JJC = JJ
+            IF(JJ == 1)    JJM = 1
+            IF(JJ == NND2) JJC = NCL2
+            DO IC = 1, N1MH
+                AKE = ( DBLE(IC- 1) * 2.0_WP * PI /HX_io ) / Ret_ave
+                
+                WRITE(DFLG, '(16ES15.7)') XND_io(IC), YND(JJ), 0.0_WP, yplus, AKE, &
+                    0.5* ( R11X1 (JJC, IC) + R11X1 (JJM, IC) ), &
+                    0.5* ( R22X1 (JJC, IC) + R22X1 (JJM, IC) ), &
+                    0.5* ( R33X1 (JJC, IC) + R33X1 (JJM, IC) ), &
+                    0.5* ( R44X1 (JJC, IC) + R44X1 (JJM, IC) ), &
+                    0.5* ( R12X1 (JJC, IC) + R12X1 (JJM, IC) ), &
+                    0.5* ( R13X1 (JJC, IC) + R13X1 (JJM, IC) ), &
+                    0.5* ( R23X1 (JJC, IC) + R23X1 (JJM, IC) ), &
+                    0.5* ( ENE1TO(JJC, IC) + ENE1TO(JJM, IC) ) * Ret_ave, &
+                    0.5* ( ENE2TO(JJC, IC) + ENE2TO(JJM, IC) ) * Ret_ave, &
+                    0.5* ( ENE3TO(JJC, IC) + ENE3TO(JJM, IC) ) * Ret_ave, &
+                    0.5* ( ENE4TO(JJC, IC) + ENE4TO(JJM, IC) ) * Ret_ave
+            END DO
+        END DO
+        
+        CLOSE(DFLG)
+            
+        
+        RETURN
+    END SUBROUTINE
+        
+        
+!==========================================================================
+SUBROUTINE SPECO_CORR_ENEG(VARINST, VARAVRG)
+    !   Refer to: Page 213, Chapter 9.9e in Orland book.
+        USE mesh_info
+        USE SPECO_info
+        
+        IMPLICIT NONE
+        
+        REAL(WP), INTENT(IN) :: VARINST(NCL1S : NCL1E, 1 : N2DO(0), NCL3, NDV + 1)
+        REAL(WP), INTENT(IN) :: VARAVRG(NCL3, NDV + 1)
+        
+        INTEGER(4) :: K, KK, KC, KD, KP
+        INTEGER(4) :: I, II, IC, ID, IP
+        INTEGER(4) :: JJ, J, L
+        INTEGER(4) :: INUMB, KNUMB
+        
+        REAL(WP) :: RHS11, RHS22, RHS33, RHS44
+        
+
+        DO J = 1, N2DO(MYID)
+            JJ = JCL2G(J)
+            !=============================
+            ENEJTF = 0.0_WP
+            ENEJME = 0.0_WP
+            EN3KI  = 0.0_WP
+            EN1IK  = 0.0_WP
+            
+            !===========FLUCTUATION Streamwise VELOCITY(Q1) =========================
+            RHS = 0.0_WP
+            DO I = 1, NCL1_io
+                DO K = 1, NCL3
+                    RHS11 = VARINST(I, J, K, 1) - VARAVRG(J, 1)   ! u'
+                    RHS(I, J, K) = RHS11                      ! u'
+                    ENEJTF(1, J) = ENEJTF(1, J) + RHS11**2      ! SIGMA_xz(u'* U')
+                    ENEJME(1, J) = ENEJME(1, J) + RHS11         ! SIGMA_xz(u') ! zero??
+                END DO
+            END DO
+            ENEJTF(1, J) = ENEJTF(1, J) * VL1313_io ! <u'u'>_xz
+            ENEJME(1, J) = ENEJME(1, J) * VL1313_io ! <u'>_xz ? Zero??
+            
+            ! tesT =====
+            !WRITE(*, '(A, 2I4.1, 2ES13.5)') '#J, JJ, ENEJTF(1, J),ENEJME(1, J)', J, JJ, ENEJTF(1, J),ENEJME(1, J)
+            !  
+            
+            !-----SPANWISE   INVERSE FFT X3   Q1 VELOCITY
+            CALL RUUX3(J, 1) ! get EN1IK 
+            !-----Streamwise INVERSE FFT X1   Q1 VELOCITY
+            CALL RUUX1(J, 1) ! get EN3KI
+            
+            !===========FLUCTUATION NORMAL VELOCITY(Q2) ===========================
+            RHS = 0.0_WP
+            DO K = 1, NCL3
+                DO I = 1, NCL1_io
+                    RHS22 = VARINST(I, J, K, 2) - VARAVRG(J, 2) !v'
+                    RHS(I, J, K) = RHS22                    !v'
+                    ENEJTF(2, J) = ENEJTF(2, J) + RHS22**2    ! SIGMA_xz(v'* V')
+                    ENEJME(2, J) = ENEJME(2, J) + RHS22       ! SIGMA_xz(u')
+                END DO
+            END DO
+            ENEJTF(2, J) = ENEJTF(2, J) * VL1313_io           ! <v'v'>_xz
+            ENEJME(2, J) = ENEJME(2, J) * VL1313_io           ! <v'>_xz
+            
+            ! tesT =====
+            !WRITE(*, '(A, 2I4.1, 2ES13.5)') '#J, JJ, ENEJTF(2, J),ENEJME(2, J)', J, JJ, ENEJTF(2, J),ENEJME(2, J)
+            !  
+            
+            !-----SPANWISE   INVERSE FFT X3  Q2 VELOCITY
+            CALL RUUX3(J, 2) ! get EN1IK
+            !-----Streamwise INVERSE FFT X1  Q2 VELOCITY
+            CALL RUUX1(J, 2) ! get EN3KI
+            
+            !===========FLUCTUATION SPANWISE VELOCITY(Q3) ===========================
+            RHS = 0.0_WP
+            DO I = 1, NCL1_io
+                DO K = 1, NCL3
+                    RHS33 = VARINST(I, J, K, 3) - VARAVRG(J, 3) !w'
+                    RHS(I, J, K) = RHS33
+                    ENEJTF(3, J) = ENEJTF(3, J) + RHS33**2
+                    ENEJME(3, J) = ENEJME(3, J) + RHS33
+                END DO
+            END DO
+            ENEJTF(3, J) = ENEJTF(3, J) * VL1313_io
+            ENEJME(3, J) = ENEJME(3, J) * VL1313_io
+            
+            ! tesT =====
+            !WRITE(*, '(A, 2I4.1, 2ES13.5)') '#J, JJ, ENEJTF(3, J),ENEJME(3, J)', J, JJ, ENEJTF(3, J),ENEJME(3, J)
+            !  
+            
+            !-----Streamwise INVERSE FFT X1  Q3 VELOCITY
+            CALL RUUX1(J, 3) ! get EN1IK
+            !-----SPANWISE   INVERSE FFT X3  Q3 VELOCITY
+            CALL RUUX3(J, 3) ! get EN3KI
+            
+            
+            !===========FLUCTUATION SPANWISE VELOCITY(Q4) ===========================
+            RHS = 0.0_WP
+            DO I = 1, NCL1_io
+                DO K = 1, NCL3
+                    RHS44 = VARINST(I, J, K, 4) - VARAVRG(J, 4) !KTE'= u* U-<uu>
+                    RHS(I, J, K) = RHS44
+                    ENEJTF(4, J) = ENEJTF(4, J) + RHS44**2
+                    ENEJME(4, J) = ENEJME(4, J) + RHS44
+                END DO
+            END DO
+            ENEJTF(4, J) = ENEJTF(4, J) * VL1313_io
+            ENEJME(4, J) = ENEJME(4, J) * VL1313_io
+            
+            ! tesT =====
+            !WRITE(*, '(A, 2I4.1, 2ES13.5)') '#J, JJ, ENEJTF(3, J),ENEJME(3, J)', J, JJ, ENEJTF(3, J),ENEJME(3, J)
+            !  
+            
+            !-----Streamwise INVERSE FFT X1  Q3 VELOCITY
+            CALL RUUX1(J, 4) ! get EN1IK
+            !-----SPANWISE   INVERSE FFT X3  Q3 VELOCITY
+            CALL RUUX3(J, 4) ! get EN3KI
+            
+            !===================get max. ENE3MA (Not USEd) =====================
+            DO L = 1, NDV + 1
+                ENE3MA(L) = 0.0_WP
+                ENE1MA(L) = 0.0_WP
+                DO K = 1, N3MH- 1
+                    KP = 2 * K
+                    KD= 2 * K - 1
+                    DO I = 1, NCL1_io
+                        ENE3MA(L) = DMAX1(DABS(EN3KI(L, KD, I)),ENE3MA(L))
+                        ENE3MA(L) = DMAX1(DABS(EN3KI(L, KP, I)),ENE3MA(L))
+                    END DO
+                END DO
+                
+                DO I = 1, N1MH- 1
+                    IP = 2 * I
+                    ID= 2 * I - 1
+                    DO K = 1, NCL3
+                        ENE1MA(L) = MAX(ABS(EN1IK(L, ID, K)),ENE1MA(L))
+                        ENE1MA(L) = MAX(ABS(EN1IK(L, IP, K)),ENE1MA(L))
+                    END DO
+                END DO
+            END DO 
+            
+            ! tesT =====
+            !WRITE(*, '(A, 2I4.1,6ES13.5)') '#J, JJ, ENE1MA,ENE3MA', J, JJ, ENE1MA,ENE3MA
+            !  
+            !===========================================
+        
+            CALL COSPEC(J, JJ)
+        
+            !=====================================================
+            DO II = 1, NCL1_io
+                UU11(JJ, II) = ENE1TO(JJ, II)
+                UU22(JJ, II) = ENE2TO(JJ, II)
+                UU33(JJ, II) = ENE3TO(JJ, II)
+                UU44(JJ, II) = ENE4TO(JJ, II)
+                UU55(JJ, II) = R11X1(JJ, II)
+                UU66(JJ, II) = R22X1(JJ, II)
+                UU77(JJ, II) = R33X1(JJ, II)
+                UU88(JJ, II) = R44X1(JJ, II)
+                UV12(JJ, II) = R12X1(JJ, II)
+                UV13(JJ, II) = R13X1(JJ, II)
+                UV23(JJ, II) = R23X1(JJ, II)
+            END DO
+            
+            DO Kk = 1, NCL3
+                WW11(JJ, KK) = ENE1ZO(JJ, KK)
+                WW22(JJ, KK) = ENE2ZO(JJ, KK)
+                WW33(JJ, KK) = ENE3ZO(JJ, KK)
+                WW44(JJ, KK) = ENE4ZO(JJ, KK)
+                WW55(JJ, KK) = R11X3(JJ, KK)
+                WW66(JJ, KK) = R22X3(JJ, KK)
+                WW77(JJ, KK) = R33X3(JJ, KK)
+                WW88(JJ, KK) = R44X3(JJ, KK)
+                WV12(JJ, II) = R12X3(JJ, II)
+                WV13(JJ, II) = R13X3(JJ, II)
+                WV23(JJ, II) = R23X3(JJ, II)
+            END DO
+        END DO
+        
+
+        CALL MPI_BARRIER(ICOMM, IERROR)
+        INUMB= NCL2 * NCL1_io
+        CALL MPI_ALLREDUCE(UU11(1, 1), WORK_UU11(1, 1), INUMB, MPI_DOUBLE_PRECISION, MPI_SUM, ICOMM, IERROR)
+        CALL MPI_ALLREDUCE(UU22(1, 1), WORK_UU22(1, 1), INUMB, MPI_DOUBLE_PRECISION, MPI_SUM, ICOMM, IERROR)
+        CALL MPI_ALLREDUCE(UU33(1, 1), WORK_UU33(1, 1), INUMB, MPI_DOUBLE_PRECISION, MPI_SUM, ICOMM, IERROR)
+        CALL MPI_ALLREDUCE(UU44(1, 1), WORK_UU44(1, 1), INUMB, MPI_DOUBLE_PRECISION, MPI_SUM, ICOMM, IERROR)
+        CALL MPI_ALLREDUCE(UU55(1, 1), WORK_UU55(1, 1), INUMB, MPI_DOUBLE_PRECISION, MPI_SUM, ICOMM, IERROR)
+        CALL MPI_ALLREDUCE(UU66(1, 1), WORK_UU66(1, 1), INUMB, MPI_DOUBLE_PRECISION, MPI_SUM, ICOMM, IERROR)
+        CALL MPI_ALLREDUCE(UU77(1, 1), WORK_UU77(1, 1), INUMB, MPI_DOUBLE_PRECISION, MPI_SUM, ICOMM, IERROR)
+        CALL MPI_ALLREDUCE(UU88(1, 1), WORK_UU88(1, 1), INUMB, MPI_DOUBLE_PRECISION, MPI_SUM, ICOMM, IERROR)
+        CALL MPI_ALLREDUCE(UV12(1, 1), WORK_UV12(1, 1), INUMB, MPI_DOUBLE_PRECISION, MPI_SUM, ICOMM, IERROR)
+        CALL MPI_ALLREDUCE(UV13(1, 1), WORK_UV13(1, 1), INUMB, MPI_DOUBLE_PRECISION, MPI_SUM, ICOMM, IERROR)
+        CALL MPI_ALLREDUCE(UV23(1, 1), WORK_UV23(1, 1), INUMB, MPI_DOUBLE_PRECISION, MPI_SUM, ICOMM, IERROR)
+
+        KNUMB= NCL2 * NCL3
+        CALL MPI_ALLREDUCE(WW11(1, 1), WORK_WW11(1, 1), KNUMB, MPI_DOUBLE_PRECISION, MPI_SUM, ICOMM, IERROR)
+        CALL MPI_ALLREDUCE(WW22(1, 1), WORK_WW22(1, 1), KNUMB, MPI_DOUBLE_PRECISION, MPI_SUM, ICOMM, IERROR)
+        CALL MPI_ALLREDUCE(WW33(1, 1), WORK_WW33(1, 1), KNUMB, MPI_DOUBLE_PRECISION, MPI_SUM, ICOMM, IERROR)
+        CALL MPI_ALLREDUCE(WW44(1, 1), WORK_WW44(1, 1), KNUMB, MPI_DOUBLE_PRECISION, MPI_SUM, ICOMM, IERROR)
+        CALL MPI_ALLREDUCE(WW55(1, 1), WORK_WW55(1, 1), KNUMB, MPI_DOUBLE_PRECISION, MPI_SUM, ICOMM, IERROR)
+        CALL MPI_ALLREDUCE(WW66(1, 1), WORK_WW66(1, 1), KNUMB, MPI_DOUBLE_PRECISION, MPI_SUM, ICOMM, IERROR)
+        CALL MPI_ALLREDUCE(WW77(1, 1), WORK_WW77(1, 1), KNUMB, MPI_DOUBLE_PRECISION, MPI_SUM, ICOMM, IERROR)
+        CALL MPI_ALLREDUCE(WW88(1, 1), WORK_WW88(1, 1), KNUMB, MPI_DOUBLE_PRECISION, MPI_SUM, ICOMM, IERROR)
+        CALL MPI_ALLREDUCE(WV12(1, 1), WORK_WV12(1, 1), INUMB, MPI_DOUBLE_PRECISION, MPI_SUM, ICOMM, IERROR)
+        CALL MPI_ALLREDUCE(WV13(1, 1), WORK_WV13(1, 1), INUMB, MPI_DOUBLE_PRECISION, MPI_SUM, ICOMM, IERROR)
+        CALL MPI_ALLREDUCE(WV23(1, 1), WORK_WV23(1, 1), INUMB, MPI_DOUBLE_PRECISION, MPI_SUM, ICOMM, IERROR)
+        
+        IF (MYID == 0) THEN
+            DO JJ = 1, NCL2
+                DO IC = 1, NCL1_io
+                    ENE1TO(JJ, IC) = WORK_UU11(JJ, IC)
+                    ENE2TO(JJ, IC) = WORK_UU22(JJ, IC)
+                    ENE3TO(JJ, IC) = WORK_UU33(JJ, IC)
+                    ENE4TO(JJ, IC) = WORK_UU44(JJ, IC)
+                    R11X1 (JJ, IC) = WORK_UU55(JJ, IC)
+                    R22X1 (JJ, IC) = WORK_UU66(JJ, IC)
+                    R33X1 (JJ, IC) = WORK_UU77(JJ, IC)
+                    R44X1 (JJ, IC) = WORK_UU88(JJ, IC)
+                    R12X1 (JJ, IC) = WORK_UV12(JJ, IC)
+                    R13X1 (JJ, IC) = WORK_UV13(JJ, IC)
+                    R23X1 (JJ, IC) = WORK_UV23(JJ, IC)
+                END DO
+
+                DO KC = 1, NCL3
+                    ENE1ZO(JJ, KC) = WORK_WW11(JJ, KC)
+                    ENE2ZO(JJ, KC) = WORK_WW22(JJ, KC)
+                    ENE3ZO(JJ, KC) = WORK_WW33(JJ, KC)
+                    ENE4ZO(JJ, KC) = WORK_WW44(JJ, KC)
+                    R11X3 (JJ, KC) = WORK_WW55(JJ, KC)
+                    R22X3 (JJ, KC) = WORK_WW66(JJ, KC)
+                    R33X3 (JJ, KC) = WORK_WW77(JJ, KC)
+                    R44X3 (JJ, KC) = WORK_WW88(JJ, KC)
+                    R12X3 (JJ, KC) = WORK_WV12(JJ, KC)
+                    R13X3 (JJ, KC) = WORK_WV13(JJ, KC)
+                    R23X3 (JJ, KC) = WORK_WV23(JJ, KC)
+                END DO
+            END DO
+        END IF
+        
+        RETURN                                                            
+    END SUBROUTINE
+      
+!======================================================================================  
+    ! input :               EN1IK, EN3KI
+    ! intermediate output:  ENE1, ENE3, CORX1, CORX3
+    ! output:               ENE?ZO, R??Z?
+SUBROUTINE COSPEC(J, JWORK)
+        USE mesh_info
+        USE SPECO_info
+        IMPLICIT NONE
+        
+        INTEGER(4), INTENT(IN) :: J
+        INTEGER(4), INTENT(IN) :: JWORK
+        INTEGER(4) :: K
+        
+        
+        !========= SPECTRA AND CORRELATIONS  VELOCITY 1 COMPONENT -----------------
+        CALL COSPX3(J, JWORK, 1, 1)
+        DO K = 1, N3MH ! check half or total?
+            ENE1ZO(JWORK, K) = ENE1ZO(JWORK, K) + ENE3 (JWORK, K)
+            R11X3 (JWORK, K) = R11X3 (JWORK, K) +CORX3(JWORK, K)
+        END DO
+        
+        CALL COSPX1(J, JWORK, 1, 1)
+        DO K = 1, N1MH
+            ENE1TO(JWORK, K) = ENE1TO(JWORK, K) + ENE1 (JWORK, K)
+            R11X1 (JWORK, K) = R11X1 (JWORK, K) +CORX1(JWORK, K)
+        END DO
+
+        !========= SPECTRA AND CORRELATIONS  VELOCITY 2 COMPONENT -----------------
+        CALL COSPX3(J, JWORK, 2, 2)
+        !WRITE(6, *)'IN COSPEC 2 ', J,R22X3(J, 1),CORX3(J, 1)
+        DO K = 1, N3MH
+            ENE2ZO(JWORK, K) = ENE2ZO(JWORK, K) + ENE3 (JWORK, K)
+            R22X3 (JWORK, K) = R22X3 (JWORK, K) +CORX3(JWORK, K)
+        END DO
+        
+        CALL COSPX1(J, JWORK, 2, 2)
+        DO K = 1, N1MH
+            ENE2TO(JWORK, K) = ENE2TO(JWORK, K) + ENE1 (JWORK, K)
+            R22X1 (JWORK, K) = R22X1 (JWORK, K) +CORX1(JWORK, K)
+        END DO
+
+        !========= SPECTRA AND CORRELATIONS  VELOCITY 3 COMPONENT -----------------
+        CALL COSPX3(J, JWORK, 3, 3)
+        DO K = 1, N3MH
+            ENE3ZO(JWORK, K) = ENE3ZO(JWORK, K) + ENE3 (JWORK, K)
+            R33X3 (JWORK, K) = R33X3 (JWORK, K) +CORX3(JWORK, K)
+        END DO
+        
+        CALL COSPX1(J, JWORK, 3, 3)
+        DO K = 1, N1MH
+            ENE3TO(JWORK, K) = ENE3TO(JWORK, K) + ENE1 (JWORK, K)
+            R33X1 (JWORK, K) = R33X1 (JWORK, K) +CORX1(JWORK, K)
+        END DO
+        
+        !========= SPECTRA AND CORRELATIONS  VELOCITY 4 COMPONENT -----------------
+        CALL COSPX3(J, JWORK, 4, 4)
+        DO K = 1, N3MH
+            ENE4ZO(JWORK, K) = ENE4ZO(JWORK, K) + ENE3 (JWORK, K)
+            R44X3 (JWORK, K) = R44X3 (JWORK, K) +CORX3(JWORK, K)
+        END DO
+        
+        CALL COSPX1(J, JWORK, 4, 4)
+        DO K = 1, N1MH
+            ENE4TO(JWORK, K) = ENE4TO(JWORK, K) + ENE1 (JWORK, K)
+            R44X1 (JWORK, K) = R44X1 (JWORK, K) +CORX1(JWORK, K)
+        END DO
+
+        !=========COSPECTRA AND CORRELATIONS  12 VELOCITY COMPONENT --------------
+        CALL COSPX3(J, JWORK, 1, 2)
+        DO K = 1, N3MH
+            EN12ZO(JWORK, K) = EN12ZO(JWORK, K) + ENE3 (JWORK, K)
+            R12X3 (JWORK, K) = R12X3 (JWORK, K) +CORX3(JWORK, K)
+        END DO
+        
+        CALL COSPX1(J, JWORK, 1, 2)
+        DO K = 1, N1MH
+            EN12TO(JWORK, K) = EN12TO(JWORK, K) + ENE1 (JWORK, K)
+            R12X1 (JWORK, K) = R12X1 (JWORK, K) +CORX1(JWORK, K)
+        END DO
+
+        !=========COSPECTRA AND CORRELATIONS  13 VELOCITY COMPONENT --------------
+        CALL COSPX3(J, JWORK, 1, 3)
+        DO K = 1, N3MH
+            EN13ZO(JWORK, K) = EN13ZO(JWORK, K) + ENE3 (JWORK, K)
+            R13X3 (JWORK, K) = R13X3 (JWORK, K) +CORX3(JWORK, K)
+        END DO
+        
+        CALL COSPX1(J, JWORK, 1, 3)
+        DO K = 1, N1MH
+            EN13TO(JWORK, K) = EN13TO(JWORK, K) + ENE1 (JWORK, K)
+            R13X1 (JWORK, K) = R13X1 (JWORK, K) +CORX1(JWORK, K)
+        END DO
+
+        !=========COSPECTRA AND CORRELATIONS  23 VELOCITY COMPONENT --------------
+        CALL COSPX3(J, JWORK, 2, 3)
+        DO K = 1, N3MH
+            EN23ZO(JWORK, K) = EN23ZO(JWORK, K) + ENE3 (JWORK, K)
+            R23X3 (JWORK, K) = R23X3 (JWORK, K) +CORX3(JWORK, K)
+        END DO
+        
+        CALL COSPX1(J, JWORK, 2, 3)
+        DO K = 1, N1MH
+            EN23TO(JWORK, K) = EN23TO(JWORK, K) + ENE1 (JWORK, K)
+            R23X1 (JWORK, K) = R23X1 (JWORK, K) +CORX1(JWORK, K)
+        END DO
+        
+        RETURN 
+    END SUBROUTINE
+    
+    
+    
+!****************************************************************************
+!***************************************************************************
+! *   SBR. RUUX1  :INVERSE FFT IN X1 OF A GENERAL QUANTITY RHS IT IS      *
+! *                     STORED IN EN1IK THAT IS USED  IN THE ROUTINE COSPX1          *                                                                                        *
+! INPUT:  RHS  (1 : NCL1, J,      1 : NCL3 )
+! OUTPUT: EN1IK(L,      1 : NCL1, 1 : NCL3 ) WAVE NUMBER SPACE
+!****************************************************************************
+SUBROUTINE RUUX1(J, L1)
+        USE mesh_info
+        USE SPECO_info
+        USE FFT99_info1
+        IMPLICIT NONE
+
+        INTEGER(4), INTENT(IN) :: J, L1
+        
+        INTEGER(4) :: K, I, IS, IP, ID
+        REAL(WP) :: XR1  (N1MD, NCL3)
+        REAL(WP) :: WORK1(N1MD, NCL3)
+        
+        DO K = 1, NCL3
+            XR1(1, K) = RHS(NCL1_io, J, K)
+            DO I = 1, NCL1_io
+                IS = I + 1
+                XR1(IS, K) = RHS(I, J, K)
+            END DO
+            XR1(N1MD, K) = RHS(1, J, K)
+        END DO
+        
+        !C   2D REAL  FFT APPLIED TO THE RHS BY FFT99 ALONG X1
+        !C   FROM PHYSICAL TO WAVE NUMBER SPACE
+        CALL FFT99(XR1,WORK1, TRIGXX1, IFXX1, 1, N1MD, NCL1_io, NCL3, -1)
+        
+        DO I = 1, N1MH
+            IP = 2 * I
+            ID= 2 * I - 1
+            DO K = 1, NCL3
+                EN1IK(L1, ID, K) = XR1(ID, K)
+                EN1IK(L1, IP, K) = XR1(IP, K)
+            END DO
+        END DO
+        
+        RETURN
+    END SUBROUTINE
+    
+    
+!****************************************************************************
+!***************************************************************************
+! *   SBR. RUUX3  :INVERSE FFT IN X3 OF A GENERAL QUANTITY RHS IT IS      *
+! *                     STORED IN EN3KI THAT IS USED  IN THE ROUTINE COSPX3          *                                                                                        *
+! INPUT:  RHS  (1 : NCL1, J,      1 : NCL3 )
+! OUTPUT: EN3KI(L,      1 : NCL3, 1 : NCL1 ) !WAVE NUMBER SPACE
+!****************************************************************************
+SUBROUTINE RUUX3(J, L1)
+        USE mesh_info
+        USE SPECO_info
+        USE FFT99_info1
+        IMPLICIT NONE
+        
+        INTEGER(4), INTENT(IN) :: J
+        INTEGER(4), INTENT(IN) :: L1
+        
+        INTEGER(4) :: I, K, KS, KP, KD
+        REAL(WP) :: XR1  (N3MD, NCL1_io)
+        REAL(WP) :: WORK1(N3MD, NCL1_io)
+        
+        !====================put RHS to XR ============
+        DO I = 1, NCL1_io
+            XR1(1, I) = RHS(I, J, NCL3)
+            DO K = 1, NCL3
+                KS = K+ 1
+                XR1(KS, I) = RHS(I, J, K)
+            END DO
+            XR1(N3MD, I) = RHS(I, J, 1)
+        END DO
+        
+        !============== 2D REAL  FFT APPLIED TO THE RHS BY FFT99 ALONG X3
+        !==============FROM PHYSICAL TO WAVE NUMBER SPACE
+        CALL FFT99(XR1,WORK1, TRIGXX3, IFXX3, 1, N3MD, NCL3, NCL1_io, -1)
+        
+        !==============
+        DO K = 1, N3MH
+            KP = 2 * K
+            KD= 2 * K - 1
+            DO I = 1, NCL1_io
+                EN3KI(L1, KD, I) = XR1(KD, I)
+                EN3KI(L1, KP, I) = XR1(KP, I)
+            END DO
+        END DO
+        
+        RETURN
+    END SUBROUTINE
+      
+      
+      
+!C****************************************************************************
+!C***************************************************************************
+!C *   SBR. COSPX3  :COSPECTRA  IN THE SPANWISE direction                  *
+!C *                                                                                                        *
+!C***************************************************************************
+! INPUT : EN3KI(L, 1 : NCL3, 1 : NCL1) !WAVE NUMBER SPACE
+! OUTPUT: ENE3 (J, 1:L3MH)       !WAVE NUMBER SPACE
+!         CORX3(J, 1 : NCL3)       !PHYSICAL SPACE
+!C****************************************************************************
+SUBROUTINE COSPX3(J, JWORK,L1, M1)
+        USE mesh_info
+        USE SPECO_info
+        USE FFT99_info1
+        IMPLICIT NONE
+        
+        INTEGER(4), INTENT(IN) :: J
+        INTEGER(4), INTENT(IN) :: JWORK
+        INTEGER(4), INTENT(IN) :: L1, M1
+        
+        REAL(WP) :: CORR3(N3MD, 1) !!WAVE NUMBER SPACE
+        REAL(WP) :: WORK1(N3MD, 1)
+        INTEGER(4) :: KE, K, KP, KD, KS, I
+        REAL(WP) :: ENEL
+      
+        
+        CORR3(:, :) = 0.0_WP
+        ENE3(JWORK, :) = 0.0_WP
+        
+        DO K = 2, N3MH
+            KP = 2 * K
+            KD= 2 * K - 1
+            KE = K
+            DO I = 1, NCL1_io
+                ENEL = (EN3KI(L1, KD, I) * EN3KI(M1, KD, I) &
+                   + EN3KI(L1, KP, I) * EN3KI(M1, KP, I)) / DBLE(NCL1_io) * 2.0_WP
+                ENE3(JWORK, KE) = ENE3(JWORK, KE) + ENEL  ! output
+                CORR3(KD, 1) = CORR3(KD, 1) + ENEL   
+                CORR3(KP, 1) = 0.0_WP
+            END DO
+        END DO
+        
+        K = 1
+        KP = 2 * K
+        KD= 2 * K - 1
+        KE = K
+        DO I = 1, NCL1_io
+            ENEL = (EN3KI(L1, KD, I) * EN3KI(M1, KD, I) &
+               + EN3KI(L1, KP, I) * EN3KI(M1, KP, I)) / DBLE(NCL1_io)
+            ENE3(JWORK, KE) = ENE3(JWORK, KE) + ENEL ! output
+            CORR3(KD, 1) = CORR3(KD, 1) + ENEL
+            CORR3(KP, 1) = 0.0_WP
+        END DO
+!C
+!C   FFT FROM THE WAVE NUMBER TO PHYSICAL SPACE
+!C
+        CALL FFT99(CORR3,WORK1, TRIGXX3, IFXX3, 1, N3MD, NCL3, 1, +1)
+        DO K = 1, NCL3
+            KS = K+ 1
+            CORX3(JWORK, K) = CORR3(KS, 1) / CORR3(2, 1) ! output
+        END DO
+        
+        RETURN
+      END
+!C****************************************************************************
+!C***************************************************************************
+!C *   SBR. COSPX1  :COSPECTRA  IN THE Streamwise direction                *
+!C *                                                                                                        *
+!C***************************************************************************
+! INPUT : EN1IK(L, 1 : NCL1, 1 : NCL3)  !!WAVE NUMBER SPACE
+! OUTPUT: ENE1 (J, 1 : N1MH)        !!WAVE NUMBER SPACE
+!         CORX1(J, 1 : NCL1)        !!PHYSICAL SPACE
+!C****************************************************************************
+SUBROUTINE COSPX1(J, JWORK,L1, M1)
+        USE mesh_info
+        USE SPECO_info
+        USE FFT99_info1
+        IMPLICIT NONE
+        
+        INTEGER(4), INTENT(IN) :: J
+        INTEGER(4), INTENT(IN) :: JWORK
+        INTEGER(4), INTENT(IN) :: L1, M1
+        
+        REAL(WP) :: CORR1(N1MD, 1)
+        REAL(WP) :: WORK1(N1MD, 1)
+        INTEGER(4) :: I, KE, IP, ID, IS, K
+        REAL(WP) :: ENEL
+        
+        
+
+        DO KE = 1, N1MD
+            CORR1(KE, 1) = 0.0_WP
+        END DO
+        DO KE = 1, NCL1_io
+            ENE1(JWORK, KE) = 0.0_WP
+        END DO
+        
+        DO I = 2, N1MH
+            IP = 2 * I
+            ID= 2 * I - 1
+            KE = i
+            DO K = 1, NCL3
+                ENEL = (EN1IK(L1, ID, K) * EN1IK(M1, ID, K) &
+                   + EN1IK(L1, IP, K) * EN1IK(M1, IP, K)) / DBLE(NCL3) * 2.0_WP
+                ENE1(JWORK, KE) = ENE1(JWORK, KE) + ENEL !output
+                CORR1(ID, 1) = CORR1(ID, 1) + ENEL
+                CORR1(IP, 1) = 0.0_WP
+            END DO
+        END DO
+        
+        I = 1
+        IP = 2 * I
+        ID= 2 * I - 1
+        KE = i
+        DO K = 1, NCL3
+            ENEL = (EN1IK(L1, ID, K) * EN1IK(M1, ID, K) &
+               + EN1IK(L1, IP, K) * EN1IK(M1, IP, K)) / DBLE(NCL3)
+            ENE1(JWORK, KE) = ENE1(JWORK, KE) + ENEL !output
+            CORR1(ID, 1) = CORR1(ID, 1) + ENEL
+            CORR1(IP, 1) = 0.0_WP
+        END DO
+        
+        CALL FFT99(CORR1,WORK1, TRIGXX1, IFXX1, 1, N1MD, NCL1_io, 1, +1)
+        
+        DO I = 1, NCL1_io
+            IS = I + 1
+            CORX1(JWORK, I) = CORR1(IS, 1) / CORR1(2, 1) !output
+        END DO
+        RETURN
+    END SUBROUTINE
+
