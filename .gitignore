@@ -4,7 +4,7 @@ docs/
 obj/
 scripts/
 test_cases/
-test_loops/
+test_loop/
 
 # Prerequisites
 *.d
