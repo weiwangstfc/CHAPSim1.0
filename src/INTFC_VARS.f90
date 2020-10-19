@@ -7,10 +7,10 @@
 !> SUBROUTINE: INTFC_VARS1 (in MYID = all)
 !>             - for a 1-component ARray
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 05/ 2010- Initial Version (tg domAIn only), by Mehdi Seddighi
-! 12 / 2013- added io domAIn, optimized the code structure in f90, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 05/2010 - Initial Version (tg domain only), by Mehdi Seddighi
+! 12/2013 - Added io domain, optimized the code structure in f90, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 SUBROUTINE INTFC_VARS3(L1, L2, NCL1ST, NCL1ED, VARS3)
     USE mesh_info
@@ -140,7 +140,7 @@ SUBROUTINE INTFC_VARS1(L1, L2, NCL1ST, NCL1ED, VARS1)
         END DO
     END DO
 
-    !=================== No. wall DOmAInS ======================================
+    !=================== No. wall domains ======================================
     ITAG = 0
     IF ( (MYID >  0) .AND. (MYID < NPSLV) ) THEN
         IDESF = MYID + 1    !next MYID

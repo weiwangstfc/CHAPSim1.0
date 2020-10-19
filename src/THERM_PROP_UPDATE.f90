@@ -6,10 +6,10 @@
 !> SUBROUTINE: THERM_PROP_UPDATE_FROM_T (in MYID = all)
 !> SUBROUTINE: THERM_PROP_UPDATE (in MYID = all)
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 06/ 2014- Created, by Wei Wang (wei.wang@sheffield.ac.uk)
-! 09/ 2020- Added more fluid types and optimized, by Wei Wang (wei.wang@stfc.ac.uk)
+! 06/2014 - Created, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 09/2020 - Added more fluid types and optimized, by Wei Wang (wei.wang@stfc.ac.uk)
 !**********************************************************************************************************************************
 SUBROUTINE THERM_PROP_UPDATE_FROM_DH(DH_tmp, H_tmp, T_tmp, D_tmp, M_tmp, K_tmp, Cp_tmp, B_tmp)
     USE THERMAL_INFO

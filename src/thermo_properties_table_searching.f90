@@ -24,10 +24,10 @@
 !> SUBROUTINE: FIND_LOCAL_MAXIMA
 !> SUBROUTINE: Property_Table_Nondimensionalization
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 06/ 2014- Created, by Wei Wang (wei.wang@sheffield.ac.uk)
-! 09/ 2020- Added more fluid types and optimized, by Wei Wang (wei.wang@stfc.ac.uk)
+! 06/2014 - Created, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 09/2020 - Added more fluid types and optimized, by Wei Wang (wei.wang@stfc.ac.uk)
 !**********************************************************************************************************************************
 FUNCTION spline_interpolation_TH(T)
     !======================================================================
@@ -850,7 +850,7 @@ SUBROUTINE CUBIC_SPLINE (N, X, Y, B, C, D)
 !             OF FUNCTION F(X)
 !
 !     OUTPUTS:
-!     B,C, D   VECTORS OF DIMENSION N, STORING THE COefficientS
+!     B,C, D   VECTORS OF DIMENSION N, STORING THE COEFFICIENTS
 !             OF THE CUBIC SPLINE
 !     Function:
 !     Y =  X
@@ -1212,7 +1212,7 @@ SUBROUTINE Property_Table_Nondimensionalization
 !>
 !>    ALL H VALUSE are SORTED FROM SMALL TO BIG NUMBERS.
 
-!>    As H has been sorted, the Newton BISection method can be USEd for searching.
+!>    As H has been sorted, the Newton BISection method can be used for searching.
 !>    IF the H data has not been sorted, binary tree method IS recommended.
 
         USE thermal_info

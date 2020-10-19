@@ -4,9 +4,9 @@
 !> @details
 !> SUBROUTINE: BC_COUTLET_ENEG_RK3 (in MYID = all)
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 04/ 2014- Initial version, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 04/2014 - Initial version, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 SUBROUTINE BC_COUTLET_ENEG_RK3(NS)
     USE mesh_info
@@ -28,7 +28,7 @@ SUBROUTINE BC_COUTLET_ENEG_RK3(NS)
 
     DO K = 1, NCL3
         DO J = 1, N2DO(MYID)
-            !U_OUTLET =     !Q_io(NCL1_io + 1, J, K, 1) whICh may be negative.
+            !U_OUTLET =     !Q_io(NCL1_io + 1, J, K, 1) which may be negative.
             BC_CONV = - DXI * U_OUTLET * &
             ( DH(NCL1_io + 1, J, K) - DH(NCL1_io, J, K) )
             BC_RHS = TGAM(NS) * BC_CONV + TROH(NS) * BC_CONV0_ENG(J, K)

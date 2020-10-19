@@ -4,15 +4,15 @@
 !> @details
 !> SUBROUTINE: RHS_ENERGY_EXPLICIT (in MYID = all)
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 06/ 2014- Created, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 06/2014 - Created, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 SUBROUTINE RHS_ENERGY_EXPLICIT
     !>   @note
-    !>    1) the calculation of heat flux IS based on a constant velocity field.
-    !>    2) \rho h u IS treated as (\rho u)h, not (\rho h)u
-    !>    3) WALL BC IS NOT INCLUDED, WHICH will BE DEALED with SEPARATELY.
+    !>    1) the calculation of heat flux is based on a constant velocity field.
+    !>    2) \rho h u is treated as (\rho u)h, not (\rho h)u
+    !>    3) wall bc is not included, which will be dealed with separately.
 
     USE thermal_info
     USE mesh_info
@@ -40,11 +40,11 @@ SUBROUTINE RHS_ENERGY_EXPLICIT
         JJP = JGPV(JJ)
 
         !=============coefficientS =============================
-        !COefficient FOR CONVECTIONS
+        !COEFFICIENT FOR CONVECTIONS
         COE2  = DYFI(JJ)     * RCCI1(JJ) * 0.5_WP
         COE3  = DZI * ZND2CL * RCCI2(JJ) * 0.5_WP
 
-        !COefficientS FOR VISCOUS TERMS
+        !COEFFICIENTS FOR VISCOUS TERMS
         COE33 = DZQI * ZND2CL * RCCI2(JJ) * CTHECD
         COE22 = DYFI(JJ) * RCCI1(JJ) * CTHECD
 

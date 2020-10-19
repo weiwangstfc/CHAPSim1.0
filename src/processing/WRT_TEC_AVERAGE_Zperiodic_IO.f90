@@ -15,9 +15,9 @@
 !> subroutine: POSITIONS_nonXperiodic_io
 !> subroutine: CL2ND_INTP_AVEG_nonXperiodic_io
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 06/ 2014- Created, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 06/2014 - Created, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 MODULE VARS_AVERAGED_nonXperiodic_io
     USE thermal_info

@@ -4,9 +4,9 @@
 !> @details
 !> SUBROUTINE: SOLVERRK3_ENG_io(in MYID = all)
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 06/ 2014- Created, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 06/2014- Created, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 SUBROUTINE SOLVERRK3_ENG_io(NS)
     USE init_info

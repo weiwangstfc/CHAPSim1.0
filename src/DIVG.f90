@@ -7,10 +7,10 @@
 !> SUBROUTINE: DIVG_U_io(in MYID = all)
 !> SUBROUTINE: DENSITY_TIME_DERIVATION (in MYID = all)
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 05/ 2010- Initial Version (tg domAIn only), by Mehdi Seddighi
-! 12 / 2013- added io domAIn, optimized the code structure in f90, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 05/2010- Initial Version (tg domain only), by Mehdi Seddighi
+! 12 /2013- Added io domain, optimized the code structure in f90, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 SUBROUTINE DIVG_tg(NS)
     USE init_info
@@ -53,8 +53,8 @@ END SUBROUTINE
 !*******************************************************************************************
 SUBROUTINE DIVG_io(NS)
     !>    @NOTE
-    !>    1) IF the velocity field IS calculated based on timE -fixed DENSITY field,
-    !>       the DENSITY time rate IS excluded from the continuity equation.
+    !>    1) If the velocity field is calculated based on time-fixed density field,
+    !>       the density time rate is excluded from the continuity equation.
     USE thermal_info
     USE init_info
     USE mesh_info
@@ -180,7 +180,7 @@ SUBROUTINE DIVG_U_io
         END DO
     END DO
 
-    !        !===========================below bottom wall JC = 0 IS not USEd============================
+    !        !===========================below bottom wall JC = 0 IS not used============================
     !        IF(MYID == 0) THEN
     !            JC = 0
     !            JP = 1
@@ -208,7 +208,7 @@ SUBROUTINE DIVG_U_io
     !            END DO
     !        END IF
 
-    !        !===========================below top wall JC = 0 IS not USEd============================
+    !        !===========================below top wall JC = 0 IS not used============================
     !        IF(MYID == NPSLV) THEN
     !            JC = N2DO(MYID) + 1
     !            JP = N2DO(MYID) + 2

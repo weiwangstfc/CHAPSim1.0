@@ -3,20 +3,20 @@
 !>       To calculate coefficients of the PoISsion equation (Tridiagonal System of Equation)
 !> @details
 !> SUBROUTINE: TDMA_COEF (in MYID = 0)
-!>             To calculate below PARAMETERs:
+!>             To calculate below parameters:
 !> @pARam AMPH(1 : NND2M)   only USEd in  SUBROUTINE PRCALC
 !> @pARam APPH(1 : NND2M)   only USEd in  SUBROUTINE PRCALC
 !> @pARam ACPH(1 : NND2M)   only USEd in  SUBROUTINE PRCALC
-!> @pARam AMVR(1 : NND2M)   \phi_{I - 1} Coefficient of Possion Eq. in UnIForm and non - UnIForm Eq.3.13 Mehdi thesIS
-!> @pARam APVR(1 : NND2M)   \phi_{i}   Coefficient of Possion Eq. in UnIForm and non - UnIForm Eq.3.13 Mehdi thesIS
-!> @pARam ACVR(1 : NND2M)   \phi_{I + 1} Coefficient of Possion Eq. in UnIForm and non - UnIForm Eq.3.13 Mehdi thesIS
+!> @pARam AMVR(1 : NND2M)   \phi_{I - 1} Coefficient of Possion Eq. in UnIForm and non - UnIForm Eq.3.13 Mehdi thesis
+!> @pARam APVR(1 : NND2M)   \phi_{i}   Coefficient of Possion Eq. in UnIForm and non - UnIForm Eq.3.13 Mehdi thesis
+!> @pARam ACVR(1 : NND2M)   \phi_{I + 1} Coefficient of Possion Eq. in UnIForm and non - UnIForm Eq.3.13 Mehdi thesis
 !> SUBROUTINE: BCAST_TDMA_COEF (in MYID = all)
 !>             To broadcast the common information
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 05/ 2010- Initial Version (tg domAIn only), by Mehdi Seddighi
-! 02 / 2014- added io domAIn, optimized the code structure in f90 and code structure was optimized, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 05/2010 - Initial Version (tg domain only), by Mehdi Seddighi
+! 02/2014 - Added io domain, optimized the code structure in f90 and code structure was optimized, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 SUBROUTINE TDMA_COEF
     !>      TEST the same as Ke Kui version in both Channel and pipe.
@@ -88,7 +88,7 @@ SUBROUTINE TDMA_COEF
 
             ELSE
                 !>          @note: clustered grids in non - Homogenous direction (y), the same methods as above.
-                !>                 coefficients in Eq.3.13 Page 44 of Mehdi thesIS.
+                !>                 coefficients in Eq.3.13 Page 44 of Mehdi thesis.
                 DO JC = 2, NCL2
                     JM = JC - 1
                     AMVR(JC, IDR) =  DYFI(JM) * DYCI(JC)

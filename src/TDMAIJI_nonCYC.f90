@@ -5,19 +5,19 @@
 ! DESCRIPTION:
 !> Brief description of SUBROUTINE.
 !> @details
-!>  SOLVER FOR REAL- DEFINITE, CYCLIC- TRIDIAGONAL, CONSTANT COefficientS
+!>  SOLVER FOR REAL- DEFINITE, CYCLIC- TRIDIAGONAL, CONSTANT COEFFICIENTS
 !>  LINEAR SYSTEMS OF EQUATIONS.
 !>  THE SOLVER IS WRITTEN IN FORTRAN 90 LANGUAGE AND ADOPTS ONLY
 !>  DOUBLE - PRECISION (8 BYTES) REAL variables.
 !>********************************************************************************
-!>  @pAR MethoDOlogy                                                             *
+!>  @par MethoDOlogy                                                             *
 !>  THE METHOD SOLVES FIRSTLY FOR THE X(1) UNKNOWN, WHICH MAKES THE              *
-!>  COefficient MATRIX CYCLIC: THIS IS THE INITIALIZATION PHASE, PERFORMED       *
+!>  COEFFICIENT MATRIX CYCLIC: THIS IS THE INITIALIZATION PHASE, PERFORMED       *
 !>  IN THE PRESENT SUBROUTINE. NOW THE SYSTEM IS A (N - 1) BY (N - 1) TRIDIAGONAL    *
 !>  (NOT CYCLIC) SYSTEM, AND IS SOLVED with THE STANDARD (AND FAST) LU           *
 !>  FACTORIZATION TECHNIQUE (ROUTINES LU_PRE AND LU_SOLV).                       *
 !>                                                                               *
-!>  COefficientS ON main AND SECONDARY DIAGONALS MUST BE CONSTANT, I.E. WE are   *
+!>  COEFFICIENTS ON main AND SECONDARY DIAGONALS MUST BE CONSTANT, I.E. WE are   *
 !>  DEALING with SYSTEMS OF THE following KIND:                                  *
 !>                                                                               *
 !>                      | A  B  0  0  B | |X1|   |D1|                            *
@@ -28,10 +28,10 @@
 !>                                                                               *
 !>  OF COURSE, THE IMPROUVEMENT IN RESPECT OF USING THE CLASSIC AND efficient    *
 !>  CTDMA SOLVER OF THOMAS ARISES WHEN ONE NEEDS TO SOLVE MANY CYCLIC TRIDIAGONAL *
-!>  SYSTEMS with THE SAME COefficient MATRIX.                                    *
+!>  SYSTEMS with THE SAME COEFFICIENT MATRIX.                                    *
 !>                                                                               *
 !>  NOTE! IN THE INITIALIZATION PHASE WE PERFORM ALSO THE LU FACTORIZATION       *
-!>  OF THE n - 1 BY n - 1 TRIDIAGONAL COefficient MATRIX.                            *
+!>  OF THE n - 1 BY n - 1 TRIDIAGONAL COEFFICIENT MATRIX.                            *
 !>                                                                               *
 !>  THE NOn - UNITY DIAGONALS OF MATRICES L & U are STORED IN THE ARRAYS            *
 !>  DIAG_PRIN(1 : n - 1) & DIAG_SUPE(1 : n -2) (IN THIS ORDER)                           *
@@ -41,11 +41,11 @@
 !>                                                                                *
 !>  Z IS A REAL *8 ARRAY OF N ELEMENTS, AND doesN'T NEED TO BE INITIALIZED.        *
 !>                                                                                *
-!> @pAR USAGE:                                                                    *
+!> @par USAGE:                                                                    *
 !>      CALL TDMAIJI_CYC(A,B,C,R, IS, ISZ, JS, JSZ)                                   *
 !>      TRIDIAGNAL MARCH in I direction in the plane of I *J
 !>
-!> @pAR INPUT                                                                     *
+!> @par INPUT                                                                     *
 !>      IS:  INTEGER, The Starting index of I direction in the I *J plane          *
 !>      ISZ: INTEGER, The total size of points in I direction                     *
 !>      JS:  INTEGER, The Starting index of J direction in the I *J plane          *
@@ -56,13 +56,13 @@
 !>      R(IS:1:IS + ISZ - 1, JS:1:JS + JSZ - 1) : Matrix ISZ*JSZ, RHS of the original     *
 !>                                        tridiagnal sys                          *
 !>
-!>pAR   OUTPUT
+!>par   OUTPUT
 !>      R(IS:1:IS + ISZ - 1, JS:1:JS + JSZ - 1) : Matrix ISZ*JSZ, Results u_{i, J}         *
-!> @toDO
+!> @todo
 !> Nothing left to DO.
 !
 ! REVISION HISTORY:
-! 30/01 / 2013- Initial Version, by Wei Wang
+! 30/01/2013- Initial Version, by Wei Wang
 !**********************************************************************************************************************************
 SUBROUTINE TDMAIJI_nonCYC(A, B, C, R, BCI, IS, ISZ, JS, JSZ)  !(A,B,C,R, N,UUU, M)
     USE WPRECISION

@@ -7,11 +7,11 @@
 !> @details
 !> Read in initial configuration file
 !
-!> @toDO
+!> @todo
 !> Nothing left to DO.
 !
 ! REVISION HISTORY:
-! 06/12 / 2013- Initial Version, by Wei Wang
+! 06/12 /2013- Initial Version, by Wei Wang
 !**********************************************************************
 SUBROUTINE READINI
 !>     @note

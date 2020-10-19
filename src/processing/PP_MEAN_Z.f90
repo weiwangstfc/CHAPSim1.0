@@ -5,9 +5,9 @@
 !> SUBROUTINE: PP_MEAN_Z_FLOW_nonXperiodic_io
 !> SUBROUTINE: PP_MEAN_Z_THEML_nonXperiodic_io
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 06/ 2014- Created, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 06/2014 - Created, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 SUBROUTINE PP_MEAN_Z_FLOW_nonXperiodic_io
     USE mesh_info

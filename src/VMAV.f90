@@ -5,10 +5,10 @@
 !> SUBROUTINE: VMAV_tg (in MYID = all)
 !> SUBROUTINE: VMAV_io(in MYID = all)
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 05/ 2010- Initial Version (tg domAIn only), by Mehdi Seddighi
-! 12 / 2013- added io domAIn, optimized the code structure in f90, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 05/2010 - Initial Version (tg domain only), by Mehdi Seddighi
+! 12/2013 - Added io domain, optimized the code structure in f90, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 SUBROUTINE VMAV_tg
 

@@ -1,6 +1,6 @@
 !**********************************************************************************************************************************
 !> @brief
-!>        to prepARe PARAMETERs for thermo- dynamics calculation
+!>        to prepARe parameters for thermo- dynamics calculation
 !> @details
 !> SUBROUTINE: thermal_init (in MYID = 0)
 !> SUBROUTINE: thermal_gravity (in MYID = 0)
@@ -8,10 +8,10 @@
 !> SUBROUTINE: thermal_init_write (in MYID = 0)
 !> SUBROUTINE: BCAST_THERMAL_INIT (in MYID = all)
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 06/ 2014- Created, by Wei Wang (wei.wang@sheffield.ac.uk)
-! 09/ 2020- Added more fluid types and optimized, by Wei Wang (wei.wang@stfc.ac.uk)
+! 06/2014 - Created, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 09/2020 - Added more fluid types and optimized, by Wei Wang (wei.wang@stfc.ac.uk)
 !**********************************************************************************************************************************
 SUBROUTINE thermal_init ! master only
     USE THERMAL_INFO
@@ -30,7 +30,7 @@ SUBROUTINE thermal_init ! master only
     REAL(WP) :: thermophysical_function_TH
     INTEGER(4) :: dim
 
-    ! =============build up ref and thermo- PRoperty (undim) relations ============
+    ! =============build up ref and thermo-property (undim) relations ============
     IF(iThermoProperty == search_table) THEN
         !(get ref and undim table)
         CALL Property_Table_Nondimensionalization
@@ -114,7 +114,7 @@ SUBROUTINE thermal_gravity
         G_A = 9.80665_WP
         F_A = -L0/ U0/ U0 * G_A
         IBuoF(2) = 1
-    ELSE IF(iGravity == 3) THEN  ! horizontal flow, should not be USEd.
+    ELSE IF(iGravity == 3) THEN  ! horizontal flow, should not be used.
         G_A = 9.80665_WP
         F_A = L0/ U0/ U0 * G_A
         IBuoF(3) = 1
@@ -137,7 +137,7 @@ SUBROUTINE thermal_wall_Boundaries_noCHT
 
         ALLOCATE (WALLFLUX(NCL1S : NCL1E, 2, 1 : NCL3)); WALLFLUX = 0.0_WP
 
-        !cARefully in ini file
+        !carefully in ini file
         ! bottom wall heating (heat flux in ), qw = - KDT/ Dy = positive
         ! bottom wall cooling (heat flux out), qw = - KDT/ Dy = negtive
         ! top    wall heating (heat flux in ), qw = - KDT/ Dy = negtive

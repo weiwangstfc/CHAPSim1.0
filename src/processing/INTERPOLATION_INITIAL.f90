@@ -8,9 +8,9 @@
 !> SUBROUTINE: INITIAL_INTERP_io
 
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 06/ 2014- Created, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 06/2014 - Created, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 MODULE INTP_VARS
     USE WPRECISION

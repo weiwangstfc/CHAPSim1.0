@@ -7,14 +7,14 @@
 !> @note
 !> allow IPV_tg(NCL1) = NCL1 + 1, outlet BC
 !>       IMV_tg(1) = 1- 1 = 0,  inlet B.C.
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 05/ 2010- Initial Version (tg domAIn only), by Mehdi Seddighi
-! 12 / 2013- added io domAIn, optimized the code structure in f90, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 05/2010 - Initial Version (tg domain only), by Mehdi Seddighi
+! 12/2013 - Added io domain, optimized the code structure in f90, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 SUBROUTINE INDEXSET
     USE mesh_info
-    USE cpARam
+    USE cparam
     USE init_info
     IMPLICIT NONE
 
@@ -63,7 +63,7 @@ SUBROUTINE INDEXSET
         IF(KC == 1)    KMV(KC) = NCL3
     END DO
 
-    !>      @note: For symmetrIC boundary Condition, only in 3 direction.
+    !>      @note: For symmetric boundary Condition, only in 3 direction.
     !>           Move forward half size of total cells.
     DO K = 1, NCL3                                  !@
         KSYM(k) = k + NCL3 / 2                          !@

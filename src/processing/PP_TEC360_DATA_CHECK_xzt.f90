@@ -19,9 +19,9 @@
 !> SUBROUTINE: TEC360_INSTANT_Uprime
 !> SUBROUTINE: TEC360_INSTANT_VORTEX_CRITERIA
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 09/ 2014- Created, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 09/2014 - Created, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 !============================= TG+ IO==================================
 MODULE TEC360_INFO

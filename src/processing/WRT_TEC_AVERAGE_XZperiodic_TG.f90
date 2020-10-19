@@ -11,9 +11,9 @@
 !> subroutine: Cf_Utau_TG
 !> subroutine: WRT_AVERAGE_PPED_TG_GATHER
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 06/ 2014- Created, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 06/2014 - Created, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 MODULE VARS_AVERAGED_TG
     USE WRT_INFO
@@ -353,7 +353,7 @@ SUBROUTINE WRT_AVERAGE_PPED_TG_CALC_RSTE_BUDG
     END DO
 
 
-    !=== Refer to note on 19/11 / 2014
+    !=== Refer to note on 19/11 /2014
     DO J = 1, NCL2
         VORper2(J, 1) = DVDL2xztL_F0_tg(J,8,8) + DVDL2xztL_F0_tg(J,6,6) - 2.0_WP * DVDL2xztL_F0_tg(J,8,6)  &
         + DUDX1(J, 3, 2)**2 + DUDX1(J, 2, 3)**2  &

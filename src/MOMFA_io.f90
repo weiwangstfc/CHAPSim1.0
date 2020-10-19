@@ -1,6 +1,6 @@
 !**********************************************************************************************************************************
 !> @brief
-!>        to be USEd for the IMPLICIT vIScous term, Check Junjie's verion
+!>        to be used for the IMPLICIT vIScous term, Check Junjie's verion
 !> @details
 !> SUBROUTINE: MOMFA_io(in MYID = all)
 !> SUBROUTINE: MOMFA1_X_io(in MYID = all)
@@ -11,9 +11,9 @@
 !> SUBROUTINE: MOMFA2_IMcomp_Z_io(in MYID = all)
 !> SUBROUTINE: MOMFA3_IMcomp_Y_io(in MYID = all)
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 02/2014- Created, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 02/2014 - Created, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 SUBROUTINE MOMFA_io(NS, IDR) ! check Junjie new version
     USE init_info

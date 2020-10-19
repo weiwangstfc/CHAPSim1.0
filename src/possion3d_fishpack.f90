@@ -1,6 +1,6 @@
 !**********************************************************************************************************************************
 !> @brief
-!>        to prepARe information required to USE FISHPACK librARy
+!>        to prepARe information required to USE FISHPACK library
 !> @details
 !> module: FISHPACK_POIS3D_INFO
 !>         variables for coefficients
@@ -15,9 +15,9 @@
 !> SUBROUTINE: TRID0 (in MYID = all)
 !>             - CALLed by FISHPACK_POIS3D_SIMPLE
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 04/ 2014- created, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 04/2014- created, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 MODULE FISHPACK_POIS3D_INFO
     USE WPRECISION

@@ -8,9 +8,9 @@
 !> SUBROUTINE: DENSITY_Staggered (in MYID = all)
 !> SUBROUTINE: DENSITY_IMPLICIT_add (in MYID = all)
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 06/ 2014- Created, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 06/2014 - Created, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 SUBROUTINE MASSFLUX_CALC_io
     USE FLOW_INFO

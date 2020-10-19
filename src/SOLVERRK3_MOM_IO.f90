@@ -4,12 +4,12 @@
 !> @details
 !> SUBROUTINE: SOLVERRK3_MOM_io(in MYID = all)
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 06/ 2014- Created, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 06/2014 - Created, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 SUBROUTINE SOLVERRK3_MOM_io(NS)
-    USE cpARam
+    USE cparam
     USE thermal_info
     USE mesh_info
     USE flow_info

@@ -7,9 +7,9 @@
 !> SUBROUTINE: MEM_DEALLOCAT
 !>             DEALLOCATE common variables.
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 12 / 2013- Initial Version, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 12/2013 - Initial Version, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 SUBROUTINE MEM_ALLOCAT
     USE mesh_info

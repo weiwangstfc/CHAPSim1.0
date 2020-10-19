@@ -1,15 +1,15 @@
 !**********************************************************************************************************************************
 !> @brief
 !>        Calculate the velocity field and rhO * U field
-!>        Eq.(A1c) in Mehdi paper or Eq.(4.61) in Mehdi thesIS.
+!>        Eq.(A1c) in Mehdi paper or Eq.(4.61) in Mehdi thesis.
 !> @details
 !> SUBROUTINE: VELOUPDT_tg (in MYID = all)
 !> SUBROUTINE: MASSFLUX_UPDATE_io(in MYID = all)
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 05/ 2010- Initial Version (tg domAIn only), by Mehdi Seddighi
-! 04/ 2014- added io domAIn, optimized the code structure in f90, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 05/2010 - Initial Version (tg domain only), by Mehdi Seddighi
+! 04/2014 - Added io domain, optimized the code structure in f90, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 SUBROUTINE VELOUPDT_tg(NS)
 

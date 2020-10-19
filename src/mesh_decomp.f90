@@ -9,10 +9,10 @@
 !> SUBROUTINE: mesh_Decomp_Bcast (in MYID = all)
 !>             Broadcast the mesh decomPOSITION information
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 05/ 2010- Initial Version (tg domAIn only), by Mehdi Seddighi
-! 12 / 2013- added io domAIn, optimized the code structure in f90, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 05/2010 - Initial Version (tg domain only), by Mehdi Seddighi
+! 12/2013 - Added io domain, optimized the code structure in f90, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 SUBROUTINE mesh_Ydecomp
     USE mesh_info
@@ -32,7 +32,7 @@ SUBROUTINE mesh_Ydecomp
     ALLOCATE ( N2DO (0 : NPSLV) )
     JDSWT = 0
     JDEWT = 0
-    !>       @wARning: y velocity IS stored on y cell surface, whICh are N2M + 1
+    !>       @warning: y velocity IS stored on y cell surface, whICh are N2M + 1
     NTOT1 = NCL2
 
     DO IP = 0, NPSLV
@@ -83,7 +83,7 @@ SUBROUTINE mesh_Zdecomp
     KDSWT = 0
     KDEWT = 0
 
-    !>       @wARning: y velocity IS stored on y cell surface, whICh are N2M + 1
+    !>       @warning: y velocity IS stored on y cell surface, whICh are N2M + 1
     NTOT1 = NCL3
 
     DO IP = 0, NPSLV

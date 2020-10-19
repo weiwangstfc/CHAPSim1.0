@@ -5,10 +5,10 @@
 !> SUBROUTINE: CONVECTION_X_tg (in MYID = all)
 !> SUBROUTINE: CONVECTION_X_io(in MYID = all)
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 05/ 2010- Initial Version (tg domAIn only), by Mehdi Seddighi
-! 04/ 2014- added io domAIn, optimized the code structure in f90, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 05/2010 - Initial Version (tg domain only), by Mehdi Seddighi
+! 04/2014 - Added io domain, optimized the code structure in f90, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 SUBROUTINE CONVECTION_X_tg
     USE mesh_info
@@ -106,7 +106,7 @@ SUBROUTINE CONVECTION_X_io
                 IP = IPV_io(IC)
                 IM = IMV_io(IC)
 
-                ! \frac{\pARtial {\rho u u}}{\pARtial x}_{i', J, K}
+                ! \frac{\partial {\rho u u}}{\partial x}_{i', J, K}
                 !(I, J, K)
                 H11F = ( G_io(IP, JC, KC, 1) + G_io(IC, JC, KC, 1) ) *  &
                 ( Q_io(IP, JC, KC, 1) + Q_io(IC, JC, KC, 1) )
@@ -116,7 +116,7 @@ SUBROUTINE CONVECTION_X_io
                 !(I', J, K)
                 H11  = (H11F - H11B) * COE1
 
-                ! \frac{\pARtial {\rho v u}}{\pARtial y}_{i', J, K}
+                ! \frac{\partial {\rho v u}}{\partial y}_{i', J, K}
                 !(I', J'+ 1, K)
                 H12F = ( G_io(IC, JP, KC, 2) +  G_io(IM, JP, KC, 2) ) *  &
                 ( YCL2ND_WFF(JJP) * Q_io(IC, JP, KC, 1) +      &
@@ -128,7 +128,7 @@ SUBROUTINE CONVECTION_X_io
                 !(I', J,  K)
                 H12  = ( H12F - H12B) * COE2
 
-                ! \frac{\pARtial {\rho w u}}{\pARtial z}_{i', J, K}
+                ! \frac{\partial {\rho w u}}{\partial z}_{i', J, K}
                 !(I', J, K'+ 1)
                 H13F = ( G_io(IC, JC, KP, 3) + G_io(IM, JC, KP, 3) ) *  &
                 ( Q_io(IC, JC, KP, 1) + Q_io(IC, JC, KC, 1) )

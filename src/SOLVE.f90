@@ -5,10 +5,10 @@
 !> SUBROUTINE: SOLVE (in MYID = all)
 !> SUBROUTINE: BCAST_COMM_STEP (in MYID = all)
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 05/ 2010- Initial Version (tg domAIn only), by Mehdi Seddighi
-! 04/ 2014- added io domAIn, optimized the code structure in f90, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 05/2010 - Initial Version (tg domain only), by Mehdi Seddighi
+! 04/2014 - Added io domain, optimized the code structure in f90, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 SUBROUTINE SOLVE
     USE init_info
@@ -23,10 +23,7 @@ SUBROUTINE SOLVE
     INTEGER(4) :: NS
     INTEGER(4) :: ITERL
 
-    !========= Note for all RANKS =================================================
-    !========= iNITIAL TIME/STEP SETTING UP =======================================
-
-
+    !========= INITIAL TIME/STEP SETTING UP =======================================
     ITERL = 0
     IF(TgFlowFlg) THEN
         ITERG0_TG  = 0
@@ -44,7 +41,7 @@ SUBROUTINE SOLVE
     END IF
 
 
-    !========FLOW INITIALIZATION, EITHER FROM random OR FROM REStartING===========
+    !========FLOW INITIALIZATION, EITHER FROM RANDOM FIELDS OR FROM RESTART===========
     CALL FLOWStart
     RENTMP = REN
     DT0 = DT
@@ -65,6 +62,7 @@ SUBROUTINE SOLVE
     CALL MPI_BARRIER(ICOMM, IERROR)
     CALL PP_MONITOR_INI
     CALL MPI_BARRIER(ICOMM, IERROR)
+
     !========= main STEPS ADVANCING========= main SOLVE =============================
     !NTSTF = IDINT(TSTOP / DT) *10000
     NTSTF = MIN(NTSTF, IDINT(TSTOP / DT))
@@ -73,6 +71,7 @@ SUBROUTINE SOLVE
         CALL CHKINTHDL(' The current iterations = ', MYID, ITERG0)
         CALL CHKHDL('*** End oF Code Configuration ***', MYID)
     END IF
+    
     DO ITERG= ITERG0 + 1, NTSTF
         StartTIME = MPI_WTIME()
 

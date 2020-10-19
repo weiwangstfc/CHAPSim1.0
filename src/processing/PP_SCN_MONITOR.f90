@@ -8,9 +8,9 @@
 !> SUBROUTINE: PP_wall_thermal_shear
 !> SUBROUTINE: PP_Wall_thermal_properties
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 06/ 2014- Created, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 06/2014 - Created, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 SUBROUTINE PP_MONITOR_INI
     USE init_info

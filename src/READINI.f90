@@ -1,17 +1,17 @@
 !**********************************************************************************************************************************
 !> @brief
-!>      Read in the USEr- Given PARAMETERs from readdata.ini
+!>      Read in the user-specified parameters from readdata.ini
 !> @details
 !> SUBROUTINE: READINI
-!>             Read in the USEr- Given PARAMETERs from readdata.ini
+!>             Read in the user-specified parameters from readdata.ini
 !> SUBROUTINE: BCAST_READINI
 !>             Broadcast the read information
 !> @note
-!> The reading subsequence in thi SUBROUTINE should be consistent with the readdata.ini.
-!> @toDO
+!> The reading subsequence in this subroutine should be consistent with the readdata.ini.
+!> @todo
 ! REVISION HISTORY:
-! 06/12 / 2013- Initial Version, by Wei Wang (wei.wang@sheffield.ac.uk)
-! 29/07/ 2020- RevISed by Wei Wang (wei.wang@stfc.ac.uk)
+! 06/12 /2013- Initial Version, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 29/07/ 2020- revised by Wei Wang (wei.wang@stfc.ac.uk)
 !**********************************************************************************************************************************
 SUBROUTINE READINI
     USE init_info

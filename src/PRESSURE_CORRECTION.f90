@@ -1,16 +1,16 @@
 !**********************************************************************************************************************************
 !> @brief
 !>        Calculate the pressure field
-!>        Eq.(A1c) in Mehdi paper or Eq.(4.61) in Mehdi thesIS.
+!>        Eq.(A1c) in Mehdi paper or Eq.(4.61) in Mehdi thesis.
 !> @details
 !> SUBROUTINE: PRCALC_tg (in MYID = all)
 !> SUBROUTINE: PRCALC_tg (in MYID = all)
 !> SUBROUTINE: CHECK_FFT_SOLVER (in MYID = all)
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 05/ 2010- Initial Version (tg domAIn only), by Mehdi Seddighi
-! 04/ 2014- added io domAIn, optimized the code structure in f90, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 05/2010 - Initial Version (tg domain only), by Mehdi Seddighi
+! 04/2014 - Added io domain, optimized the code structure in f90, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 SUBROUTINE PRCALC_tg(NS)
     USE init_info
@@ -23,7 +23,7 @@ SUBROUTINE PRCALC_tg(NS)
     REAL(WP) :: BE, LLPHI !,  COE21, COE22, COE3
     INTEGER(4) :: IC, JC, KC !, KM, KP, IM, IP, JM, JP, JJ, JJP
 
-    BE = 0.50_WP * TALP(NS) * DT * CVISC * M_inlet / D_inlet ! \alpha_1 * dt / 2 / Re in Eq.(A1d) of Mehdi thesIS.
+    BE = 0.50_WP * TALP(NS) * DT * CVISC * M_inlet / D_inlet ! \alpha_1 * dt / 2 / Re in Eq.(A1d) of Mehdi thesis.
 
 
     DO KC = 1, NCL3
@@ -113,7 +113,7 @@ SUBROUTINE PRCALC_io(NS)
 
     IF(iVisScheme == VisImplicit) THEN
 
-        BE = 0.50_WP * TALP(NS) * DT * CVISC ! \alpha_1 * dt / 2 / Re in Eq.(A1d) of Mehdi thesIS.
+        BE = 0.50_WP * TALP(NS) * DT * CVISC ! \alpha_1 * dt / 2 / Re in Eq.(A1d) of Mehdi thesis.
         DO KC = 1, NCL3
             DO JC = 1, N2DO(MYID)
                 DO IC = 1, NCL1_io

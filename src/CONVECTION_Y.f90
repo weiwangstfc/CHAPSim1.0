@@ -5,10 +5,10 @@
 !> SUBROUTINE: CONVECTION_Y_tg (in MYID = all)
 !> SUBROUTINE: CONVECTION_Y_io(in MYID = all)
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 05/ 2010- Initial Version (tg domAIn only), by Mehdi Seddighi
-! 04/ 2014- added io domAIn, optimized the code structure in f90, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 05/2010 - Initial Version (tg domain only), by Mehdi Seddighi
+! 04/2014 - Added io domain, optimized the code structure in f90, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 SUBROUTINE CONVECTION_Y_tg
     USE flow_info
@@ -160,7 +160,7 @@ SUBROUTINE CONVECTION_Y_io
                 IP = IPV_io(IC)
                 IM = IMV_io(IC)
 
-                ! \frac{\pARtial {\rho u v}}{\pARtial x}_{i, J', K}
+                ! \frac{\partial {\rho u v}}{\partial x}_{i, J', K}
                 !{i'+ 1, J', K}
                 H21F = ( YCL2ND_WFF(JJ) * G_io(IP, JC, KC, 1) +   &
                 YCL2ND_WFB(JJ) * G_io(IP, JM, KC, 1) ) * &
@@ -172,7 +172,7 @@ SUBROUTINE CONVECTION_Y_io
                 !{i, J', K}
                 H21  = ( H21F - H21B) * COE1
 
-                ! \frac{\pARtial {\rho v v}}{\pARtial y}_{i, J', K}
+                ! \frac{\partial {\rho v v}}{\partial y}_{i, J', K}
                 !{i, J, K}
                 H22F = ( G_io(IC, JP, KC, 2) + G_io(IC, JC, KC, 2) ) * &
                 ( Q_io(IC, JP, KC, 2) * RNDI1(JJP) + Q_io(IC, JC, KC, 2) * RNDI1(JJ) )
@@ -189,7 +189,7 @@ SUBROUTINE CONVECTION_Y_io
                 !{i, J', K}
                 H22 = ( H22F - H22B) * COE2
 
-                ! \frac{\pARtial {\rho w v}}{\pARtial x}_{i, J', K}
+                ! \frac{\partial {\rho w v}}{\partial x}_{i, J', K}
                 !{i, J', K'+ 1}
                 H23F = ( YCL2ND_WFF(JJ) * G_io(IC, JC, KP, 3) * RCCI1(JJ) +   &
                 YCL2ND_WFB(JJ) * G_io(IC, JM, KP, 3) * RCCI1(JJM) ) * &

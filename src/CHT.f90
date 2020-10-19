@@ -52,7 +52,7 @@ SUBROUTINE CHT_THERMAL_preparation !master only
       END IF
 
       IF(iCase == IPIPEC) THEN
-          HEAT_SRC_SOLID_BOT = 0.0_WP ! not USEd.
+          HEAT_SRC_SOLID_BOT = 0.0_WP ! not used.
       END IF
 
       IF(iCase == IANNUL) THEN

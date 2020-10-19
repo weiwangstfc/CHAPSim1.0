@@ -9,9 +9,9 @@
 !> subroutine: WRT_AVERAGE_VARS_THERMAL_Xperiodic_io
 !> subroutine: WRT_AVERAGE_SPECTRA
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 06/ 2014- Created, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 06/2014 - Created, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 SUBROUTINE WRT_INSTANT_VARS_io
     USE MESH_INFO

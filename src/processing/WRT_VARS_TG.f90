@@ -5,9 +5,9 @@
 !> subroutine: WRT_INSTANT_VARS_TG
 !> subroutine: WRT_AVERAGE_VARS_TG
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 06/ 2014- Created, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 06/2014 - Created, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 SUBROUTINE WRT_INSTANT_VARS_TG
     USE MESH_INFO

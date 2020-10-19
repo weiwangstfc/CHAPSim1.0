@@ -5,17 +5,17 @@
 !> module: FFT99_info1
 !>         variables for coefficients
 !> module: FFT99_info2
-!>         variables for PARAMETERs
+!>         variables for parameters
 !> SUBROUTINE: FFT99_POIS3D_INIT (in MYID = all)
 !> SUBROUTINE: FFT99_ROOT (in MYID = 0)
 !> SUBROUTINE: BCAST_FFT99_ROOT (in MYID = all)
 !> SUBROUTINE: TDMA_PHI_COEF (in MYID = all)
 !> SUBROUTINE: FFT99_POIS3D_periodicxz (in MYID = all)
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 05/ 2010- Initial Version (tg domAIn only), by Mehdi Seddighi
-! 04/ 2014- added io domAIn, optimized the code structure in f90, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 05/2010- Initial Version (tg domain only), by Mehdi Seddighi
+! 04/2014- Added io domain, optimized the code structure in f90, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 MODULE FFT99_info1
     USE WPRECISION
@@ -168,7 +168,7 @@ SUBROUTINE FFT99_ROOT
 
     PI = 2.0_WP * (DASIN(1.0_WP))
 
-    !=============calculate (2 -2cos(2pI / Nk)) / Dz^2 for z direction =============.
+    !=============calculate (2 - 2cos(2PI / Nk)) / Dz^2 for z direction =============.
     ALLOCATE( AN(N) )
     AN = 0.0_WP
     DO K = 1, N3MH
@@ -183,7 +183,7 @@ SUBROUTINE FFT99_ROOT
     END DO
     DEALLOCATE(AN)
 
-    !=============calculate (2 -2cos(2pI / Nk)) / DX^2 for x direction =============.
+    !=============calculate (2 -2cos(2PI / Nk)) / DX^2 for x direction =============.
     ALLOCATE( AP(L) )
     AP = 0.0_WP
     DO I = 1, N1MH
@@ -282,7 +282,7 @@ SUBROUTINE FFT99_POIS3D_periodicxz(iDomain_tmp)
     RHSLLPHIRE = 0.0_WP
     RHSLLPHIIM = 0.0_WP
 
-    ! FFT for x direction, and THEN CFFT for z direction.
+    ! FFT for x direction, and then CFFT for z direction.
     UN3M = 1.0_WP / DBLE(N)
     DO J = 1, ML
 

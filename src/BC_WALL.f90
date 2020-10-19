@@ -23,9 +23,9 @@
 !> SUBROUTINE: BC_WALL_DPH_tg (in MYID = all)
 !> SUBROUTINE: BC_WALL_DPH_io(in MYID = all)
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 12 / 2013- Initial Version, by Wei Wang
+! 12/2013 - Initial Version, by Wei Wang
 !**********************************************************************************************************************************
 SUBROUTINE BC_PIPE_CENTRE_Q(iDomain_tmp)
     USE flow_info
@@ -194,14 +194,14 @@ SUBROUTINE BC_PIPE_CENTRE_THERMAL
     DO I = NCL1S, NCL1E
         DO K = 1, NCL3
             KS = KSYM(K)
-            ENTHALPY  (I, 0, K) = ENTHALPY  (I, 1, KS)
-            DENSITY   (I, 0, K) = DENSITY   (I, 1, KS)
+            ENTHALPY   (I, 0, K) = ENTHALPY   (I, 1, KS)
+            DENSITY    (I, 0, K) = DENSITY    (I, 1, KS)
             TEMPERATURE(I, 0, K) = TEMPERATURE(I, 1, KS)
-            Viscousity(I, 0, K) = Viscousity(I, 1, KS)
-            THERMCONDT(I, 0, K) = THERMCONDT(I, 1, KS)
-            HEATCAP   (I, 0, K) = HEATCAP   (I, 1, KS)
-            DH      (I, 0, K) = ENTHALPY  (I, 1, KS) *  &
-            DENSITY   (I, 1, KS)
+            Viscousity (I, 0, K) = Viscousity (I, 1, KS)
+            THERMCONDT (I, 0, K) = THERMCONDT (I, 1, KS)
+            HEATCAP    (I, 0, K) = HEATCAP    (I, 1, KS)
+            DH         (I, 0, K) = ENTHALPY   (I, 1, KS) * DENSITY(I, 1, KS)
+            
         END DO
     END DO
 

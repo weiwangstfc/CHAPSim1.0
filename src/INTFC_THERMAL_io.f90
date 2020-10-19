@@ -7,9 +7,9 @@
 !> SUBROUTINE:INTFC_INL_THERMAL_io(in MYID = all)
 !> SUBROUTINE:INTFC_MFD_DENSITY_io(in MYID = all), not used.
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 06/ 2014- Created, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 06/2014- Created, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 SUBROUTINE INTFC_MFD_THERMAL_io
     !>      @NOTE:
@@ -204,7 +204,7 @@ SUBROUTINE INTFC_MFD_THERMAL_io
         MPI_DOUBLE_PRECISION, IDESB, ITAG, ICOMM, TRC_STS, IERROR)
 
 
-        !@note vAR(I, N2DO(MYID) + 1, K) not USEd actually.
+        !@note vAR(I, N2DO(MYID) + 1, K) not used actually.
         !================== 1 ENTHALPY ===========================
         DO I = 1, NCL1_io
             DO K = 1, NCL3
@@ -516,7 +516,7 @@ SUBROUTINE INTFC_OUL_THERMAL_io
         MPI_DOUBLE_PRECISION, IDESB, ITAG, ICOMM, TRC_STS, IERROR)
 
 
-        !@note vAR(I, N2DO(MYID) + 1, K) not USEd actually.
+        !@note vAR(I, N2DO(MYID) + 1, K) not used actually.
         !================== 1 ENTHALPY ===========================
         I = NCL1_io + 1
         DO K = 1, NCL3
@@ -801,7 +801,7 @@ SUBROUTINE INTFC_INL_THERMAL_io
         MPI_DOUBLE_PRECISION, IDESB, ITAG, ICOMM, TRC_STS, IERROR)
 
 
-        !@note vAR(I, N2DO(MYID) + 1, K) not USEd actually.
+        !@note vAR(I, N2DO(MYID) + 1, K) not used actually.
         !================== 1 ENTHALPY ===========================
         I = 0
         DO K = 1, NCL3
@@ -1005,7 +1005,7 @@ SUBROUTINE INTFC_MFD_DENSITY_io ! not used
         MPI_DOUBLE_PRECISION, IDESB, ITAG, ICOMM, TRC_STS, IERROR)
 
 
-        !@note vAR(I, N2DO(MYID) + 1, K) not USEd actually.
+        !@note vAR(I, N2DO(MYID) + 1, K) not used actually.
         !================== 2 DENSITY ==================================
         DO I = 1, NCL1_io
             DO K = 1, NCL3

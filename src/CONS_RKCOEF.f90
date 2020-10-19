@@ -1,16 +1,16 @@
 !**********************************************************************************************************************************
 !> @brief
-!>       setup constant PARAMETERs for time dIScretization method, like the RK method
+!>       setup constant parameters for time discretization method, like the RK method
 !> @details
 !> SUBROUTINE: CONS_RKCOEF
-!>             setup constant PARAMETERs for time dIScretization method, like the RK method
+!>             setup constant parameters for time discretization method, like the RK method
 !> SUBROUTINE: BCAST_RKCOEF
 !>             Broadcast the common information
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 05/ 2010- Initial Version (tg domAIn only), by Mehdi Seddighi
-! 12 / 2013- added io domAIn, optimized the code structure in f90, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 05/2010- Initial Version (tg domain only), by Mehdi Seddighi
+! 12/2013- Added io domain, optimized the code structure in f90, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 SUBROUTINE CONS_RKCOEF
     USE init_info

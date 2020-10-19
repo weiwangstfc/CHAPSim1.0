@@ -7,9 +7,9 @@
 !> SUBROUTINE: INST_Qio_Gradient_CellCentred
 !> SUBROUTINE: PP_DRIVEN_FORCE
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 06/ 2014- Created, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 06/2014 - Created, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 SUBROUTINE PP_MEAN_ZX_FLOW_TG
     !>  @NOTE :  I, J,  L

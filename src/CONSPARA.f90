@@ -1,6 +1,6 @@
 !**********************************************************************************************************************************
 !> @brief
-!>       setup constant PARAMETERs for time dIScretization method, like the RK method
+!>       setup constant parameters for time discretization method, like the RK method
 !> @details
 !> SUBROUTINE: CONSPARA (in MYID = 0)
 !>             Calculate below information
@@ -10,10 +10,10 @@
 !> SUBROUTINE: BCAST_CONSPARA (in MYID = all)
 !>             Broadcast the common information
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 05/ 2010- Initial Version (tg domAIn only), by Mehdi Seddighi
-! 12 / 2013- added io domAIn, optimized the code structure in f90, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 05/2010 - Initial Version (tg domain only), by Mehdi Seddighi
+! 12/2013 - Added io domain, optimized the code structure in f90, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 SUBROUTINE CONSPARA
     USE init_info
@@ -51,7 +51,7 @@ SUBROUTINE CONSPARA
         END IF
     ELSE
         IF(TgFlowFlg) THEN
-            DX = ALX1(1) / DBLE(NCL1_tg)  !check toDO for clustering grids in x direction.
+            DX = ALX1(1) / DBLE(NCL1_tg)  !check todo for clustering grids in x direction.
         END IF
         IF(IoFlowFlg) THEN
             DX = ALX1(2) / DBLE(NCL1_io)

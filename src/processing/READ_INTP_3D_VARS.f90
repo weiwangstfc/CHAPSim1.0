@@ -13,9 +13,9 @@
 !> subroutine: TRASPO23_Y2Z
 !> subroutine: TRASPO23_Z2Y
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 06/ 2014- Created, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 06/2014 - Created, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 SUBROUTINE READ_3D_VARS(N1, N2, N3, N2L, N2P, IterIn, TimeIn, DUMMY, FLNM)
     USE WPRECISION

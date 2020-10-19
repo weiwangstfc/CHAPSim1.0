@@ -5,17 +5,17 @@
 !> SUBROUTINE: BC_TINLET_FLOW (in MYID = all)
 !> SUBROUTINE: BC_TINLET_THERML (in MYID = all)
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 04/ 2014- Initial version, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 04/2014- Initial version, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 SUBROUTINE BC_TINLET_FLOW
     !>     @note
-    !>     Inlet bc will USE the data from the adjacent cells in the turbulence
+    !>     Inlet bc will use the data from the adjacent cells in the turbulence
     !>     generator.
     !>     For TG, energy equation may be solved with no heat flux fed in, therefore
-    !>     It IS still like incompressible flow with constant thermal properties.
-    !>     Thus, the inlet thermal properties USE constant values.
+    !>     It is still like incompressible flow with constant thermal properties.
+    !>     Thus, the inlet thermal properties use constant values.
 
     USE mesh_info
     USE flow_info
@@ -52,7 +52,7 @@ SUBROUTINE BC_TINLET_FLOW
     END DO
     DPH_io(0, :, :) = 0.0_WP
 
-    !== As J = 0~n2DO+ 1, the intfc IS not necessary =====
+    !== As J = 0~N2DO+ 1, the intfc is not necessary =====
     !CALL INTFC_INL_G_io
     !CALL INTFC_INL_Q_io
     !CALL INTFC_INL_P_io
@@ -87,7 +87,7 @@ SUBROUTINE BC_TINLET_THERML
     END DO
 
     !        !================FOR THERMAL FIELD============================
-    !        !====ONLY TO BE CALLED BEFORE main SOLVER ONCE =======
+    !        !====ONLY TO BE CALLED BEFORE MAIN SOLVER ONCE =======
     !        IF(iThermalWallType == BC_Fixed_Heat_Flux) THEN
     !            DO J = 0, N2DO(MYID) + 1, 1
     !                DO K = 1, NCL3

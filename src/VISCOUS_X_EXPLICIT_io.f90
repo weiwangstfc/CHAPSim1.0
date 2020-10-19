@@ -5,10 +5,10 @@
 !> SUBROUTINE: VISCOUS_ALL_EXPLT_X_io(in MYID = all)
 !> SUBROUTINE: VISCOUS_PAR_EXPLT_X_io(in MYID = all)
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 06/ 2014- Created, by Wei Wang (wei.wang@sheffield.ac.uk)
-! 09/ 2020- Added more fluid types and optimized, by Wei Wang (wei.wang@stfc.ac.uk)
+! 06/2014 - Created, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 09/2020 - Added more fluid types and optimized, by Wei Wang (wei.wang@stfc.ac.uk)
 !**********************************************************************************************************************************
 SUBROUTINE VISCOUS_ALL_EXPLT_X_io
     USE MESH_INFO

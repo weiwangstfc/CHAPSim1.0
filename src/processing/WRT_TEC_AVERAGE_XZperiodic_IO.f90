@@ -26,9 +26,9 @@
 !> subroutine: WRITE_SPECO_AVE_PROFILE
 !> subroutine: WRITE_SPECO_AVE_Contour
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 06/ 2014- Created, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 06/2014 - Created, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 !================================periodic BELOW========================================================
 MODULE VARS_AVERAGED_XZ_io
@@ -1889,7 +1889,7 @@ SUBROUTINE PP_FLOW_BASIC_VARS_XZ_io
     !            END DO
     !        END DO
     !        ! above treatment IS an approximat
-    !   As third order introduces more dIFfeRENces than the second order, thus above approximation IS too rough to be USEd.
+    !   As third order introduces more dIFfeRENces than the second order, thus above approximation IS too rough to be used.
 
     DO J = 1, NCL2
 
@@ -1993,9 +1993,9 @@ SUBROUTINE PP_FLOW_BASIC_VARS_XZ_io
 
 
     !==== VortICitY ==================================
-    ! Omega1 = \pARtial u_3 / \pARtial x_2 -  \pARtial u_2 / \pARtial x_3
-    ! Omega2 = \pARtial u_1 / \pARtial x_3 -  \pARtial u_3 / \pARtial x_1
-    ! Omega3 = \pARtial u_2 / \pARtial x_1 -  \pARtial u_1 / \pARtial x_2
+    ! Omega1 = \partial u_3 / \partial x_2 -  \partial u_2 / \partial x_3
+    ! Omega2 = \partial u_1 / \partial x_3 -  \partial u_3 / \partial x_1
+    ! Omega3 = \partial u_2 / \partial x_1 -  \partial u_1 / \partial x_2
     ! Omega_I = <Omega_i> + Omega'_i (or omega)
     ! <Omega'_i * Omega'_i> = <Omega_i * Omega_i> - <Omega_i><Omega_i>
     DO J = 1, NCL2
@@ -2364,12 +2364,12 @@ SUBROUTINE PP_FLOW_BASIC_VARS_XZ_io
     !=========== VIScous sheAR stresS =====================
     !=========<tau_mn>(<u>) AND <tau_mn>(u') ============
     ! Eq. Tau_Mean_RA(J, M, N) = viscstress_Tau_Umea + viscstress_Tau_Uper
-    !     <tau_mn>(<u>) * REN = <mu> [ (\pARtial <u_m>) / (\pARtial x_n) +
-    !                               (\pARtial <u_n>) / (\pARtial x_m) ] -
-    !                     2 / 3<mu> [ (\pARtial <u_l>) / (\pARtial x_l) \Delta_mn]
-    !     <tau_mn>(u') * REN = < mu' [ (\pARtial u'_m) / (\pARtial x_n) +
-    !                               (\pARtial u'_n) / (\pARtial x_m) ] > -
-    !                     2 / 3<mu' [ (\pARtial u'_l) / (\pARtial x_l) \Delta_mn]
+    !     <tau_mn>(<u>) * REN = <mu> [ (\partial <u_m>) / (\partial x_n) +
+    !                               (\partial <u_n>) / (\partial x_m) ] -
+    !                     2 / 3<mu> [ (\partial <u_l>) / (\partial x_l) \Delta_mn]
+    !     <tau_mn>(u') * REN = < mu' [ (\partial u'_m) / (\partial x_n) +
+    !                               (\partial u'_n) / (\partial x_m) ] > -
+    !                     2 / 3<mu' [ (\partial u'_l) / (\partial x_l) \Delta_mn]
     DO J = 1, NCL2
 
         DO M = 1, NDV
@@ -2397,9 +2397,9 @@ SUBROUTINE PP_FLOW_BASIC_VARS_XZ_io
 
 
     !======== TauU_RA(J, M, N, H) = <u_h \tau_mn>======================
-    !Eq.<u_h \tau_mn> = <\mu u_h \pARtial{u_m}/\pARtial{u_n}>+
-    !                  <\mu u_h \pARtial{u_n}/\pARtial{u_m}>-
-    !               2 / 3<\mu u_h \pARtial{u_l}/\pARtial{u_l}>Delta_mn
+    !Eq.<u_h \tau_mn> = <\mu u_h \partial{u_m}/\partial{u_n}>+
+    !                  <\mu u_h \partial{u_n}/\partial{u_m}>-
+    !               2 / 3<\mu u_h \partial{u_l}/\partial{u_l}>Delta_mn
     DO J = 1, NCL2
         DO M = 1, NDV
             DO N = 1, NDV
@@ -2886,8 +2886,8 @@ SUBROUTINE PP_FLOW_FA_RSTE_Budg_XZ_io
 
     !===FA====PRODUCTION TERMS ==P ==================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     !       Eq: Budg_prodc_stres_Duiuj(J, L) = p *_{ij}=P_{ij}-2 / 3P\Delta_{ij}
-    !       Eq: P_{ij} = -<\rho u"_i u"_k> (\pARtial {u_j} / \pARtial x_k) +
-    !                    -<\rho u"_j u"_k> (\pARtial {u_i} / \pARtial x_k)
+    !       Eq: P_{ij} = -<\rho u"_i u"_k> (\partial {u_j} / \partial x_k) +
+    !                    -<\rho u"_j u"_k> (\partial {u_i} / \partial x_k)
     DO J = 1, NCL2
         !==============for TKE and MKE ==================
         Budg_prodc_stres_MKE(J) = uff2d_FA(J, 1, 2) * DUDX_FA(J, 1, 2) + &
@@ -2912,7 +2912,7 @@ SUBROUTINE PP_FLOW_FA_RSTE_Budg_XZ_io
     CALL CHKHDL(' ==>Calculated Budg_prodc_stres', MYID)
 
     !==FA===== VIScous ENERGY dISsipation term ===========================================================
-    !       TauDvDL_RA(J, M, N,H,P) = <\pARtial(u_m) /\pARtial x_n \tau_hp>
+    !       TauDvDL_RA(J, M, N,H,P) = <\partial(u_m) /\partial x_n \tau_hp>
     DO J = 1, NCL2
         !==============for TKE and MKE ==================
         Budg_viscs_dissp_TKE(J) = &
@@ -2968,8 +2968,8 @@ SUBROUTINE PP_FLOW_FA_RSTE_Budg_XZ_io
     CALL CHKHDL(' ==>Calculated Budg_viscs_dissp_Duiuj', MYID)
 
     !==FA===== Velocity- PRessure gradient pressure strAIn terM ======= (StrAIn ) =======>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    !       Eq = <p' \pARtial { u"_i}/\pARtial{x_j} > +
-    !            <p' \pARtial { u"_j}/\pARtial{x_i} >
+    !       Eq = <p' \partial { u"_i}/\partial{x_j} > +
+    !            <p' \partial { u"_j}/\partial{x_i} >
     DO J = 1, NCL2
         !==============for TKE and MKE ==================
         Budg_pduDX_stran_TKE(J) =  DVDLPxztL_F0_io(J, 1, 1) - U1xztL_F0_io(J, 4) * DVDL1xztL_F0_io(J, 1, 1) + &
@@ -2992,7 +2992,7 @@ SUBROUTINE PP_FLOW_FA_RSTE_Budg_XZ_io
 
 
     !==FA===== TURBUELCEN DIFFUSION TERMS = ( Turb. DIFfusion) >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    !       Eq.  Budg_TdIFf_Duiuj(J, L) = ( \pARtial <\rho u"_i u"_j u"_k > ) / (\pARtial x_k )
+    !       Eq.  Budg_TdIFf_Duiuj(J, L) = ( \partial <\rho u"_i u"_j u"_k > ) / (\partial x_k )
     DO J = 1, NCL2
         uffMKEffd_FA(J) = U_FA(J, 1) * Uff2d_FA(J, 1, 2) + &
         U_FA(J, 2) * Uff2d_FA(J, 2, 2) + &
@@ -3087,8 +3087,8 @@ SUBROUTINE PP_FLOW_FA_RSTE_Budg_XZ_io
 
 
     !==FA===== Velocity- PRessure gradient dIFfusion terM ======= (pressure dIFfusion) ==================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    !       Eq. = - \pARtial (<p' u"_j>) /\pARtial (x_i) - \pARtial (<p' u"_i>) /\pARtial (x_j)
-    !         = - \pARtial (<p' u'_j>) /\pARtial (x_i) - \pARtial (<p' u'_i>) /\pARtial (x_j)
+    !       Eq. = - \partial (<p' u"_j>) /\partial (x_i) - \partial (<p' u"_i>) /\partial (x_j)
+    !         = - \partial (<p' u'_j>) /\partial (x_i) - \partial (<p' u'_i>) /\partial (x_j)
     DO J = 1, NCL2
         !==============for TKE and MKE ==================
         IF(J == 1) THEN
@@ -3170,8 +3170,8 @@ SUBROUTINE PP_FLOW_FA_RSTE_Budg_XZ_io
 
     !===FA==== VIScous dIFfusion term ===========================================================
     !       VIScous stress term IS based on RA decomPOSITION like Huang, not FA.
-    !       Eq. = \pARtial <u"_j tau'_ki> / pARtial (x_k) +
-    !             \pARtial <u"_i tau'_kj> / pARtial (x_k)
+    !       Eq. = \partial <u"_j tau'_ki> / pARtial (x_k) +
+    !             \partial <u"_i tau'_kj> / pARtial (x_k)
     DO J = 1, NCL2
         !==============for TKE and MKE ==================
         IF(J == 1) THEN
@@ -3308,8 +3308,8 @@ SUBROUTINE PP_FLOW_FA_RSTE_Budg_XZ_io
     CALL CHKHDL(' ==>Calculated Budg_press_accl1_Duiuj', MYID)
 
     !==FA===== VIScous acceleration, including alL ======== (based on tau_RA) ======>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    !       Eq. <u"_j> (\pARtial <tau_ki>) / (\pARtial  x_k) +
-    !           <u"_i> (\pARtial <tau_kj>) / (\pARtial  x_k)
+    !       Eq. <u"_j> (\partial <tau_ki>) / (\partial  x_k) +
+    !           <u"_i> (\partial <tau_kj>) / (\partial  x_k)
     DO J = 1, NCL2
         !==============for TKE and MKE ==================
         Budg_viscs_accl1_TKE(J) = dTaudy_RA(J, 2, 1) * Uff_RA(J, 1) + &
@@ -3883,8 +3883,8 @@ SUBROUTINE PP_FLOW_RA_noDen_RSTE_Budg_XZ_io
     CALL PP_Budg_INIT
     !=======PRODUCTION TERMS due to mean sheAR === (RS) =========================================================
     !       Eq: Budg_prodc_stres_Duiuj(J, L) = p *_{ij}=P_{ij}-2 / 3P\Delta_{ij}
-    !       Eq: P_{ij} = -<\rho u''_i u''_k> (\pARtial {u_j} / \pARtial x_k) +
-    !                    -<\rho u''_j u''_k> (\pARtial {u_i} / \pARtial x_k)
+    !       Eq: P_{ij} = -<\rho u''_i u''_k> (\partial {u_j} / \partial x_k) +
+    !                    -<\rho u''_j u''_k> (\partial {u_i} / \partial x_k)
     Budg_prodc_stres_DuiuJ = 0.0_WP
     DO J = 1, NCL2
         !==============for TKE and MKE ==================
@@ -3919,7 +3919,7 @@ SUBROUTINE PP_FLOW_RA_noDen_RSTE_Budg_XZ_io
     CALL CHKHDL(' ==>Calculated Budg_prodc_stres_Duiuj', MYID)
 
     !== RA===== VIScous ENERGY dISsipation term ===========================================================
-    !       viscstressVeloGrad_RA(J, M, N,H,P) = <\pARtial(u_m) /\pARtial x_n \tau_hp>
+    !       viscstressVeloGrad_RA(J, M, N,H,P) = <\partial(u_m) /\partial x_n \tau_hp>
     Budg_viscs_dissp_TKE = 0.0_WP
     Budg_viscs_dissp_MKE = 0.0_WP
     Budg_viscs_dissp_DuiuJ = 0.0_WP
@@ -3995,7 +3995,7 @@ SUBROUTINE PP_FLOW_RA_noDen_RSTE_Budg_XZ_io
 
 
     !== RA===== TURBUELCEN DIFFUSION TERMS = (turblence tranport rate) === (RS) ========================
-    !       Eq.  Budg_TdIFf_Duiuj(J, L) = ( \pARtial <\rho u''_i u''_j u''_k > ) / (\pARtial x_k )
+    !       Eq.  Budg_TdIFf_Duiuj(J, L) = ( \partial <\rho u''_i u''_j u''_k > ) / (\partial x_k )
     DO J = 1, NCL2
         ufMKEfd_RA(J) =  0.5_WP * ( U3xztL_F0_io(J, 2) + U3xztL_F0_io(J,7) + U3xztL_F0_io(J,9) )
 
@@ -4066,7 +4066,7 @@ SUBROUTINE PP_FLOW_RA_noDen_RSTE_Budg_XZ_io
     CALL CHKHDL(' ==>Calculated Budg_Turbu_diffu_Duiuj', MYID)
 
     !== RA===== Velocity- PRessure gradient dIFfusion terM ======= (RS) ==============================
-    !       Eq. = - \pARtial (<p' u''_j>) /\pARtial (x_i) - \pARtial (<p' u''_i>) /\pARtial (x_j)
+    !       Eq. = - \partial (<p' u''_j>) /\partial (x_i) - \partial (<p' u''_i>) /\partial (x_j)
     DO J = 1, NCL2
         !==============for TKE and MKE ==================
         IF(J == 1) THEN
@@ -4146,8 +4146,8 @@ SUBROUTINE PP_FLOW_RA_noDen_RSTE_Budg_XZ_io
 
 
     !== RA===== VIScous dIFfusion term ===========================================================
-    !       Eq. = \pARtial <u''_j tau'_ki> / pARtial (x_k) +
-    !             \pARtial <u''_i tau'_kj> / pARtial (x_k)
+    !       Eq. = \partial <u''_j tau'_ki> / pARtial (x_k) +
+    !             \partial <u''_i tau'_kj> / pARtial (x_k)
     DO J = 1, NCL2
         !==============for TKE and MKE ==================
         IF(J == 1) THEN
@@ -4619,7 +4619,7 @@ SUBROUTINE PP_HEAT_BASIC_VARS_XZ_io
 
     END DO
 
-    !========<\pARtial(h) /\pARtial x_m \tau_hp>======================
+    !========<\partial(h) /\partial x_m \tau_hp>======================
     ! Eq. viscstressEnthGrad_RA(J, M, H, P)
     !   = <mu * d(u_h) / D(x_p) * d(h) / D(x_m) > +
     !       <mu * d(u_p) / D(x_h) * d(h) / D(x_m) > - 2 / 3 *
@@ -4666,8 +4666,8 @@ SUBROUTINE PP_HEAT_FA_RSTE_Budg_XZ_io
     REAL(WP) :: htauJC, htauJP
 
     !==PRODUCTION TERMS due to mean sheAR and mean enthalpy gradienT === (THF(turbulent heat flux)) ========
-    !Eq: Budg_prod_thf_stres(J, L) = -<\rho h''u''_k> (\pARtial {u_i} / \pARtial x_k)
-    !Eq: Budg_prod_thf_entpg(J, L) = -<\rho u_i'' u''_k> (\pARtial {h}   / \pARtial x_k)
+    !Eq: Budg_prod_thf_stres(J, L) = -<\rho h''u''_k> (\partial {u_i} / \partial x_k)
+    !Eq: Budg_prod_thf_entpg(J, L) = -<\rho u_i'' u''_k> (\partial {h}   / \partial x_k)
     Budg_prodc_stres_thf = 0.0_WP
     Budg_prodc_enthg_thf = 0.0_WP
     DO J = 1, NCL2
@@ -4682,7 +4682,7 @@ SUBROUTINE PP_HEAT_FA_RSTE_Budg_XZ_io
     END DO
 
     !== TURBUELCEN DIFFUSION TERMS = (turblence tranport rate) ================================
-    !Eq.  Budg_TdIFf_Duiuj(J, L) = ( \pARtial <\rho u''_i u''_j u''_k > ) / (\pARtial x_k )
+    !Eq.  Budg_TdIFf_Duiuj(J, L) = ( \partial <\rho u''_i u''_j u''_k > ) / (\partial x_k )
     DO J = 1, NCL2
         DO M = 1, NDV
             IF(J == 1) THEN
@@ -4810,7 +4810,7 @@ SUBROUTINE PP_HEAT_FA_RSTE_Budg_XZ_io
     END DO
 
     !======= VIScous acceleration, including alL ======== (based on tau_RA) ===================================
-    !       Eq. <h''> (\pARtial <tau_ki>) / (\pARtial  x_k)
+    !       Eq. <h''> (\partial <tau_ki>) / (\partial  x_k)
     DO J = 1, NCL2
         DO M = 1, NDV
             Budg_viscs_accl1_thf(J, M) = dTaudy_RA(J, 2, M) * Hff_RA(J)
@@ -4818,7 +4818,7 @@ SUBROUTINE PP_HEAT_FA_RSTE_Budg_XZ_io
     END DO
 
     !======= VIScous dIFfusion term ===========================================================
-    !       Eq. = \pARtial <h'' tau'_ki> / pARtial (x_k)
+    !       Eq. = \partial <h'' tau'_ki> / pARtial (x_k)
     DO J = 1, NCL2
         DO M = 1, NDV
             IF(J == 1) THEN
@@ -6129,7 +6129,7 @@ SUBROUTINE WRT_HeatTransfer_Table_XZ_io
     WRITE(TECFLG, '(A, 2ES19.9)') 'Above two dIFf = ', dqw-CMWORK, dqw_D -CMWORK_D
     WRITE(TECFLG, '(A)') '  '
 
-    WRITE(TECFLG, '(A)         ') '%########Heat transfer PARAMETERs#############################'
+    WRITE(TECFLG, '(A)         ') '%########Heat transfer parameters#############################'
     WRITE(TECFLG, '(A, 30X, 2(A,7X), A, 1X, A)') '%#', 'wall(Y = -1)', 'wall(Y =+ 1)', &
     'Two-wall average', 'Error(\%) = (W1-W2) / (W1 + W2) *100'
     WRITE(TECFLG, '(A, 4ES19.9)') 'Qw: Wall heat flux(undim)   = ', Qw(1:2), 0.5_WP * (Qw(1) + Qw(2)), &

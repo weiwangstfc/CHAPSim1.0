@@ -4,9 +4,9 @@
 !> @details
 !> SUBROUTINE: RHS_MOM_EXPLICIT_io(in MYID = all)
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 06/ 2014- Created, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 06/2014 - Created, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 SUBROUTINE RHS_MOM_EXPLICIT_io(NS, IDR) ! not using other Gs or Qs in the current step
     USE FLOW_INFO

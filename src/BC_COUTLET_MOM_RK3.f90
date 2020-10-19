@@ -9,9 +9,9 @@
 !> SUBROUTINE: VELOUPDT_CBC_U (in MYID = all)
 !> SUBROUTINE: CBC_Gx (in MYID = all)
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 04/ 2014- Initial version, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 04/2014- Initial version, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 SUBROUTINE BC_COUTLET_MOM_RK3(NS)
     USE mesh_info
@@ -30,7 +30,7 @@ SUBROUTINE BC_COUTLET_MOM_RK3(NS)
     IF(.NOT. TgFlowFlg) RETURN
 
     !==== Method onE =====================================================
-    ! outlet in x direction. IF in other directions, the cylindrical coordinates will introduce other terms, see eq.4.31 of Pierce thesIS.
+    ! outlet in x direction. If in other directions, the cylindrical coordinates will introduce other terms, see eq.4.31 of Pierce thesis.
     CALL CONVCTION_OUTLET_U
 
     COE1 = DXI * U_OUTLET
@@ -72,7 +72,7 @@ SUBROUTINE BC_COUTLET_MOM_RK3(NS)
     END DO
     !END IF
 
-    !=========================updatE ============================================
+    !=========================update ============================================
     CALL INTFC_VARS3(NCL1_io + 1, NCL1_io + 1, NCL1S, NCL1E, G_io)
     CALL BC_WALL_G_io
     CALL INTFC_VARS3(NCL1_io + 1, NCL1_io + 1, NCL1S, NCL1E, Q_io)
@@ -113,7 +113,7 @@ END SUBROUTINE
 
 !**********************************************************************************************************************************
 SUBROUTINE CONVCTION_OUTLET_U
-    !     Below IS based on constant DENSITY in the domain.
+    !     Below is based on constant density in the domain.
     !     Ref: A simple and efficient outflow boundary condition for the incompressible Navier–Stokes equations
     USE thermal_info
     USE mpi_info
@@ -213,7 +213,7 @@ SUBROUTINE BC_CBC_TDMA(NS)
 
     CALL BC_INTFC_CBC(3)
     !>    @note : with BC_INTFC_CBC(3) all known, and tri-matrix,
-    !>            TRANSP23 IS not necessary here.
+    !>            TRANSP23 is not necessary here.
     DO IDR = 1, NDV
         DO K = 1, NCL3
             DO JC = 1, N2DO(MYID)

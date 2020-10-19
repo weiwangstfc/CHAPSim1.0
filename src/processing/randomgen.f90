@@ -6,9 +6,9 @@
 !> SUBROUTINE: rvec_random
 !> SUBROUTINE: r_random
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 10/ 2013- Created, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 10/2013 - Created, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 SUBROUTINE random_initialize ( seed )
     USE WPRECISION
@@ -40,7 +40,7 @@ SUBROUTINE random_initialize ( seed )
     !
     !    John BurkARdt
     !
-    !  PARAMETERs:
+    !  parameters:
     !
     !    Input/output, INTEGER(4) SEED.
     !    IF SEED IS zero on input, THEN you're asking thIS routine to come up
@@ -132,7 +132,7 @@ SUBROUTINE rvec_random ( alo, ahi, n, a )
     !
     !    John BurkARdt
     !
-    !  PARAMETERs:
+    !  parameters:
     !
     !    Input, REAL(WP) ALO, AHI, the range allowed for the entries.
     !
@@ -173,7 +173,7 @@ SUBROUTINE r_random ( rlo, rhi, r )
     !
     !    John BurkARdt
     !
-    !  PARAMETERs:
+    !  parameters:
     !
     !    Input, REAL(WP) RLO, RHI, the minimum and maximum values.
     !

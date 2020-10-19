@@ -4,9 +4,9 @@
 !> @details
 !> SUBROUTINE: POSTPROCESS_TG (in MYID = all)
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 06/ 2014- Created, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 06/2014 - Created, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 SUBROUTINE POSTPROCESS_TG
     USE init_info

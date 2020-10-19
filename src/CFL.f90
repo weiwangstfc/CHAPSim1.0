@@ -5,10 +5,10 @@
 !> SUBROUTINE: CFL_tg (in MYID = all)
 !> SUBROUTINE: CFL_io(in MYID = all)
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 05/ 2010- Initial Version (tg only), by Mehdi Seddighi
-! 12 / 2013- added io domAIn, optimized the code structure in f90, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 05/2010- Initial Version (tg only), by Mehdi Seddighi
+! 12/2013- Added io domain, optimized the code structure in f90, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 SUBROUTINE CFL_tg
     USE flow_info
@@ -55,7 +55,7 @@ END SUBROUTINE
 SUBROUTINE CFL_io
     !>    @note
     !>    1) Energy equation has the same convection velocity as the
-    !>       momentum equation, thus, no additional CFL IS required
+    !>       momentum equation, thus, no additional CFL is required
     !>       for energy equation.
     !>    2) For conservative variables, the convection variable are Q
 
@@ -94,7 +94,7 @@ SUBROUTINE CFL_io
 
                 QCF = DMAX1(QCF, VCF)
                 CFLMA = DMAX1(CFLMA, QCF)
-                !>                  @wARning Why rm IS involved in 3rd direction?
+                !>                  @warning Why rm is involved in 3rd direction?
             END DO
         END DO
     END DO
@@ -107,7 +107,7 @@ SUBROUTINE CFL_io
 END SUBROUTINE
 
 !**********************************************************************
-SUBROUTINE CFL_VISCOUS ! not USEd any more, merged above to CFL_io
+SUBROUTINE CFL_VISCOUS ! not used any more, merged above to CFL_io
     USE flow_info
     USE init_info
     USE mesh_info

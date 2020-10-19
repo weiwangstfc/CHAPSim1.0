@@ -4,9 +4,9 @@
 !> @details
 !> SUBROUTINE: POSTPROCESS_INTEGRAL_INSTANS (in MYID = all)
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 06/ 2014- Created, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 06/2014 - Created, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 SUBROUTINE POSTPROCESS_INTEGRAL_INSTANS
     USE init_info
@@ -51,7 +51,7 @@ SUBROUTINE POSTPROCESS_INTEGRAL_INSTANS
         IF(TgFlowFlg) THEN
             ! to add....
 
-        ELSE  !===periodic main io domAIn =======================
+        ELSE  !===periodic main io domain =======================
             !== Read in all data=======
             DO N = 1, pp_instn_sz
                 tI = pp_instn_tim(N)

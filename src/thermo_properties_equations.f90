@@ -11,7 +11,7 @@
 !> function: thermophysical_function_TH
 !> SUBROUTINE:thermophysical_function_DH_preparation
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
 ! 09/2020 - Created, by Wei Wang (wei.wang@stfc.ac.uk)
 !**********************************************************************************************************************************

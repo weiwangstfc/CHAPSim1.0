@@ -1,4 +1,22 @@
-!***********************************************************************
+!**********************************************************************************************************************************
+!> @brief
+!>        Flow field initialization of the tg domain
+!> @details
+!> SUBROUTINE: random_FL_THEML_FLD_io (in MYID = all)
+!> SUBROUTINE: CALC_INITIALIZATION_io (in MYID = all)
+!> SUBROUTINE: IniField_FLOW_io (in MYID = all)
+!> SUBROUTINE: IniField_THERMAL_io (in MYID = all)
+!> SUBROUTINE: BULK_VELOCITY_io
+!> SUBROUTINE: BULK_MASSFLUX_io
+!> SUBROUTINE: BULK_H_io
+!> SUBROUTINE: VELO2MASSFLUX
+!> SUBROUTINE: Unified_MassFlux
+!> @note
+!> @todo
+! REVISION HISTORY:
+! 05/2010- Initial Version (tg domain only), by Mehdi Seddighi
+! 12/2013- Added io domain, optimized the code structure in f90, by Wei Wang (wei.wang@sheffield.ac.uk)
+!**********************************************************************************************************************************
 SUBROUTINE random_FL_THEML_FLD_io
         USE init_info
         USE mesh_info
@@ -265,7 +283,7 @@ SUBROUTINE IniField_THERMAL_io
 !>          Set up the initial thermal field.
 !>    Known:
 !>           P_0, T_0
-!>           P_0 IS only USEd to creat the NIST table, and not USEd in the code.
+!>           P_0 IS only USEd to creat the NIST table, and not used in the code.
 !>    To set up:
 !>           T, \rho, \mu, \kappa, h, h\rho
         USE MESH_INFO
@@ -453,7 +471,7 @@ SUBROUTINE VELO2MASSFLUX
                 DO IC = NCL1S, NCL1E
                     IF(iCase == ICHANL) THEN
                         G_io(IC, 1, KC, IDR) = 0.0_WP
-                        G_io(IC, 0, KC, IDR) = 0.0_WP ! not USEd!
+                        G_io(IC, 0, KC, IDR) = 0.0_WP ! not used!
                     END IF
                     IF(iCase == IPIPEC) THEN
                         G_io(IC, 1, KC, IDR) = 0.0_WP

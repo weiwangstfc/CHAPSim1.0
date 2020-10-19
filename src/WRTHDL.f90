@@ -1,12 +1,12 @@
 !**********************************************************************************************************************************
 !> @brief
-!>        to WRITE information to the log/screen file
+!>        to write information to the log/screen file
 !> @details
 !> SUBROUTINE: MKDIR
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 06/ 2014- Created, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 06/2014 - Created, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 MODULE CHKHDL_FORMAT
     CHARACTER(LEN = 32) :: FORMAT_CHAR  = '(4X, A)'
@@ -60,7 +60,7 @@ SUBROUTINE ERRHDL(MSG, RANK)
 END SUBROUTINE ERRHDL
 !**********************************************************************************************************************************
 !>**********************************************************************
-!>@pAR SUBROUTINE  CHECKHANDLE
+!>@par SUBROUTINE  CHECKHANDLE
 !>     WRITE out the check message
 !>**********************************************************************
 SUBROUTINE CHKHDL(MSG, RANK)
@@ -77,7 +77,7 @@ SUBROUTINE CHKHDL(MSG, RANK)
 END SUBROUTINE
 !**********************************************************************************************************************************
 !>**********************************************************************
-!>@pAR SUBROUTINE  CHECKHANDLE
+!>@par SUBROUTINE  CHECKHANDLE
 !>     WRITE out the check message
 !>**********************************************************************
 SUBROUTINE CHKINTHDL(MSG, RANK, N)
@@ -118,7 +118,7 @@ SUBROUTINE CHK2INTHDL(MSG, RANK, N1, N2)
 END SUBROUTINE
 !**********************************************************************************************************************************
 !>**********************************************************************
-!>@pAR SUBROUTINE  CHECKHANDLE
+!>@par SUBROUTINE  CHECKHANDLE
 !>     WRITE out the check message
 !>**********************************************************************
 SUBROUTINE CHKRLHDL(MSG, RANK, A)

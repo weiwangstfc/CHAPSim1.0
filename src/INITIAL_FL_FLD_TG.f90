@@ -1,6 +1,6 @@
 !**********************************************************************************************************************************
 !> @brief
-!>        Flow field initialization of the tg domAIn
+!>        Flow field initialization of the tg domain
 !> @details
 !> SUBROUTINE: random_FL_FLD_TG (in MYID = all)
 !> SUBROUTINE: CALC_INITIALIZATION_tg (in MYID = all)
@@ -8,10 +8,10 @@
 !> SUBROUTINE: IniField_FLOW_tg (in MYID = all)
 !>             - to calculate initial velocity and pressure flow field
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 05/ 2010- Initial Version (tg domAIn only), by Mehdi Seddighi
-! 12 / 2013- added io domAIn, optimized the code structure in f90, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 05/2010- Initial Version (tg domain only), by Mehdi Seddighi
+! 12/2013- Added io domain, optimized the code structure in f90, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 SUBROUTINE random_FL_FLD_TG
     USE init_info

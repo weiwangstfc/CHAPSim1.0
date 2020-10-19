@@ -14,12 +14,12 @@
 !> SUBROUTINE: COSPX3
 !> SUBROUTINE:
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 06/ 2015- Created, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 06/2015 - Created, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 MODULE SPECO_info
-    USE cpARam
+    USE cparam
 
     INTEGER(4) :: N1MH
     INTEGER(4) :: N3MH
@@ -372,7 +372,7 @@ SUBROUTINE SPECO_ALLOCATE
     !===========u'=u-<u>=======================================
     ALLOCATE ( RHS(NCL1_io, N2DO(0), NCL3) ) ; RHS = 0.0_WP
 
-    !=========== ENErgy in each direction ( not USEd ) ======================
+    !=========== ENErgy in each direction ( not used ) ======================
     ! IN PHYSICAL SPACE
     ALLOCATE ( ENEJTF(6, N2DO(0)) ) ; ENEJTF = 0.0_WP  ! <u'u'>_zx
     ALLOCATE ( ENEJME(6, N2DO(0)) ) ; ENEJME = 0.0_WP  ! <u'>_zx  ? not zero?
@@ -742,7 +742,7 @@ SUBROUTINE SPECO_DEALLOCATE
     !===========u'=u-<u>=======================================
     DEALLOCATE ( RHS )
 
-    !=========== ENErgy in each direction ( not USEd ) ======================
+    !=========== ENErgy in each direction ( not used ) ======================
     DEALLOCATE ( ENEJTF )
     DEALLOCATE ( ENEJME )
 

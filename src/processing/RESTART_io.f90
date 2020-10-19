@@ -9,9 +9,9 @@
 !> subroutine: ReStart_AVERAGE_VARS_THERMAL_Xperiodic_io
 !> subroutine: REStart_AVERAGE_SPECTRA
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 06/ 2014- Created, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 06/2014 - Created, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 SUBROUTINE ReStart_INSTANT_VARS_io(TFM)  ! FOR BOTH KINDS OF DOMAINS....
     USE MESH_INFO

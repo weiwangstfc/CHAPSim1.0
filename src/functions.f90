@@ -8,9 +8,9 @@
 !> FUNCTION: ISINF1
 !> FUNCTION: logbaseb
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 06/ 2014- Created, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 06/2014 - Created, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 FUNCTION DGAL(AL,ZITAF)
     USE WPRECISION

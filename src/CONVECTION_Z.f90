@@ -5,10 +5,10 @@
 !> SUBROUTINE: CONVECTION_Y_tg (in MYID = all)
 !> SUBROUTINE: CONVECTION_Y_io(in MYID = all)
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 05/ 2010- Initial Version (tg domAIn only), by Mehdi Seddighi
-! 04/ 2014- added io domAIn, optimized the code structure in f90, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 05/2010 - Initial Version (tg domain only), by Mehdi Seddighi
+! 04/2014 - Added io domain, optimized the code structure in f90, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 SUBROUTINE CONVECTION_Z_tg
     USE init_info
@@ -66,7 +66,7 @@ SUBROUTINE CONVECTION_Z_tg
         END DO
     END DO
 
-    !>       @note below IS only for pipe/ CoriolIS force!!!!!!!!!!!!!!!      for athmut
+    !>       @note below is only for pipe/ Coriolis force!!!!!!!!!!!!!!!      for athmut
     IF (iCase == IPIPEC .OR. iCase == IANNUL) THEN
         DO JC = 1, N2DO(MYID)
             JM = JLMV(JC)
@@ -143,7 +143,7 @@ SUBROUTINE CONVECTION_Z_io
                 IP = IPV_io(IC)
                 IM = IMV_io(IC)
 
-                ! \frac{\pARtial {\rho u w}}{\pARtial x}_{i, J, K'}
+                ! \frac{\partial {\rho u w}}{\partial x}_{i, J, K'}
                 !{i'+ 1, J, K'}
                 H31F = ( G_io(IP, JC, KC, 1) + G_io(IP, JC, KM, 1) ) * &
                 ( Q_io(IP, JC, KC, 3) + Q_io(IC, JC, KC, 3) )
@@ -153,7 +153,7 @@ SUBROUTINE CONVECTION_Z_io
                 !{i, J, K'}
                 H31  = ( H31F - H31B) * COE1
 
-                ! \frac{\pARtial {\rho v w}}{\pARtial y}_{i, J, K'}
+                ! \frac{\partial {\rho v w}}{\partial y}_{i, J, K'}
                 !{i, J'+ 1, K'}
                 H32F = ( G_io(IC, JP, KC, 2) + G_io(IC, JP, KM, 2) ) * &
                 ( YCL2ND_WFF(JJP) * Q_io(IC, JP, KC, 3) * RCCI1(JJP) +   &
@@ -165,7 +165,7 @@ SUBROUTINE CONVECTION_Z_io
                 !{i, J, K'}
                 H32 = ( H32F - H32B) * COE2
 
-                ! \frac{\pARtial {\rho w w}}{\pARtial z}_{i, J, K'}
+                ! \frac{\partial {\rho w w}}{\partial z}_{i, J, K'}
                 !(I, J, K)
                 H33F = ( G_io(IC, JC, KP, 3) + G_io(IC, JC, KC, 3) ) *  &
                 ( Q_io(IC, JC, KP, 3) + Q_io(IC, JC, KC, 3) )
@@ -185,7 +185,7 @@ SUBROUTINE CONVECTION_Z_io
     END DO
 
 
-    !below IS only for pipe/ CoriolIS force!!!!!!!!!!!!!!!
+    !below is only for pipe/ Coriolis force!!!!!!!!!!!!!!!
     IF (iCase == IPIPEC .OR. iCase == IANNUL ) THEN
         DO JC = 1, N2DO(MYID)
             JM = JLMV(JC)

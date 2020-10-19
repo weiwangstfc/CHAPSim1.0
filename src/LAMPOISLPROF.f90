@@ -7,12 +7,12 @@
 !>             To satISfy U_Bulk = 1.0.
 !> SUBROUTINE: BCAST_LAMPOISLPROF (in MYID = all)
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 05/ 2010- Initial Version (tg domAIn only), by Mehdi Seddighi
-! 06/ 2011- Added Pipe flow profile, by Kui He
-! 12 / 2013- added io domAIn, optimized the code structure in f90, by Wei Wang (wei.wang@sheffield.ac.uk)
-! 04/ 2016- Added Annular and TGV-box meshing, by Wei Wang (wei.wang@stfc.ac.uk)
+! 05/2010 - Initial Version (tg domain only), by Mehdi Seddighi
+! 06/2011 - Added Pipe flow profile, by Kui He
+! 12/2013 - Added io domain, optimized the code structure in f90, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 04/2016 - Added Annular and TGV-box meshing, by Wei Wang (wei.wang@stfc.ac.uk)
 !**********************************************************************************************************************************
 SUBROUTINE LAMPOISLPROF
     USE init_info

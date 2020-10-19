@@ -12,9 +12,9 @@
 !> SUBROUTINE: PP_MEAN_T_nonXperiodic_io
 !> SUBROUTINE: PP_MEAN_T_Xperiodic_io
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 04/ 2015- Created, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 04/2015 - Created, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 SUBROUTINE PP_TMEAN_INI_TG
     USE mesh_info

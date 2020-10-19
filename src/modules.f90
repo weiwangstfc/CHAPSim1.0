@@ -4,7 +4,7 @@
 !> @details
 !> module: WPRECISION
 !> module: mpi_info
-!> module: cpARam
+!> module: cparam
 !> module: WRT_INFO
 !> module: mesh_info
 !> module: BC_INLOUT_info
@@ -14,9 +14,9 @@
 !> module: thermal_info
 !> module: postprocess_info
 !> @note
-!> @toDO
+!> @todo
 ! REVISION HISTORY:
-! 06/ 2014- Created, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 06/2014- Created, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 MODULE WPRECISION
     INTEGER, PARAMETER :: WP = 8 !KIND(0.0D0) !WORKING PRECESION
@@ -37,7 +37,7 @@ MODULE mpi_info
 END MODULE mpi_info
 
 !**********************************************************************************************************************************
-MODULE cpARam
+MODULE cparam
     USE WPRECISION
     USE mpi_info
 
@@ -180,11 +180,11 @@ MODULE cpARam
 
     INTEGER(4) :: MEMPC_Byte = 0  ! memory per core in the unit of byte
 
-END MODULE cpARam
+END MODULE cparam
 
 !**********************************************************************************************************************************
 MODULE WRT_INFO
-    USE cpARam
+    USE cparam
     CHARACTER(8) :: date
     CHARACTER(10) :: time
 
@@ -220,7 +220,7 @@ END MODULE WRT_INFO
 !**********************************************************************************************************************************
 MODULE mesh_info
     USE WRT_INFO
-    USE cpARam
+    USE cparam
 
     INTEGER(4), ALLOCATABLE :: N2DO(:)
     INTEGER(4), ALLOCATABLE :: N3DO(:)
@@ -300,7 +300,7 @@ END MODULE mesh_info
 
 !**********************************************************************************************************************************
 MODULE BC_INLOUT_info
-    USE cpARam
+    USE cparam
 
     REAL(WP) :: U_OUTLET
     REAL(WP), ALLOCATABLE :: BC_CONV0(:, :, :)
@@ -313,7 +313,7 @@ END MODULE BC_INLOUT_info
 !**********************************************************************************************************************************
 MODULE init_info
     USE WRT_INFO
-    USE cpARam
+    USE cparam
 
     INTEGER(4) :: ITERG0_io
     INTEGER(4) :: ITERG0_TG
@@ -396,7 +396,7 @@ END MODULE init_info
 
 !**********************************************************************************************************************************
 MODULE flow_info
-    USE cpARam
+    USE cparam
     USE BC_INLOUT_info
 
     REAL(WP) :: FACOE_TG, FACOE_io
@@ -463,7 +463,7 @@ END MODULE flow_info
 
 !**********************************************************************************************************************************
 MODULE  CHT_info
-    USE cpARam
+    USE cparam
 
     INTEGER(4) :: NCL2_Solid(2)
     INTEGER(4) :: NCL1s_CHT(2)
@@ -480,7 +480,7 @@ END MODULE CHT_info
 
 !**********************************************************************************************************************************
 MODULE thermal_info
-    USE cpARam
+    USE cparam
     !============== iNI GIVEN ================
     INTEGER(4) :: FLOWDIR
     INTEGER(4) :: iGravity
@@ -655,7 +655,7 @@ END MODULE
 
 
 !    MODULE WALLSTRESS_info
-!        USE cpARam
+!        USE cparam
 
 !        REAL(WP), ALLOCATABLE :: Cf_LW_io(:)
 !        REAL(WP), ALLOCATABLE :: Cf_UW_io(:)
@@ -667,7 +667,7 @@ END MODULE
 
 !**********************************************************************************************************************************
 MODULE postprocess_info
-    USE cpARam
+    USE cparam
 
     INTEGER(4) :: NSTATIS_tg
     INTEGER(4) :: NSTATIS_io
@@ -1062,7 +1062,7 @@ END MODULE postprocess_info
 
 !**********************************************************************************************************************************
 ! MODULE Flow_State_Constant
-!     USE cpARam
+!     USE cparam
 !
 !     REAL(WP), PARAMETER :: SL_MU0 = 1.716E-5_WP  ! Kg/ M /s
 !     REAL(WP), PARAMETER :: SL_T0  = 273.15_WP    ! K
