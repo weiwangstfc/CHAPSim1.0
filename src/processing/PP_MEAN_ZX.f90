@@ -989,6 +989,7 @@ SUBROUTINE PP_DRIVEN_FORCE
     REAL(WP) :: VisForcWall2, VisForcWall2_WORK
     REAL(WP) :: BuoFc, BuoFc_WORK
     INTEGER(4) :: IC, KC, M, JC, JJ
+    REAL(WP) :: B_tmp
 
     IF(iFlowDriven /= 1) RETURN
 
@@ -1000,7 +1001,15 @@ SUBROUTINE PP_DRIVEN_FORCE
         DO IC = 1, NCL1_io
             DO KC = 1, NCL3
                 IF(iThermoDynamics == 1) THEN
-                    VisForcWall1 = VisForcWall1 + M_WAL_GV(1, iBotWall) * (Q_io(IC, 1, KC, 1) - 0.0_WP) / &
+                    IF(iThermalWallType(iBotWall) == BC_Fixed_Temperature) THEN
+                        Mwal(iBotWall) = M_WAL_GV(NCL1_io / 2, iBotWall)
+                    END IF
+                    IF(iThermalWallType(iBotWall) == BC_Fixed_Heat_Flux) THEN
+                        CALL THERM_PROP_UPDATE_FROM_DH(DH(IC, 1, KC), Hwal_RA(iBotWall), Twal(iBotWall), Dwal(iBotWall), &
+                    Mwal(iBotWall), Kwal(iBotWall), Cpwal(iBotWall), B_tmp)
+                    END IF
+
+                    VisForcWall1 = VisForcWall1 + Mwal(iBotWall) * (Q_io(IC, 1, KC, 1) - 0.0_WP) / &
                     (YCC(1) - YND(1)) * CVISC * DX * DZ
                 ELSE
                     VisForcWall1 = VisForcWall1 + (Q_io(IC, 1, KC, 1) - 0.0_WP) / (YCC(1) - YND(1)) * CVISC * DX * DZ
@@ -1011,11 +1020,20 @@ SUBROUTINE PP_DRIVEN_FORCE
     END IF
 
     IF(MYID == NPSLV) THEN
+
         DO IC = 1, NCL1_io
             DO KC = 1, NCL3
                 IF(iThermoDynamics == 1) THEN
+                    IF(iThermalWallType(iTopWall) == BC_Fixed_Temperature) THEN
+                        Mwal(iTopWall) = M_WAL_GV(NCL1_io / 2, iTopWall)
+                    END IF
+                    IF(iThermalWallType(iTopWall) == BC_Fixed_Heat_Flux) THEN
+                        CALL THERM_PROP_UPDATE_FROM_DH(DH(IC, N2DO(MYID), KC), Hwal_RA(iTopWall), Twal(iTopWall), Dwal(iTopWall), &
+                    Mwal(iTopWall), Kwal(iTopWall), Cpwal(iTopWall), B_tmp)
+                    END IF
+
                     VisForcWall2 = VisForcWall2 + &
-                    M_WAL_GV(1, iTopWall) * (Q_io(IC, N2DO(MYID), KC, 1) - 0.0_WP) / (YCC(NCL2) - YND(NND2)) * CVISC * DX * DZ
+                    Mwal(iTopWall) * (Q_io(IC, N2DO(MYID), KC, 1) - 0.0_WP) / (YCC(NCL2) - YND(NND2)) * CVISC * DX * DZ
                 ELSE
                     VisForcWall2 = VisForcWall2 + (Q_io(IC, N2DO(MYID), KC, 1) - 0.0_WP) / (YCC(NCL2) - YND(NND2)) * CVISC * DX * DZ
                 END IF
