@@ -6,6 +6,7 @@ scripts/
 test_cases/
 test_cases_additional/
 test_loop/
+.vscode/
 
 # Prerequisites
 *.d
@@ -39,3 +40,4 @@ test_loop/
 *.exe
 *.out
 *.app
+CHAPSim_workspace.code-workspace
