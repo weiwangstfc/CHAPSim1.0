@@ -1049,7 +1049,7 @@ SUBROUTINE TEC360_ALL_NODES
         WRITE(TECFLG, '(A, 1I13.1, 1ES13.5, A, 1I4.1, A, 1I4.1, A, 1I4.1, A)') &
         'ZONE T = " ', ITERG,PhyTIME, ' ", I = ', &
         N1, ', J = ', NND2, ', K = ', NND3, ', F =POINT'
-        WRITE(TECFLG, '(A)') 'VARSHARELIST = ([1- 3]= 1)'
+        WRITE(TECFLG, '(A)') 'VARSHARELIST = ([1-3]= 1)'
         DO K = 1, NND3
             DO J = 1, NND2
                 IF(TgFlowFlg) THEN
@@ -1183,7 +1183,7 @@ SUBROUTINE TEC360_XSLICE(N)
         OPEN(TECFLG, FILE = TRIM(ADJUSTL(FLNM)), POSITION = 'APPEND')
         WRITE(TECFLG, '(A, 1I11.1, 1ES13.5, A, 1I4.1, A, 1I4.1, A, 1I4.1, A)') 'ZONE T = " ', ITERG,PhyTIME, &
         ' ", I = ', 1, ', J = ', NND2, ', K = ', NND3, ', F =POINT'
-        WRITE(TECFLG, '(A)') 'VARSHARELIST = ([1- 3]= 1)'
+        WRITE(TECFLG, '(A)') 'VARSHARELIST = ([1-3]= 1)'
 
         DO K = 1, NND3
             DO J = 1, NND2
@@ -1301,7 +1301,7 @@ SUBROUTINE TEC360_YSLICE(N)
         OPEN(TECFLG, FILE = TRIM(ADJUSTL(FLNM)), POSITION = 'APPEND')
         WRITE(TECFLG, '(A, 1I11.1, 1ES13.5, A, 1I4.1, A, 1I4.1, A, 1I4.1, A)') 'ZONE T = " ', ITERG, PhyTIME, &
         ' ", I = ', N1, ', J = ', 1, ', K = ', NND3, ', F = POINT'
-        WRITE(TECFLG, '(A)') 'VARSHARELIST = ([1- 3]= 1)'
+        WRITE(TECFLG, '(A)') 'VARSHARELIST = ([1-3]= 1)'
 
         DO K = 1, NND3
             IF(TgFlowFlg) THEN
@@ -1436,7 +1436,7 @@ SUBROUTINE TEC360_ZSLICE(N)
         OPEN(TECFLG, FILE = TRIM(ADJUSTL(FLNM)), POSITION = 'APPEND')
         WRITE(TECFLG, '(A, 1I11.1, 1ES13.5, A, 1I4.1, A, 1I4.1, A, 1I4.1, A)') 'ZONE T = " ', ITERG,PhyTIME, &
         ' ", I = ', N1, ', J = ', NND2, ', K = ', 1, ', F =POINT'
-        WRITE(TECFLG, '(A)') 'VARSHARELIST = ([1- 3]= 1)'
+        WRITE(TECFLG, '(A)') 'VARSHARELIST = ([1-3]= 1)'
 
         DO K = KID(N), KID(N)
             DO J = 1, NND2
