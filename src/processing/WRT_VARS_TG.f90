@@ -135,7 +135,8 @@ SUBROUTINE WRT_AVERAGE_VARS_TG
 
     NSZ = NDV + 1 + NDV + NDV * (7 - NDV) / 2 + NDV - 3 +  NDV * (6 - NDV) + &
     (NDV * (7 - NDV)) / 2 + NDV - 8  + NDV * NDV  + NDV * NDV +  &
-    ((NDV - 1) * 3 + NDV) * ((NDV - 1) * 3 + NDV) + 4* (4* QUADHN)
+    ((NDV - 1) * 3 + NDV) * ((NDV - 1) * 3 + NDV) !+ 4* (4* QUADHN)
+    IF(iPPQuadrants == 1) NSZ =  NSZ + 4* (4* QUADHN)
 
     ALLOCATE( DUMMY(1 : N2DO(MYID), NSZ ) )
     DUMMY = 0.0_WP

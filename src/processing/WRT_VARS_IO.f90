@@ -619,7 +619,7 @@ SUBROUTINE WRT_AVERAGE_VARS_Xperiodic_io
     NSZ = NSZ + (NDV * (6 - NDV) + (NDV * (7 - NDV)) / 2 + NDV - 8)
 
     ! IF with quadrant
-    NSZ = NSZ + 6* (4* QUADHN)
+    IF(iPPQuadrants == 1) NSZ = NSZ + 6* (4* QUADHN)
 
     ! IF with driven force
     NSZ = NSZ + NDV + 1
