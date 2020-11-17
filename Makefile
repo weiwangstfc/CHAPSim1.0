@@ -34,19 +34,24 @@ FOPT = -fdefault-real-8 -fdefault-double-8 # for gfortran
 ifeq ($(cfg), gnu)
 #-O0 -DDEBUG -fbacktrace -fbounds-check -fcheck=all -fdump-core -ffpe-trap=invalid,zero,overflow -finit-real=nan -fsignaling-nans -Warray-temporaries -Wall -Waliasing -Wampersand -Warray-bounds -Warray-temporaries -Wcharacter-truncation -Wconversion -Wconversion-extra -Wextra -Wline-truncation -Wintrinsics-std -Wintrinsic-shadow -Wno-align-commons -Wreal-q-constant -Wunused-parameter -Wsurprising -Wunderflow -pedantic -pedantic-errors
     FOPT12 = \
-	-Og\
+	-O\
 	-g\
 	-DDEBUG\
 	-fbacktrace\
 	-fbounds-check\
 	-fcheck=all\
 	-fdump-core\
-	-ffpe-trap=invalid,zero,overflow\
-	-finit-real=nan\
+	-ffpe-trap=invalid,zero,overflow,underflow\
+	-finit-real=snan\
+	-fimplicit-none\
+	-ftrapv\
 	-fsignaling-nans\
 	-fimplicit-none\
+	-fno-omit-frame-pointer\
 	-Wall\
 	-Wextra\
+	-Wuninitialized\
+	-Wmaybe-uninitialized\
 	-pedantic\
 	-pedantic-errors
 	#-fimplicit-none\#
@@ -55,12 +60,16 @@ ifeq ($(cfg), gnu)
     FOPT4 = -Og -g -fno-range-check -fbacktrace -fbounds-check 
     
 else ifeq ($(cfg), intel)
-    FOPT12 = -O0 -g\
+    FOPT12 = -O\
+	     -g\
 	-traceback\
 	-check all\
 	-check bounds\
 	-check uninit\
 	-ftrapuv\
+	-fp-stack-check\
+	-warn all\
+	-no-ftz\
 	-debug all\
 	-fpe0\
 	-fpe3\

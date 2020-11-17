@@ -59,9 +59,8 @@ SUBROUTINE POSTPROCESS_io
     USE thermal_info
     IMPLICIT NONE
 
-
-    !============ instantanous saving===================================
-    IF( DMOD(PhyTIME, dtSave)  < DT) CALL WRT_INSTANT_VARS_io
+    !======================== MONITORING THE CALCULATION RUNNING PROPERLY ========================
+    CALL DIVGCK_io
 
     !=============== CALL average every time step after the setting tsav1 =========================
     IF(PhyTIME > tRunAve1) THEN
@@ -78,29 +77,11 @@ SUBROUTINE POSTPROCESS_io
             CALL PP_MEAN_T_Xperiodic_io(T_Asymptotic_Average)
         END IF
 
-        !==================WRiting ouT ========================
-        IF( DMOD(PhyTIME, dtSave)  < DT) THEN
-
-            IF(TgFlowFlg) THEN
-                CALL WRT_AVERAGE_VARS_nonXperiodic_io
-                IF(DMOD(PhyTIME, dtAveView)  <  DT) THEN
-                    CALL WRT_AVERAGE_PPED_nonXperiodic_io
-                END IF
-            ELSE
-                CALL WRT_AVERAGE_VARS_Xperiodic_io
-                IF(DMOD(PhyTIME, dtAveView)  <  DT) THEN
-                    CALL WRT_AVERAGE_PPED_Xperiodic_io
-                    IF(iPPSpectra == 1) CALL PP_SPECOSPEC
-                END IF
-            END IF
-        END IF
-
     END IF
 
     !=============== Screen printing for monitoring the codE ======================================
     IF ( (ITERG == 1) .OR. MOD(ITERG, iterMonitor) == 0 )  THEN
         !======================== MONITORING THE CALCULATION RUNNING PROPERLY ==
-        CALL DIVGCK_io
 
         IF(TgFlowFlg) THEN
 
@@ -120,6 +101,28 @@ SUBROUTINE POSTPROCESS_io
 
         END IF
 
+    END IF
+
+    !============ instantanous saving===================================
+    IF( DMOD(PhyTIME, dtSave)  < DT) THEN
+        CALL WRT_INSTANT_VARS_io
+
+    !==================WRiting ouT ========================
+        IF(PhyTIME > tRunAve1) THEN
+
+        IF(TgFlowFlg) THEN
+            CALL WRT_AVERAGE_VARS_nonXperiodic_io
+            IF(DMOD(PhyTIME, dtAveView)  <  DT) THEN
+                CALL WRT_AVERAGE_PPED_nonXperiodic_io
+            END IF
+        ELSE
+            CALL WRT_AVERAGE_VARS_Xperiodic_io
+            IF(DMOD(PhyTIME, dtAveView)  <  DT) THEN
+                CALL WRT_AVERAGE_PPED_Xperiodic_io
+                IF(iPPSpectra == 1) CALL PP_SPECOSPEC
+            END IF
+        END IF
+        END IF
     END IF
 
     RETURN

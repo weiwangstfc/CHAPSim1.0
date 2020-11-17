@@ -796,7 +796,11 @@ SUBROUTINE PP_wall_thermal_shear(flg_xzt)
     REAL(WP) :: Tau_diff, Tau_avag
 
 
-    IF(iThermoDynamics == 1) CALL PP_Wall_thermal_properties(flg_xzt)
+    DEN = 1.0_WP
+    VIS = 1.0_WP
+    YL  = 1.0_WP
+    IF(iThermoDynamics == 1) then 
+        CALL PP_Wall_thermal_properties(flg_xzt)
 
     !================ ARithmetIC mean of DENSITY ==================
     DEN = 0.0_WP
@@ -814,6 +818,7 @@ SUBROUTINE PP_wall_thermal_shear(flg_xzt)
         ELSE
         END IF
     END DO
+    END IF
 
     !================ ARithmetIC mean of DENSITY ==================
     Utaw_io(1:2) = 0.0_WP

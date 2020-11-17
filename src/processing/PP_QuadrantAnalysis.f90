@@ -63,9 +63,9 @@ SUBROUTINE PP_QUADRANTANALYSIS_xzL(iDomain_tmp)
         NCL1 = NCL1_TG
         VL1313 = VL1313_tg
 
-        ALLOCATE(Q(NCL1_tg, 0 : N2DO(MYID) + 1, NCL3, NDV))
-        ALLOCATE(IPV(NCL1))
-        ALLOCATE(IMV(NCL1))
+        ALLOCATE(Q(NCL1_tg, 0 : N2DO(MYID) + 1, NCL3, NDV)); Q = 0.0_WP
+        ALLOCATE(IPV(NCL1)) ; IPV = 0
+        ALLOCATE(IMV(NCL1)) ; IMV = 0
 
         Q = Q_tg
         IPV = IPV_tg
@@ -79,9 +79,9 @@ SUBROUTINE PP_QUADRANTANALYSIS_xzL(iDomain_tmp)
         NCL1 = NCL1_io
         VL1313 = VL1313_io
 
-        ALLOCATE(Q(NCL1_io, 0 : N2DO(MYID) + 1, NCL3, NDV))
-        ALLOCATE(IPV(NCL1))
-        ALLOCATE(IMV(NCL1))
+        ALLOCATE(Q(NCL1_io, 0 : N2DO(MYID) + 1, NCL3, NDV)) ; Q = 0.0_WP
+        ALLOCATE(IPV(NCL1)) ; IPV = 0
+        ALLOCATE(IMV(NCL1)) ; IMV = 0
 
         Q = Q_io
         IPV = IPV_io
@@ -93,24 +93,24 @@ SUBROUTINE PP_QUADRANTANALYSIS_xzL(iDomain_tmp)
     END IF
 
 
-    ALLOCATE ( Uper (NCL1, NCL3) )
-    ALLOCATE ( Vper (NCL1, NCL3) )
-    ALLOCATE ( Wper (NCL1, NCL3) )
+    ALLOCATE ( Uper (NCL1, NCL3) ); Upper = 0.0_WP
+    ALLOCATE ( Vper (NCL1, NCL3) ); Vpper = 0.0_WP
+    ALLOCATE ( Wper (NCL1, NCL3) ); Wpper = 0.0_WP
 
-    ALLOCATE ( UVper  (NCL1, NCL3) )
-    ALLOCATE ( Vorz (NCL1, NCL3) )
-    ALLOCATE ( TKE(NCL1, NCL3) )
+    ALLOCATE ( UVper  (NCL1, NCL3) ) ; UVper = 0.0_WP
+    ALLOCATE ( Vorz (NCL1, NCL3) )   ; Vorz = 0.0_WP
+    ALLOCATE ( TKE(NCL1, NCL3) )     ; TKE = 0.0_WP
 
     IF(iDomain_tmp == IIO) THEN
-        ALLOCATE ( Upper (NCL1, NCL3) )
-        ALLOCATE ( Vpper (NCL1, NCL3) )
-        ALLOCATE ( Wpper (NCL1, NCL3) )
+        ALLOCATE ( Upper (NCL1, NCL3) ) ; Upper = 0.0_WP
+        ALLOCATE ( Vpper (NCL1, NCL3) ) ; Vpper = 0.0_WP
+        ALLOCATE ( Wpper (NCL1, NCL3) ) ; Wpper = 0.0_WP
 
-        ALLOCATE ( Tper (NCL1, NCL3) )
-        ALLOCATE ( Dper (NCL1, NCL3) )
+        ALLOCATE ( Tper (NCL1, NCL3) ) ; Tper = 0.0_WP
+        ALLOCATE ( Dper (NCL1, NCL3) ) ; Dper = 0.0_WP
 
-        ALLOCATE ( DUVper (NCL1, NCL3) )
-        ALLOCATE ( DUVpper(NCL1, NCL3) )
+        ALLOCATE ( DUVper (NCL1, NCL3) ) ; DUVper = 0.0_WP
+        ALLOCATE ( DUVpper(NCL1, NCL3) ) ; DUVpper = 0.0_WP
     END IF
 
     !=========CALCULATE QUADRANT ===========================================================================
