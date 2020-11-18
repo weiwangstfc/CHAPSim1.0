@@ -25,7 +25,7 @@ SUBROUTINE ReStart_INSTANT_VARS_TG(TFM)
 
     IF(MYID == 0) CALL CHKHDL('TG: ReStart instantanous flow field', MYID)
 
-    ALLOCATE(DUMMY(NCL1_TG, N2DO(MYID), NCL3))
+    ALLOCATE(DUMMY(NCL1_TG, N2DO(MYID), NCL3)); DUMMY = 0.0_WP
     WRITE(PNTIM, '(1ES15.9)') TFM !TimeReStart_tg
     DO N = 1, NDV + 1
         IF(N == 1)  WRITE(WRT_RST_FNM, '(A)') TRIM(FilePath1) // 'DNS_perixz_INSTANT_T' // TRIM(PNTIM) // '_U.D'

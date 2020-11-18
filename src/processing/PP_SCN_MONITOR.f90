@@ -803,21 +803,21 @@ SUBROUTINE PP_wall_thermal_shear(flg_xzt)
         CALL PP_Wall_thermal_properties(flg_xzt)
 
     !================ ARithmetIC mean of DENSITY ==================
-    DEN = 0.0_WP
-    VIS = 0.0_WP
-    YL  = 0.0_WP
-    DO J = 1, N2DO(MYID)
-        JJ = JCL2G(J)
-        YL = YL + 1.0_WP / DYFI(JJ)
-        IF(flg_xzT == flgxz) THEN
-            DEN = DEN + D1xzL_io(J) / DYFI(JJ)
-            VIS = VIS + M1xzL_io(J) / DYFI(JJ)
-        ELSE IF (flg_xzT == flgxzt)  THEN
-            DEN = DEN + D1xztL_io(J) / DYFI(JJ)
-            VIS = VIS + M1xztL_io(J) / DYFI(JJ)
-        ELSE
-        END IF
-    END DO
+        DEN = 0.0_WP
+        VIS = 0.0_WP
+        YL  = 0.0_WP
+        DO J = 1, N2DO(MYID)
+            JJ = JCL2G(J)
+            YL = YL + 1.0_WP / DYFI(JJ)
+            IF(flg_xzT == flgxz) THEN
+                DEN = DEN + D1xzL_io(J) / DYFI(JJ)
+                VIS = VIS + M1xzL_io(J) / DYFI(JJ)
+            ELSE IF (flg_xzT == flgxzt)  THEN
+                DEN = DEN + D1xztL_io(J) / DYFI(JJ)
+                VIS = VIS + M1xztL_io(J) / DYFI(JJ)
+            ELSE
+            END IF
+        END DO
     END IF
 
     !================ ARithmetIC mean of DENSITY ==================

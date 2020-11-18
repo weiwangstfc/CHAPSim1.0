@@ -441,114 +441,114 @@ SUBROUTINE MEMO_ALLOCT_AVERAGE_XZ_io
     IMPLICIT NONE
 
     !========================================
-    ALLOCATE( U1xztL_F0_io( NCL2, NDV + 1 ) )
-    ALLOCATE( G1xztL_F0_io( NCL2, NDV   ) )
-    ALLOCATE( UPxztL_F0_io( NCL2, NDV   ) )
+    ALLOCATE( U1xztL_F0_io( NCL2, NDV + 1 ) ) ;  U1xztL_F0_io = 0.0_WP
+    ALLOCATE( G1xztL_F0_io( NCL2, NDV   ) ) ; G1xztL_io = 0.0_WP
+    ALLOCATE( UPxztL_F0_io( NCL2, NDV   ) ) ; UPxztL_io = 0.0_WP
 
-    ALLOCATE( U2xztL_F0_io( NCL2, NDV * (7 - NDV) / 2 + NDV - 3 ) )
-    ALLOCATE( UGxztL_F0_io( NCL2, NDV * (7 - NDV) / 2 + NDV - 3 ) )
-    ALLOCATE( UGUxztL_F0_io(NCL2, NDV * (6 - NDV) + (NDV * (7 - NDV)) / 2 + NDV - 8) )
-    ALLOCATE( U3xztL_F0_io(NCL2, NDV * (6 - NDV) + (NDV * (7 - NDV)) / 2 + NDV - 8) )
+    ALLOCATE( U2xztL_F0_io( NCL2, NDV * (7 - NDV) / 2 + NDV - 3 ) ) ; U2xztL_F0_io = 0.0_WP
+    ALLOCATE( UGxztL_F0_io( NCL2, NDV * (7 - NDV) / 2 + NDV - 3 ) ) ; UGxztL_F0_io = 0.0_WP
+    ALLOCATE( UGUxztL_F0_io(NCL2, NDV * (6 - NDV) + (NDV * (7 - NDV)) / 2 + NDV - 8) ) ; UGUxztL_F0_io = 0.0_WP
+    ALLOCATE( U3xztL_F0_io(NCL2, NDV * (6 - NDV) + (NDV * (7 - NDV)) / 2 + NDV - 8) ) ;  U3xztL_F0_io = 0.0_WP
 
-    ALLOCATE( DVDL1xztL_F0_io( NCL2, NDV, NDV  ) )
-    ALLOCATE( DVDLPxztL_F0_io( NCL2, NDV, NDV  ) )
-    ALLOCATE( DVDL2xztL_F0_io( NCL2, (NDV - 1) * 3 + NDV, (NDV - 1) * 3 + NDV  ) )
+    ALLOCATE( DVDL1xztL_F0_io( NCL2, NDV, NDV  ) ) ; DVDL1xztL_F0_io = 0.0_WP
+    ALLOCATE( DVDLPxztL_F0_io( NCL2, NDV, NDV  ) ) ; DVDLPxztL_F0_io = 0.0_WP
+    ALLOCATE( DVDL2xztL_F0_io( NCL2, (NDV - 1) * 3 + NDV, (NDV - 1) * 3 + NDV  ) ) ; DVDL2xztL_F0_io = 0.0_WP
     IF(iPPQuadrants == 1)  THEN
-        ALLOCATE( QuadUVxztL_F0_io( NCL2, 4, QUADHN  ) )
-        ALLOCATE( QuadVzxztL_F0_io( NCL2, 4, QUADHN  ) )
-        ALLOCATE( QuadTKxztL_F0_io( NCL2, 4, QUADHN  ) )
-        ALLOCATE( QuadDRxztL_F0_io( NCL2, 4, QUADHN  ) )
-        ALLOCATE( QuadDUV1xztL_F0_io( NCL2, 4, QUADHN  ) )
-        ALLOCATE( QuadDUV2xztL_F0_io( NCL2, 4, QUADHN  ) )
+        ALLOCATE( QuadUVxztL_F0_io( NCL2, 4, QUADHN  ) ) ; QuadUVxztL_F0_io = 0.0_WP
+        ALLOCATE( QuadVzxztL_F0_io( NCL2, 4, QUADHN  ) ) ; QuadVzxztL_F0_io = 0.0_WP
+        ALLOCATE( QuadTKxztL_F0_io( NCL2, 4, QUADHN  ) ) ; QuadTKxztL_F0_io = 0.0_WP
+        ALLOCATE( QuadDRxztL_F0_io( NCL2, 4, QUADHN  ) ) ; QuadDRxztL_F0_io = 0.0_WP
+        ALLOCATE( QuadDUV1xztL_F0_io( NCL2, 4, QUADHN  ) ) ; QuadDUV1xztL_F0_io = 0.0_WP
+        ALLOCATE( QuadDUV2xztL_F0_io( NCL2, 4, QUADHN  ) ) ; QuadDUV2xztL_F0_io = 0.0_WP
 
-        ALLOCATE( OctDUVxztL_F0_io( NCL2, 8, QUADHN  ) )
-        ALLOCATE( OctDVzxztL_F0_io( NCL2, 8, QUADHN  ) )
-        ALLOCATE( OctDTKxztL_F0_io( NCL2, 8, QUADHN  ) )
-        ALLOCATE( OctDDRxztL_F0_io( NCL2, 8, QUADHN  ) )
-        ALLOCATE( OctDDUV1xztL_F0_io( NCL2, 8, QUADHN  ) )
-        ALLOCATE( OctDDUV2xztL_F0_io( NCL2, 8, QUADHN  ) )
+        ALLOCATE( OctDUVxztL_F0_io( NCL2, 8, QUADHN  ) ) ; OctDUVxztL_F0_io = 0.0_WP
+        ALLOCATE( OctDVzxztL_F0_io( NCL2, 8, QUADHN  ) ) ; OctDVzxztL_F0_io = 0.0_WP
+        ALLOCATE( OctDTKxztL_F0_io( NCL2, 8, QUADHN  ) ) ; OctDTKxztL_F0_io = 0.0_WP
+        ALLOCATE( OctDDRxztL_F0_io( NCL2, 8, QUADHN  ) ) ; OctDDRxztL_F0_io = 0.0_WP
+        ALLOCATE( OctDDUV1xztL_F0_io( NCL2, 8, QUADHN  ) ) ; OctDDUV1xztL_F0_io = 0.0_WP
+        ALLOCATE( OctDDUV2xztL_F0_io( NCL2, 8, QUADHN  ) ) ; OctDDUV2xztL_F0_io = 0.0_WP
 
-        ALLOCATE( OctTUVxztL_F0_io( NCL2, 8, QUADHN  ) )
-        ALLOCATE( OctTVzxztL_F0_io( NCL2, 8, QUADHN  ) )
-        ALLOCATE( OctTTKxztL_F0_io( NCL2, 8, QUADHN  ) )
-        ALLOCATE( OctTDRxztL_F0_io( NCL2, 8, QUADHN  ) )
-        ALLOCATE( OctTDUV1xztL_F0_io( NCL2, 8, QUADHN  ) )
-        ALLOCATE( OctTDUV2xztL_F0_io( NCL2, 8, QUADHN  ) )
+        ALLOCATE( OctTUVxztL_F0_io( NCL2, 8, QUADHN  ) ) ; OctTUVxztL_F0_io = 0.0_WP
+        ALLOCATE( OctTVzxztL_F0_io( NCL2, 8, QUADHN  ) ) ; OctTVzxztL_F0_io = 0.0_WP
+        ALLOCATE( OctTTKxztL_F0_io( NCL2, 8, QUADHN  ) ) ; OctTTKxztL_F0_io = 0.0_WP
+        ALLOCATE( OctTDRxztL_F0_io( NCL2, 8, QUADHN  ) ) ; OctTDRxztL_F0_io = 0.0_WP
+        ALLOCATE( OctTDUV1xztL_F0_io( NCL2, 8, QUADHN  ) ) ; OctTDUV1xztL_F0_io = 0.0_WP
+        ALLOCATE( OctTDUV2xztL_F0_io( NCL2, 8, QUADHN  ) ) ; OctTDUV2xztL_F0_io = 0.0_WP
     END IF
-    ALLOCATE( FUxztL_F0_io( NCL2, NDV + 1 ) )
+    ALLOCATE( FUxztL_F0_io( NCL2, NDV + 1 ) ) ; FUxztL_F0_io = 0.0_WP
 
     !============= RA =========================
-    ALLOCATE( dPDX_RA   (NCL2, NDV)    )
-    ALLOCATE( ufpf_RA   (NCL2, NDV)    )
-    ALLOCATE( uf2_RA    (NCL2, NDV, NDV)    )
-    ALLOCATE( uf2d_RA   (NCL2, NDV, NDV)    )
-    ALLOCATE( uf3_RA    (NCL2, NDV, NDV, NDV) )
-    ALLOCATE( uf3d_RA   (NCL2, NDV, NDV, NDV) )
-    ALLOCATE( UU_RA         (NCL2, NDV, NDV) )
+    ALLOCATE( dPDX_RA   (NCL2, NDV)    ) ; dPDX_RA = 0.0_WP
+    ALLOCATE( ufpf_RA   (NCL2, NDV)    ) ; ufpf_RA = 0.0_WP
+    ALLOCATE( uf2_RA    (NCL2, NDV, NDV)    ) ; uf2_RA = 0.0_WP
+    ALLOCATE( uf2d_RA   (NCL2, NDV, NDV)    ) ; uf2d_RA = 0.0_WP
+    ALLOCATE( uf3_RA    (NCL2, NDV, NDV, NDV) ) ; uf3_RA = 0.0_WP
+    ALLOCATE( uf3d_RA   (NCL2, NDV, NDV, NDV) ) ; uf3d_RA = 0.0_WP
+    ALLOCATE( UU_RA         (NCL2, NDV, NDV) ) ; UU_RA = 0.0_WP
 
-    ALLOCATE( dUiDXi        (NCL2)            )
-    ALLOCATE( StrAInTensor  (NCL2, NDV, NDV)  )
-    ALLOCATE( VortcyTensor  (NCL2, NDV, NDV)  )
-    ALLOCATE( Skewness_RA   (NCL2, NDV)       )
+    ALLOCATE( dUiDXi        (NCL2)            ) ; dUiDXi = 0.0_WP
+    ALLOCATE( StrAInTensor  (NCL2, NDV, NDV)  ) ; StrAInTensor = 0.0_WP
+    ALLOCATE( VortcyTensor  (NCL2, NDV, NDV)  ) ; VortcyTensor = 0.0_WP
+    ALLOCATE( Skewness_RA   (NCL2, NDV)       ) ; Skewness_RA = 0.0_WP
 
-    ALLOCATE( MKE_RA        (NCL2)            )
-    ALLOCATE( TKE_RA        (NCL2)            )
-    ALLOCATE( ufTKEfd_RA    (NCL2)            )
-    ALLOCATE( ufMKEfd_RA    (NCL2)            )
+    ALLOCATE( MKE_RA        (NCL2)            ) ; MKE_RA = 0.0_WP
+    ALLOCATE( TKE_RA        (NCL2)            ) ; TKE_RA = 0.0_WP
+    ALLOCATE( ufTKEfd_RA    (NCL2)            ) ; ufTKEfd_RA = 0.0_WP
+    ALLOCATE( ufMKEfd_RA    (NCL2)            ) ; ufMKEfd_RA = 0.0_WP
 
 
-    ALLOCATE( Omega2_RA(NCL2, NDV) )
-    ALLOCATE( Omega_RA2(NCL2, NDV) )
-    ALLOCATE( Omega_rms(NCL2, NDV) )
+    ALLOCATE( Omega2_RA(NCL2, NDV) ) ; Omega2_RA = 0.0_WP
+    ALLOCATE( Omega_RA2(NCL2, NDV) ) ; Omega_RA2 = 0.0_WP
+    ALLOCATE( Omega_rms(NCL2, NDV) ) ; Omega_rms = 0.0_WP
 
-    ALLOCATE( AnIsotropy_RA(NCL2, NDV, NDV) )
-    ALLOCATE( Anistpinva_RA(NCL2, NDV) )
-    ALLOCATE( LumleyAxis_RA(NCL2, 2) )
+    ALLOCATE( AnIsotropy_RA(NCL2, NDV, NDV) ) ; AnIsotropy_RA = 0.0_WP
+    ALLOCATE( Anistpinva_RA(NCL2, NDV) ) ; Anistpinva_RA = 0.0_WP
+    ALLOCATE( LumleyAxis_RA(NCL2, 2) ) ; LumleyAxis_RA = 0.0_WP
 
 
 
     !=============FA =========================
     IF(iThermoDynamics == 1) THEN
-        ALLOCATE( DrivenForce   (NCL2)           )
-        ALLOCATE( U_FA          (NCL2, NDV)      )
-        ALLOCATE( UU_FA         (NCL2, NDV, NDV) )
-        ALLOCATE( dUDX_FA       (NCL2, NDV, NDV) )
+        ALLOCATE( DrivenForce   (NCL2)           ) ; DrivenForce = 0.0_WP
+        ALLOCATE( U_FA          (NCL2, NDV)      ) ; U_FA = 0.0_WP
+        ALLOCATE( UU_FA         (NCL2, NDV, NDV) ) ; UU_FA = 0.0_WP
+        ALLOCATE( dUDX_FA       (NCL2, NDV, NDV) ) ; dUDX_FA = 0.0_WP
 
 
-        ALLOCATE( uff_RA        (NCL2, NDV)      )
-        ALLOCATE( uff2_FA       (NCL2, NDV, NDV) )
-        ALLOCATE( uff2d_FA      (NCL2, NDV, NDV) )
-        ALLOCATE( uff3_FA       (NCL2, NDV, NDV, NDV) )
-        ALLOCATE( uff3d_FA      (NCL2, NDV, NDV, NDV) )
-        ALLOCATE( TDIFU_FA      (NCL2, NDV, NDV) )
+        ALLOCATE( uff_RA        (NCL2, NDV)      ) ; uff_RA = 0.0_WP
+        ALLOCATE( uff2_FA       (NCL2, NDV, NDV) ) ; uff2_FA = 0.0_WP
+        ALLOCATE( uff2d_FA      (NCL2, NDV, NDV) ) ; uff2d_FA = 0.0_WP
+        ALLOCATE( uff3_FA       (NCL2, NDV, NDV, NDV) ) ; uff3_FA = 0.0_WP
+        ALLOCATE( uff3d_FA      (NCL2, NDV, NDV, NDV) ) ; uff3d_FA = 0.0_WP
+        ALLOCATE( TDIFU_FA      (NCL2, NDV, NDV) ) ; TDIFU_FA = 0.0_WP
 
-        ALLOCATE( dUiDXiM       (NCL2)            )
-        ALLOCATE( StrAInTensorM (NCL2, NDV, NDV)  )
-        ALLOCATE( VortcyTensorM (NCL2, NDV, NDV)  )
-        ALLOCATE( Skewness_FA   (NCL2, NDV)       )
+        ALLOCATE( dUiDXiM       (NCL2)            ) ; dUiDXiM = 0.0_WP
+        ALLOCATE( StrAInTensorM (NCL2, NDV, NDV)  ) ; StrAInTensorM = 0.0_WP
+        ALLOCATE( VortcyTensorM (NCL2, NDV, NDV)  ) ; VortcyTensorM = 0.0_WP
+        ALLOCATE( Skewness_FA   (NCL2, NDV)       ) ; Skewness_FA = 0.0_WP
 
-        ALLOCATE( MKE_FA        (NCL2)            )
-        ALLOCATE( TKE_FA        (NCL2)            )
-        ALLOCATE( uffTKEffd_FA  (NCL2)            )
-        ALLOCATE( uffMKEffd_FA  (NCL2)            )
+        ALLOCATE( MKE_FA        (NCL2)            ) ; MKE_FA = 0.0_WP
+        ALLOCATE( TKE_FA        (NCL2)            ) ; TKE_FA = 0.0_WP
+        ALLOCATE( uffTKEffd_FA  (NCL2)            ) ; uffTKEffd_FA = 0.0_WP
+        ALLOCATE( uffMKEffd_FA  (NCL2)            ) ; uffMKEffd_FA = 0.0_WP
 
-        ALLOCATE( AnIsotropy_FA(NCL2, NDV, NDV) )
-        ALLOCATE( Anistpinva_FA(NCL2, NDV) )
-        ALLOCATE( LumleyAxis_FA(NCL2, 2) )
+        ALLOCATE( AnIsotropy_FA(NCL2, NDV, NDV) ) ; AnIsotropy_FA = 0.0_WP
+        ALLOCATE( Anistpinva_FA(NCL2, NDV) ) ; Anistpinva_FA = 0.0_WP
+        ALLOCATE( LumleyAxis_FA(NCL2, 2) ) ; LumleyAxis_FA = 0.0_WP
     END IF
 
-    ALLOCATE( Tau_Mean_RA   (NCL2, NDV, NDV) )
-    ALLOCATE( Tau_meaU_RA   (NCL2, NDV, NDV) )
-    ALLOCATE( dTaudy_RA     (NCL2, NDV, NDV) )
-    ALLOCATE( dTSSdy_RA     (NCL2, NDV, NDV) )
-    ALLOCATE( TauU_RA       (NCL2, NDV, NDV, NDV) )
-    ALLOCATE( Taufuf_RA     (NCL2, NDV, NDV, NDV     ) )
-    ALLOCATE( TauDvDL_RA    (NCL2, NDV, NDV, NDV, NDV) )
+    ALLOCATE( Tau_Mean_RA   (NCL2, NDV, NDV) ) ; Tau_Mean_RA = 0.0_WP
+    ALLOCATE( Tau_meaU_RA   (NCL2, NDV, NDV) ) ; Tau_meaU_RA = 0.0_WP
+    ALLOCATE( dTaudy_RA     (NCL2, NDV, NDV) ) ; dTaudy_RA = 0.0_WP
+    ALLOCATE( dTSSdy_RA     (NCL2, NDV, NDV) ) ; dTSSdy_RA = 0.0_WP
+    ALLOCATE( TauU_RA       (NCL2, NDV, NDV, NDV) ) ; TauU_RA = 0.0_WP
+    ALLOCATE( Taufuf_RA     (NCL2, NDV, NDV, NDV     ) ) ; Taufuf_RA = 0.0_WP
+    ALLOCATE( TauDvDL_RA    (NCL2, NDV, NDV, NDV, NDV) ) ; TauDvDL_RA = 0.0_WP
     !ALLOCATE( Tau_ik_Du_jDX_i_RA(NCL2, NDV, NDV))
 
-    ALLOCATE( NSFbal_FA(NCL2, NDV))
-    ALLOCATE( NSFbal_RA(NCL2, NDV))
-    ALLOCATE( ENEbal_FA(NCL2))
+    ALLOCATE( NSFbal_FA(NCL2, NDV)) ; NSFbal_FA = 0.0_WP
+    ALLOCATE( NSFbal_RA(NCL2, NDV)) ; NSFbal_RA = 0.0_WP
+    ALLOCATE( ENEbal_FA(NCL2)) ; ENEbal_FA = 0.0_WP
 
     ALLOCATE( Bdfcintg(NCL2)) ; bdfciNTG = 0.0_WP
     ALLOCATE( DensIntg(NCL2)) ; DensIntg = 0.0_WP
@@ -556,164 +556,164 @@ SUBROUTINE MEMO_ALLOCT_AVERAGE_XZ_io
 
     !========================================
     !================== RuV =============================
-    ALLOCATE (Budg_prodc_stres_Duiuj(NCL2, NDV * (7 - NDV) / 2 + NDV - 3))
-    ALLOCATE (Budg_viscs_dissp_Duiuj(NCL2, NDV * (7 - NDV) / 2 + NDV - 3))
-    ALLOCATE (Budg_pduDX_stran_Duiuj(NCL2, NDV * (7 - NDV) / 2 + NDV - 3))
-    ALLOCATE (Budg_Turbu_diffu_Duiuj(NCL2, NDV * (7 - NDV) / 2 + NDV - 3))
-    ALLOCATE (Budg_DpuDX_diffu_Duiuj(NCL2, NDV * (7 - NDV) / 2 + NDV - 3))
-    ALLOCATE (Budg_viscs_diffu_Duiuj(NCL2, NDV * (7 - NDV) / 2 + NDV - 3))
+    ALLOCATE (Budg_prodc_stres_Duiuj(NCL2, NDV * (7 - NDV) / 2 + NDV - 3)) ; Budg_prodc_stres_Duiuj = 0.0_WP
+    ALLOCATE (Budg_viscs_dissp_Duiuj(NCL2, NDV * (7 - NDV) / 2 + NDV - 3)) ; Budg_viscs_dissp_Duiuj = 0.0_WP
+    ALLOCATE (Budg_pduDX_stran_Duiuj(NCL2, NDV * (7 - NDV) / 2 + NDV - 3)) ; Budg_pduDX_stran_Duiuj = 0.0_WP
+    ALLOCATE (Budg_Turbu_diffu_Duiuj(NCL2, NDV * (7 - NDV) / 2 + NDV - 3)) ; Budg_Turbu_diffu_Duiuj = 0.0_WP
+    ALLOCATE (Budg_DpuDX_diffu_Duiuj(NCL2, NDV * (7 - NDV) / 2 + NDV - 3)) ; Budg_DpuDX_diffu_Duiuj = 0.0_WP
+    ALLOCATE (Budg_viscs_diffu_Duiuj(NCL2, NDV * (7 - NDV) / 2 + NDV - 3)) ; Budg_viscs_diffu_Duiuj = 0.0_WP
 
-    ALLOCATE (Budg_press_accl1_Duiuj(NCL2, NDV * (7 - NDV) / 2 + NDV - 3))
-    ALLOCATE (Budg_viscs_accl1_Duiuj(NCL2, NDV * (7 - NDV) / 2 + NDV - 3))
-    ALLOCATE (Budg_prodc_Dvfc1_Duiuj(NCL2, NDV * (7 - NDV) / 2 + NDV - 3))
-    ALLOCATE (Budg_Balance1_Duiuj   (NCL2, NDV * (7 - NDV) / 2 + NDV - 3))
+    ALLOCATE (Budg_press_accl1_Duiuj(NCL2, NDV * (7 - NDV) / 2 + NDV - 3)) ; Budg_press_accl1_Duiuj = 0.0_WP
+    ALLOCATE (Budg_viscs_accl1_Duiuj(NCL2, NDV * (7 - NDV) / 2 + NDV - 3)) ; Budg_viscs_accl1_Duiuj = 0.0_WP
+    ALLOCATE (Budg_prodc_Dvfc1_Duiuj(NCL2, NDV * (7 - NDV) / 2 + NDV - 3)) ; Budg_prodc_Dvfc1_Duiuj = 0.0_WP
+    ALLOCATE (Budg_Balance1_Duiuj   (NCL2, NDV * (7 - NDV) / 2 + NDV - 3)) ; Budg_Balance1_Duiuj = 0.0_WP
 
-    ALLOCATE (Budg_prodc_gvfc2_Duiuj(NCL2, NDV * (7 - NDV) / 2 + NDV - 3))
-    ALLOCATE (Budg_prodc_Dvfc2_Duiuj(NCL2, NDV * (7 - NDV) / 2 + NDV - 3))
-    ALLOCATE (Budg_turss_accl2_Duiuj(NCL2, NDV * (7 - NDV) / 2 + NDV - 3))
-    ALLOCATE (Budg_Balance2_Duiuj   (NCL2, NDV * (7 - NDV) / 2 + NDV - 3))
+    ALLOCATE (Budg_prodc_gvfc2_Duiuj(NCL2, NDV * (7 - NDV) / 2 + NDV - 3)) ; Budg_prodc_gvfc2_Duiuj = 0.0_WP
+    ALLOCATE (Budg_prodc_Dvfc2_Duiuj(NCL2, NDV * (7 - NDV) / 2 + NDV - 3)) ; Budg_prodc_Dvfc2_Duiuj = 0.0_WP
+    ALLOCATE (Budg_turss_accl2_Duiuj(NCL2, NDV * (7 - NDV) / 2 + NDV - 3)) ; Budg_turss_accl2_Duiuj = 0.0_WP
+    ALLOCATE (Budg_Balance2_Duiuj   (NCL2, NDV * (7 - NDV) / 2 + NDV - 3)) ; Budg_Balance2_Duiuj = 0.0_WP
 
-    ALLOCATE (Budg_pressure3_Duiuj(NCL2, NDV * (7 - NDV) / 2 + NDV - 3))
-    ALLOCATE (Budg_vistress3_Duiuj(NCL2, NDV * (7 - NDV) / 2 + NDV - 3))
-    ALLOCATE (Budg_Balance3_Duiuj (NCL2, NDV * (7 - NDV) / 2 + NDV - 3))
+    ALLOCATE (Budg_pressure3_Duiuj(NCL2, NDV * (7 - NDV) / 2 + NDV - 3)) ; Budg_pressure3_Duiuj = 0.0_WP
+    ALLOCATE (Budg_vistress3_Duiuj(NCL2, NDV * (7 - NDV) / 2 + NDV - 3)) ; Budg_vistress3_Duiuj = 0.0_WP
+    ALLOCATE (Budg_Balance3_Duiuj (NCL2, NDV * (7 - NDV) / 2 + NDV - 3)) ; Budg_Balance3_Duiuj = 0.0_WP
 
     !================== RuV == Sum along Y =======================
-    ALLOCATE (Budg_prodc_stres_Duiuj_ysum(NDV * (7 - NDV) / 2 + NDV - 3))
-    ALLOCATE (Budg_viscs_dissp_Duiuj_ysum(NDV * (7 - NDV) / 2 + NDV - 3))
-    ALLOCATE (Budg_pduDX_stran_Duiuj_ysum(NDV * (7 - NDV) / 2 + NDV - 3))
-    ALLOCATE (Budg_Turbu_diffu_Duiuj_ysum(NDV * (7 - NDV) / 2 + NDV - 3))
-    ALLOCATE (Budg_DpuDX_diffu_Duiuj_ysum(NDV * (7 - NDV) / 2 + NDV - 3))
-    ALLOCATE (Budg_viscs_diffu_Duiuj_ysum(NDV * (7 - NDV) / 2 + NDV - 3))
+    ALLOCATE (Budg_prodc_stres_Duiuj_ysum(NDV * (7 - NDV) / 2 + NDV - 3)) ; Budg_prodc_stres_Duiuj_ysum = 0.0_WP
+    ALLOCATE (Budg_viscs_dissp_Duiuj_ysum(NDV * (7 - NDV) / 2 + NDV - 3)) ; Budg_viscs_dissp_Duiuj_ysum = 0.0_WP
+    ALLOCATE (Budg_pduDX_stran_Duiuj_ysum(NDV * (7 - NDV) / 2 + NDV - 3)) ; Budg_pduDX_stran_Duiuj_ysum = 0.0_WP
+    ALLOCATE (Budg_Turbu_diffu_Duiuj_ysum(NDV * (7 - NDV) / 2 + NDV - 3)) ; Budg_Turbu_diffu_Duiuj_ysum = 0.0_WP
+    ALLOCATE (Budg_DpuDX_diffu_Duiuj_ysum(NDV * (7 - NDV) / 2 + NDV - 3)) ; Budg_DpuDX_diffu_Duiuj_ysum = 0.0_WP
+    ALLOCATE (Budg_viscs_diffu_Duiuj_ysum(NDV * (7 - NDV) / 2 + NDV - 3)) ; Budg_viscs_diffu_Duiuj_ysum = 0.0_WP
 
-    ALLOCATE (Budg_press_accl1_Duiuj_ysum(NDV * (7 - NDV) / 2 + NDV - 3))
-    ALLOCATE (Budg_viscs_accl1_Duiuj_ysum(NDV * (7 - NDV) / 2 + NDV - 3))
-    ALLOCATE (Budg_prodc_Dvfc1_Duiuj_ysum(NDV * (7 - NDV) / 2 + NDV - 3))
-    ALLOCATE (Budg_Balance1_Duiuj_ysum   (NDV * (7 - NDV) / 2 + NDV - 3))
+    ALLOCATE (Budg_press_accl1_Duiuj_ysum(NDV * (7 - NDV) / 2 + NDV - 3)) ; Budg_press_accl1_Duiuj_ysum = 0.0_WP
+    ALLOCATE (Budg_viscs_accl1_Duiuj_ysum(NDV * (7 - NDV) / 2 + NDV - 3)) ; Budg_viscs_accl1_Duiuj_ysum = 0.0_WP
+    ALLOCATE (Budg_prodc_Dvfc1_Duiuj_ysum(NDV * (7 - NDV) / 2 + NDV - 3)) ; Budg_prodc_Dvfc1_Duiuj_ysum = 0.0_WP
+    ALLOCATE (Budg_Balance1_Duiuj_ysum   (NDV * (7 - NDV) / 2 + NDV - 3)) ; Budg_Balance1_Duiuj_ysum = 0.0_WP
 
-    ALLOCATE (Budg_prodc_gvfc2_Duiuj_ysum(NDV * (7 - NDV) / 2 + NDV - 3))
-    ALLOCATE (Budg_prodc_Dvfc2_Duiuj_ysum(NDV * (7 - NDV) / 2 + NDV - 3))
-    ALLOCATE (Budg_turss_accl2_Duiuj_ysum(NDV * (7 - NDV) / 2 + NDV - 3))
-    ALLOCATE (Budg_Balance2_Duiuj_ysum   (NDV * (7 - NDV) / 2 + NDV - 3))
+    ALLOCATE (Budg_prodc_gvfc2_Duiuj_ysum(NDV * (7 - NDV) / 2 + NDV - 3)) ; Budg_prodc_gvfc2_Duiuj_ysum = 0.0_WP
+    ALLOCATE (Budg_prodc_Dvfc2_Duiuj_ysum(NDV * (7 - NDV) / 2 + NDV - 3)) ; Budg_prodc_Dvfc2_Duiuj_ysum = 0.0_WP
+    ALLOCATE (Budg_turss_accl2_Duiuj_ysum(NDV * (7 - NDV) / 2 + NDV - 3)) ; Budg_turss_accl2_Duiuj_ysum = 0.0_WP
+    ALLOCATE (Budg_Balance2_Duiuj_ysum   (NDV * (7 - NDV) / 2 + NDV - 3)) ; Budg_Balance2_Duiuj_ysum = 0.0_WP
 
-    ALLOCATE (Budg_pressure3_Duiuj_ysum(NDV * (7 - NDV) / 2 + NDV - 3))
-    ALLOCATE (Budg_vistress3_Duiuj_ysum(NDV * (7 - NDV) / 2 + NDV - 3))
-    ALLOCATE (Budg_Balance3_Duiuj_ysum (NDV * (7 - NDV) / 2 + NDV - 3))
+    ALLOCATE (Budg_pressure3_Duiuj_ysum(NDV * (7 - NDV) / 2 + NDV - 3)) ; Budg_pressure3_Duiuj_ysum = 0.0_WP
+    ALLOCATE (Budg_vistress3_Duiuj_ysum(NDV * (7 - NDV) / 2 + NDV - 3)) ; Budg_vistress3_Duiuj_ysum = 0.0_WP
+    ALLOCATE (Budg_Balance3_Duiuj_ysum (NDV * (7 - NDV) / 2 + NDV - 3)) ; Budg_Balance3_Duiuj_ysum = 0.0_WP
 
     !================== TKE =============================
-    ALLOCATE (Budg_prodc_stres_TKE(NCL2) )
-    ALLOCATE (Budg_viscs_dissp_TKE(NCL2) )
-    ALLOCATE (Budg_pduDX_stran_TKE(NCL2) )
-    ALLOCATE (Budg_Turbu_diffu_TKE(NCL2) )
-    ALLOCATE (Budg_DpuDX_diffu_TKE(NCL2) )
-    ALLOCATE (Budg_viscs_diffu_TKE(NCL2) )
+    ALLOCATE (Budg_prodc_stres_TKE(NCL2) ) ; Budg_prodc_stres_TKE = 0.0_WP
+    ALLOCATE (Budg_viscs_dissp_TKE(NCL2) ) ; Budg_viscs_dissp_TKE = 0.0_WP
+    ALLOCATE (Budg_pduDX_stran_TKE(NCL2) ) ; Budg_pduDX_stran_TKE = 0.0_WP
+    ALLOCATE (Budg_Turbu_diffu_TKE(NCL2) ) ; Budg_Turbu_diffu_TKE = 0.0_WP
+    ALLOCATE (Budg_DpuDX_diffu_TKE(NCL2) ) ; Budg_DpuDX_diffu_TKE = 0.0_WP
+    ALLOCATE (Budg_viscs_diffu_TKE(NCL2) ) ; Budg_viscs_diffu_TKE = 0.0_WP
 
-    ALLOCATE (Budg_press_accl1_TKE(NCL2) )
-    ALLOCATE (Budg_viscs_accl1_TKE(NCL2) )
-    ALLOCATE (Budg_prodc_Dvfc1_TKE(NCL2) )
-    ALLOCATE (Budg_Balance1_TKE   (NCL2) )
+    ALLOCATE (Budg_press_accl1_TKE(NCL2) ) ; Budg_press_accl1_TKE = 0.0_WP
+    ALLOCATE (Budg_viscs_accl1_TKE(NCL2) ) ; Budg_viscs_accl1_TKE = 0.0_WP
+    ALLOCATE (Budg_prodc_Dvfc1_TKE(NCL2) ) ; Budg_prodc_Dvfc1_TKE = 0.0_WP
+    ALLOCATE (Budg_Balance1_TKE   (NCL2) ) ; Budg_Balance1_TKE = 0.0_WP
 
-    ALLOCATE (Budg_prodc_gvfc2_TKE(NCL2) )
-    ALLOCATE (Budg_prodc_Dvfc2_TKE(NCL2) )
-    ALLOCATE (Budg_turss_accl2_TKE(NCL2) )
-    ALLOCATE (Budg_Balance2_TKE   (NCL2) )
+    ALLOCATE (Budg_prodc_gvfc2_TKE(NCL2) ) ; Budg_prodc_gvfc2_TKE = 0.0_WP
+    ALLOCATE (Budg_prodc_Dvfc2_TKE(NCL2) ) ; Budg_prodc_Dvfc2_TKE = 0.0_WP
+    ALLOCATE (Budg_turss_accl2_TKE(NCL2) ) ; Budg_turss_accl2_TKE = 0.0_WP
+    ALLOCATE (Budg_Balance2_TKE   (NCL2) ) ; Budg_Balance2_TKE = 0.0_WP
 
-    ALLOCATE (Budg_pressure3_TKE(NCL2) )
-    ALLOCATE (Budg_vistress3_TKE(NCL2) )
-    ALLOCATE (Budg_Balance3_TKE (NCL2) )
+    ALLOCATE (Budg_pressure3_TKE(NCL2) ) ; Budg_pressure3_TKE = 0.0_WP
+    ALLOCATE (Budg_vistress3_TKE(NCL2) ) ; Budg_vistress3_TKE = 0.0_WP
+    ALLOCATE (Budg_Balance3_TKE (NCL2) ) ; Budg_Balance3_TKE = 0.0_WP
 
     !================== MKE =============================
-    ALLOCATE (Budg_prodc_stres_MKE(NCL2) )
-    ALLOCATE (Budg_viscs_dissp_MKE(NCL2) )
-    ALLOCATE (Budg_pduDX_stran_MKE(NCL2) )
-    ALLOCATE (Budg_Turbu_diffu_MKE(NCL2) )
-    ALLOCATE (Budg_DpuDX_diffu_MKE(NCL2) )
-    ALLOCATE (Budg_viscs_diffu_MKE(NCL2) )
+    ALLOCATE (Budg_prodc_stres_MKE(NCL2) ) ; Budg_prodc_stres_MKE = 0.0_WP
+    ALLOCATE (Budg_viscs_dissp_MKE(NCL2) ) ; Budg_viscs_dissp_MKE = 0.0_WP
+    ALLOCATE (Budg_pduDX_stran_MKE(NCL2) ) ; Budg_pduDX_stran_MKE = 0.0_WP
+    ALLOCATE (Budg_Turbu_diffu_MKE(NCL2) ) ; Budg_Turbu_diffu_MKE = 0.0_WP
+    ALLOCATE (Budg_DpuDX_diffu_MKE(NCL2) ) ; Budg_DpuDX_diffu_MKE = 0.0_WP
+    ALLOCATE (Budg_viscs_diffu_MKE(NCL2) ) ; Budg_viscs_diffu_MKE = 0.0_WP
 
-    ALLOCATE (Budg_press_accl1_MKE(NCL2) )
-    ALLOCATE (Budg_viscs_accl1_MKE(NCL2) )
-    ALLOCATE (Budg_prodc_Dvfc1_MKE(NCL2) )
-    ALLOCATE (Budg_prodc_gvfc1_MKE(NCL2) )
-    ALLOCATE (Budg_Balance1_MKE   (NCL2) )
+    ALLOCATE (Budg_press_accl1_MKE(NCL2) ) ; Budg_press_accl1_MKE = 0.0_WP
+    ALLOCATE (Budg_viscs_accl1_MKE(NCL2) ) ; Budg_viscs_accl1_MKE = 0.0_WP
+    ALLOCATE (Budg_prodc_Dvfc1_MKE(NCL2) ) ; Budg_prodc_Dvfc1_MKE = 0.0_WP
+    ALLOCATE (Budg_prodc_gvfc1_MKE(NCL2) ) ; Budg_prodc_gvfc1_MKE = 0.0_WP
+    ALLOCATE (Budg_Balance1_MKE   (NCL2) ) ; Budg_Balance1_MKE = 0.0_WP
 
-    ALLOCATE (Budg_prodc_gvfc2_MKE(NCL2) )
-    ALLOCATE (Budg_prodc_Dvfc2_MKE(NCL2) )
-    ALLOCATE (Budg_turss_accl2_MKE(NCL2) )
-    ALLOCATE (Budg_Balance2_MKE   (NCL2) )
+    ALLOCATE (Budg_prodc_gvfc2_MKE(NCL2) ) ; Budg_prodc_gvfc2_MKE = 0.0_WP
+    ALLOCATE (Budg_prodc_Dvfc2_MKE(NCL2) ) ; Budg_prodc_Dvfc2_MKE = 0.0_WP
+    ALLOCATE (Budg_turss_accl2_MKE(NCL2) ) ; Budg_turss_accl2_MKE = 0.0_WP
+    ALLOCATE (Budg_Balance2_MKE   (NCL2) ) ; Budg_Balance2_MKE = 0.0_WP
 
-    ALLOCATE (Budg_pressure3_MKE(NCL2) )
-    ALLOCATE (Budg_vistress3_MKE(NCL2) )
-    ALLOCATE (Budg_Balance3_MKE (NCL2) )
+    ALLOCATE (Budg_pressure3_MKE(NCL2) ) ; Budg_pressure3_MKE = 0.0_WP
+    ALLOCATE (Budg_vistress3_MKE(NCL2) ) ; Budg_vistress3_MKE = 0.0_WP
+    ALLOCATE (Budg_Balance3_MKE (NCL2) ) ; Budg_Balance3_MKE = 0.0_WP
 
 
     !===========================================
-    ALLOCATE ( RANS_Mut(NCL2) )
+    ALLOCATE ( RANS_Mut(NCL2) ) ; RANS_Mut = 0.0_WP
     !========================================
-    ALLOCATE( TauwSD(NCL2)         )
-    ALLOCATE( DensSD(NCL2)         )
-    ALLOCATE( viscsD(NCL2)         )
-    ALLOCATE( YWdISD(NCL2)         )
+    ALLOCATE( TauwSD(NCL2)         ) ; TauwSD = 0.0_WP
+    ALLOCATE( DensSD(NCL2)         ) ; DensSD = 0.0_WP
+    ALLOCATE( viscsD(NCL2)         ) ; viscsD = 0.0_WP
+    ALLOCATE( YWdISD(NCL2)         ) ; YWdISD = 0.0_WP
 
     ALLOCATE( D1xztL_F0_io( NCL2 ) ) ;  D1xztL_F0_io = 1.0_WP
     ALLOCATE( M1xztL_F0_io( NCL2 ) ) ;  M1xztL_F0_io = 1.0_WP
 
-    ALLOCATE( DVDL1MxztL_F0_io( NCL2, NDV, NDV  )                     )
-    ALLOCATE( DVDL1MUxztL_F0_io( NCL2, NDV, NDV, NDV  )                )
-    ALLOCATE( DVDL2MxztL_F0_io( NCL2, (NDV - 1) * 3 + NDV, (NDV - 1) * 3 + NDV  ) )
+    ALLOCATE( DVDL1MxztL_F0_io( NCL2, NDV, NDV  ) )  ; DVDL1MxztL_F0_io = 0.0_WP
+    ALLOCATE( DVDL1MUxztL_F0_io( NCL2, NDV, NDV, NDV  ) ) ; DVDL1MUxztL_F0_io = 0.0_WP
+    ALLOCATE( DVDL2MxztL_F0_io( NCL2, (NDV - 1) * 3 + NDV, (NDV - 1) * 3 + NDV  ) ) ; DVDL2MxztL_F0_io = 0.0_WP
 
     IF(iThermoDynamics == 1) THEN
         !========================================
-        ALLOCATE( T1xztL_F0_io( NCL2 ) )
-        ALLOCATE( H1xztL_F0_io( NCL2 ) )
+        ALLOCATE( T1xztL_F0_io( NCL2 ) ) ; T1xztL_F0_io = 0.0_WP
+        ALLOCATE( H1xztL_F0_io( NCL2 ) ) ; H1xztL_F0_io = 0.0_WP
 
-        ALLOCATE( DVDL1MHxztL_F0_io( NCL2, NDV, NDV  )                     )
-        ALLOCATE( T2xztL_F0_io( NCL2 ) )
-        ALLOCATE( D2xztL_F0_io( NCL2 ) )
-        ALLOCATE( H2xztL_F0_io( NCL2 ) )
+        ALLOCATE( DVDL1MHxztL_F0_io( NCL2, NDV, NDV  ) )  ; DVDL1MHxztL_F0_io = 0.0_WP
+        ALLOCATE( T2xztL_F0_io( NCL2 ) ) ; T2xztL_F0_io = 0.0_WP
+        ALLOCATE( D2xztL_F0_io( NCL2 ) ) ; D2xztL_F0_io = 0.0_WP
+        ALLOCATE( H2xztL_F0_io( NCL2 ) ) ; H2xztL_F0_io = 0.0_WP
 
-        ALLOCATE( DHxztL_F0_io( NCL2 ) )
-        ALLOCATE( PHxztL_F0_io( NCL2 ) )
+        ALLOCATE( DHxztL_F0_io( NCL2 ) ) ; DHxztL_F0_io = 0.0_WP
+        ALLOCATE( PHxztL_F0_io( NCL2 ) ) ; PHxztL_F0_io = 0.0_WP
 
         !            ALLOCATE( DVDL1MxztL_F0_io( NCL2, NDV, NDV  )                     )
         !            ALLOCATE( DVDL1MHxztL_F0_io( NCL2, NDV, NDV  )                     )
         !            ALLOCATE( DVDL1MUxztL_F0_io( NCL2, NDV, NDV, NDV  )                )
         !            ALLOCATE( DVDL2MxztL_F0_io( NCL2, (NDV - 1) * 3 + NDV, (NDV - 1) * 3 + NDV  ) )
 
-        ALLOCATE( UHxztL_F0_io( NCL2, NDV )                 )
-        ALLOCATE( GHxztL_F0_io( NCL2, NDV )                 )
-        ALLOCATE( U2DHxztL_F0_io( NCL2, NDV * (7 - NDV) / 2 + NDV - 3 ) )
+        ALLOCATE( UHxztL_F0_io( NCL2, NDV )                 ) ; UHxztL_F0_io = 0.0_WP
+        ALLOCATE( GHxztL_F0_io( NCL2, NDV )                 ) ; GHxztL_F0_io = 0.0_WP
+        ALLOCATE( U2DHxztL_F0_io( NCL2, NDV * (7 - NDV) / 2 + NDV - 3 ) ) ; U2DHxztL_F0_io = 0.0_WP
 
-        ALLOCATE( DhDL1xztL_F0_io( NCL2, NDV )     )
-        ALLOCATE( DhDLPxztL_F0_io( NCL2, NDV )     )
-        ALLOCATE( DTDLKxztL_F0_io( NCL2, NDV )     )
-        ALLOCATE( DTDLKUxztL_F0_io(NCL2, NDV, NDV ) )
+        ALLOCATE( DhDL1xztL_F0_io( NCL2, NDV )     ) ; DhDL1xztL_F0_io = 0.0_WP
+        ALLOCATE( DhDLPxztL_F0_io( NCL2, NDV )     ) ; DhDLPxztL_F0_io = 0.0_WP
+        ALLOCATE( DTDLKxztL_F0_io( NCL2, NDV )     ) ; DTDLKxztL_F0_io = 0.0_WP
+        ALLOCATE( DTDLKUxztL_F0_io(NCL2, NDV, NDV ) ) ; DTDLKUxztL_F0_io = 0.0_WP
 
-        ALLOCATE( DTDLKDVDLxztL_F0_io(NCL2, NDV, NDV, NDV ) )
-        ALLOCATE( DHDLMDVDLxztL_F0_io(NCL2, NDV, NDV, NDV ) )
+        ALLOCATE( DTDLKDVDLxztL_F0_io(NCL2, NDV, NDV, NDV ) ) ; DTDLKDVDLxztL_F0_io = 0.0_WP
+        ALLOCATE( DHDLMDVDLxztL_F0_io(NCL2, NDV, NDV, NDV ) ) ; DHDLMDVDLxztL_F0_io = 0.0_WP
 
 
-        ALLOCATE( CpSD  (NCL2)         )
-        ALLOCATE( QwSD  (NCL2)         )
-        ALLOCATE( TwSD  (NCL2)         )
-        ALLOCATE( HwSD  (NCL2)         )
+        ALLOCATE( CpSD  (NCL2)         ) ; CpSD = 0.0_WP
+        ALLOCATE( QwSD  (NCL2)         ) ; QwSD = 0.0_WP
+        ALLOCATE( TwSD  (NCL2)         ) ; TwSD = 0.0_WP
+        ALLOCATE( HwSD  (NCL2)         ) ; HwSD = 0.0_WP
 
         !============================
         !ALLOCATE( Nuy(NCL2, 2))
 
         !========================================
-        ALLOCATE( H_FA      (0 : NND2)         )
-        ALLOCATE( hff_RA    (NCL2)         )
-        ALLOCATE( hfpf_RA (NCL2)         )
-        ALLOCATE( dTDX      (NCL2, NDV)     )
-        ALLOCATE( dDDX      (NCL2, NDV)     )
-        ALLOCATE( dHDX_RA   (NCL2, NDV)     )
-        ALLOCATE( dHDX_FA   (NCL2, NDV)     )
-        ALLOCATE( UH_FA     (NCL2, NDV)     )
-        ALLOCATE( uff2hffd_FA(NCL2, NDV, NDV) )
+        ALLOCATE( H_FA      (0 : NND2)         ) ; H_FA = 0.0_WP
+        ALLOCATE( hff_RA    (NCL2)         ) ; hff_RA = 0.0_WP
+        ALLOCATE( hfpf_RA (NCL2)         ) ; hfpf_RA = 0.0_WP
+        ALLOCATE( dTDX      (NCL2, NDV)     ) ; dTDX = 0.0_WP
+        ALLOCATE( dDDX      (NCL2, NDV)     ) ; dDDX = 0.0_WP
+        ALLOCATE( dHDX_RA   (NCL2, NDV)     ) ; dHDX_RA = 0.0_WP
+        ALLOCATE( dHDX_FA   (NCL2, NDV)     ) ; dHDX_FA = 0.0_WP
+        ALLOCATE( UH_FA     (NCL2, NDV)     ) ; UH_FA = 0.0_WP
+        ALLOCATE( uff2hffd_FA(NCL2, NDV, NDV) ) ; uff2hffd_FA = 0.0_WP
 
-        ALLOCATE( uffhffd_FA        (NCL2, NDV)      )
-        ALLOCATE( ufhfd_RA        (NCL2, NDV)      )
-        ALLOCATE( viscstressEnth_RA    (NCL2, NDV, NDV) )
-        ALLOCATE( viscstressEnthGrad_RA(NCL2, NDV, NDV, NDV) )
+        ALLOCATE( uffhffd_FA        (NCL2, NDV)      ) ; uffhffd_FA = 0.0_WP
+        ALLOCATE( ufhfd_RA        (NCL2, NDV)      ) ; ufhfd_RA = 0.0_WP
+        ALLOCATE( viscstressEnth_RA    (NCL2, NDV, NDV) ) ; viscstressEnth_RA = 0.0_WP
+        ALLOCATE( viscstressEnthGrad_RA(NCL2, NDV, NDV, NDV) ) ; viscstressEnthGrad_RA = 0.0_WP
         !========================================
 
         ALLOCATE(Budg_prodc_stres_thf(NCL2, NDV) ) ; Budg_prodc_stres_thF = 0.0_WP
@@ -1760,7 +1760,7 @@ SUBROUTINE PP_FLOW_BASIC_VARS_XZ_io
     !====================== RA based======================================
     !====================================================================
 
-    CALL CHKHDL('   Calculating basIC variables', MYID)
+    CALL CHKHDL('   Calculating basic variables', MYID)
     !============== DPDX_RA(CL, M) = d<p>/ DX_m ========================
     dPDX_RA(:, :) = 0.0_WP
     N = 2
@@ -2093,8 +2093,9 @@ SUBROUTINE PP_FLOW_BASIC_VARS_XZ_io
         Anistpinva_RA(J, 1) = 0.0_WP
         Anistpinva_RA(J, 2) = (EIG(1) * EIG(1) + EIG(1) * EIG(2) + EIG(2) * EIG(2)) * (-1.0_WP)
         Anistpinva_RA(J, 3) = EIG(1) * EIG(2) * (EIG(1) + EIG(2)) * (-1.0_WP)
-        LumleyAxis_RA(J, 1) = DSQRT(-Anistpinva_RA(J, 2) / 3.0_WP)
-        LumleyAxis_RA(J, 2) = (Anistpinva_RA(J, 3) / 2.0_WP)**(1.0_WP / 3.0_WP)
+        
+        !LumleyAxis_RA(J, 1) = DSQRT( DABS(-Anistpinva_RA(J, 2) / 3.0_WP))
+        !LumleyAxis_RA(J, 2) = (Anistpinva_RA(J, 3) / 2.0_WP)**(1.0_WP / 3.0_WP)
 
         !!WRITE(*, *) 'invARs', J, Anistpinva_RA(J, 1:3), LumleyAxis_RA(J, 1:2)
         !!WRITE(*, *) 'EIGenv', J, EIG(1:3), - EIG(1) - EIG(2), EIG(1) + EIG(2) + EIG(3)
@@ -2359,215 +2360,215 @@ SUBROUTINE PP_FLOW_BASIC_VARS_XZ_io
             uff2_FA(J, 3, 3) )      * D1xztL_F0_io(J)
         END DO
         CALL CHKHDL(' ==>Calculated MKE_FA and TKE_FA', MYID)
-    END IF
+    
 
-    !=========== VIScous sheAR stresS =====================
-    !=========<tau_mn>(<u>) AND <tau_mn>(u') ============
-    ! Eq. Tau_Mean_RA(J, M, N) = viscstress_Tau_Umea + viscstress_Tau_Uper
-    !     <tau_mn>(<u>) * REN = <mu> [ (\partial <u_m>) / (\partial x_n) +
-    !                               (\partial <u_n>) / (\partial x_m) ] -
-    !                     2 / 3<mu> [ (\partial <u_l>) / (\partial x_l) \Delta_mn]
-    !     <tau_mn>(u') * REN = < mu' [ (\partial u'_m) / (\partial x_n) +
-    !                               (\partial u'_n) / (\partial x_m) ] > -
-    !                     2 / 3<mu' [ (\partial u'_l) / (\partial x_l) \Delta_mn]
-    DO J = 1, NCL2
+        !=========== VIScous sheAR stresS =====================
+        !=========<tau_mn>(<u>) AND <tau_mn>(u') ============
+        ! Eq. Tau_Mean_RA(J, M, N) = viscstress_Tau_Umea + viscstress_Tau_Uper
+        !     <tau_mn>(<u>) * REN = <mu> [ (\partial <u_m>) / (\partial x_n) +
+        !                               (\partial <u_n>) / (\partial x_m) ] -
+        !                     2 / 3<mu> [ (\partial <u_l>) / (\partial x_l) \Delta_mn]
+        !     <tau_mn>(u') * REN = < mu' [ (\partial u'_m) / (\partial x_n) +
+        !                               (\partial u'_n) / (\partial x_m) ] > -
+        !                     2 / 3<mu' [ (\partial u'_l) / (\partial x_l) \Delta_mn]
+        DO J = 1, NCL2
 
-        DO M = 1, NDV
-            DO N = 1, NDV
-                IF(M >  N) CYCLE
-                !==Eq.2.20 in Huang1995====
-                Tau_Mean_RA(J, M, N) = 2.0_WP * &
-                ( StrAInTensorM(J, M, N) - dUiDXiM(J) * DBLE(Kronecker_Delta(M, N)) / 3.0_WP  )
-                Tau_meaU_RA(J, M, N) = 2.0_WP * M1xztL_F0_io(J) * CVISC * &
-                ( StrAInTensor (J, M, N) - dUiDXi(J) * DBLE(Kronecker_Delta(M, N)) / 3.0_WP  )
-            END DO
-        END DO
-
-        DO M = 1, NDV
-            DO N = 1, NDV
-                IF(M >  N) THEN
-                    Tau_Mean_RA(J, M, N) = Tau_Mean_RA(J, N, M)
-                    Tau_meaU_RA(J, M, N) = Tau_meaU_RA(J, N, M)
-                END IF
-            END DO
-        END DO
-
-    END DO
-    CALL CHKHDL(' ==>Calculated <\mu S*>, <\mu>*<S*>, <\mu` S`>', MYID)
-
-
-    !======== TauU_RA(J, M, N, H) = <u_h \tau_mn>======================
-    !Eq.<u_h \tau_mn> = <\mu u_h \partial{u_m}/\partial{u_n}>+
-    !                  <\mu u_h \partial{u_n}/\partial{u_m}>-
-    !               2 / 3<\mu u_h \partial{u_l}/\partial{u_l}>Delta_mn
-    DO J = 1, NCL2
-        DO M = 1, NDV
-            DO N = 1, NDV
-                DO H = 1, NDV
-                    TauU_RA(J, M, N, H) = ( &
-                    DVDL1MUxztL_F0_io(J, M, N,H) + &
-                    DVDL1MUxztL_F0_io(J, N, M,H) - &
-                    2.0_WP / 3.0_WP * ( DVDL1MUxztL_F0_io(J, 1, 1,H) + &
-                    DVDL1MUxztL_F0_io(J, 2, 2,H) + &
-                    DVDL1MUxztL_F0_io(J, 3, 3,H) ) * DBLE(Kronecker_Delta(M, N)) ) * CVISC
-                    Taufuf_RA(J, M, N, H) = TauU_RA(J, M, N, H) - &
-                    U1xztL_F0_io(J,H) * Tau_Mean_RA(J, M, N)
+            DO M = 1, NDV
+                DO N = 1, NDV
+                    IF(M >  N) CYCLE
+                    !==Eq.2.20 in Huang1995====
+                    Tau_Mean_RA(J, M, N) = 2.0_WP * &
+                    ( StrAInTensorM(J, M, N) - dUiDXiM(J) * DBLE(Kronecker_Delta(M, N)) / 3.0_WP  )
+                    Tau_meaU_RA(J, M, N) = 2.0_WP * M1xztL_F0_io(J) * CVISC * &
+                    ( StrAInTensor (J, M, N) - dUiDXi(J) * DBLE(Kronecker_Delta(M, N)) / 3.0_WP  )
                 END DO
             END DO
-        END DO
 
-        !===below for tesT == test OK ===
-        !!WRITE(*, *) TauU_RA(J, 1, 2, 1:3) - TauU_RA(J, 2, 1, 1:3)
-        !!WRITE(*, *) TauU_RA(J, 1, 3, 1:3) - TauU_RA(J, 3, 1, 1:3)
-        !!WRITE(*, *) TauU_RA(J, 2, 3, 1:3) - TauU_RA(J, 3, 2, 1:3)
-        !test
-
-    END DO
-    CALL CHKHDL(' ==>Calculated TauU_RA', MYID)
-
-    !========= D<tau_mn>(<u>,u') / DY = DTaudy_RA(J, M, N) ============
-    DO J = 1, NCL2
-
-        DO M = 1, NDV
-            DO N = 1, NDV
-                IF(M >  N) CYCLE
-                IF(J == 1) THEN
-                    IF (M == 1 .AND. N == 2) THEN
-                        FF = DABS(Tauw_io(1))
-                    ELSE
-                        FF = 0.0_WP
+            DO M = 1, NDV
+                DO N = 1, NDV
+                    IF(M >  N) THEN
+                        Tau_Mean_RA(J, M, N) = Tau_Mean_RA(J, N, M)
+                        Tau_meaU_RA(J, M, N) = Tau_meaU_RA(J, N, M)
                     END IF
-                    dTaudy_RA(J, M, N) = &
-                    ( ( YCL2ND_WFF(J + 1) * Tau_Mean_RA(J + 1, M, N) + &
-                    YCL2ND_WFB(J + 1) * Tau_Mean_RA(J,  M, N) ) -  &
-                    FF ) * DYFI(J)
+                END DO
+            END DO
 
-                ELSE IF(J == NCL2) THEN
-                    IF (M == 1 .AND. N == 2) THEN
-                        FF = - DABS(Tauw_io(2))
+        END DO
+    
+        CALL CHKHDL(' ==>Calculated <\mu S*>, <\mu>*<S*>, <\mu` S`>', MYID)
+
+
+        !======== TauU_RA(J, M, N, H) = <u_h \tau_mn>======================
+        !Eq.<u_h \tau_mn> = <\mu u_h \partial{u_m}/\partial{u_n}>+
+        !                  <\mu u_h \partial{u_n}/\partial{u_m}>-
+        !               2 / 3<\mu u_h \partial{u_l}/\partial{u_l}>Delta_mn
+        DO J = 1, NCL2
+            DO M = 1, NDV
+                DO N = 1, NDV
+                    DO H = 1, NDV
+                        TauU_RA(J, M, N, H) = ( &
+                        DVDL1MUxztL_F0_io(J, M, N,H) + &
+                        DVDL1MUxztL_F0_io(J, N, M,H) - &
+                        2.0_WP / 3.0_WP * ( DVDL1MUxztL_F0_io(J, 1, 1,H) + &
+                        DVDL1MUxztL_F0_io(J, 2, 2,H) + &
+                        DVDL1MUxztL_F0_io(J, 3, 3,H) ) * DBLE(Kronecker_Delta(M, N)) ) * CVISC
+                        Taufuf_RA(J, M, N, H) = TauU_RA(J, M, N, H) - &
+                        U1xztL_F0_io(J,H) * Tau_Mean_RA(J, M, N)
+                    END DO
+                END DO
+            END DO
+
+            !===below for tesT == test OK ===
+            !!WRITE(*, *) TauU_RA(J, 1, 2, 1:3) - TauU_RA(J, 2, 1, 1:3)
+            !!WRITE(*, *) TauU_RA(J, 1, 3, 1:3) - TauU_RA(J, 3, 1, 1:3)
+            !!WRITE(*, *) TauU_RA(J, 2, 3, 1:3) - TauU_RA(J, 3, 2, 1:3)
+            !test
+
+        END DO
+        CALL CHKHDL(' ==>Calculated TauU_RA', MYID)
+
+        !========= D<tau_mn>(<u>,u') / DY = DTaudy_RA(J, M, N) ============
+        DO J = 1, NCL2
+
+            DO M = 1, NDV
+                DO N = 1, NDV
+                    IF(M >  N) CYCLE
+                    IF(J == 1) THEN
+                        IF (M == 1 .AND. N == 2) THEN
+                            FF = DABS(Tauw_io(1))
+                        ELSE
+                            FF = 0.0_WP
+                        END IF
+                        dTaudy_RA(J, M, N) = &
+                        ( ( YCL2ND_WFF(J + 1) * Tau_Mean_RA(J + 1, M, N) + &
+                        YCL2ND_WFB(J + 1) * Tau_Mean_RA(J,  M, N) ) -  &
+                        FF ) * DYFI(J)
+
+                    ELSE IF(J == NCL2) THEN
+                        IF (M == 1 .AND. N == 2) THEN
+                            FF = - DABS(Tauw_io(2))
+                        ELSE
+                            FF = 0.0_WP
+                        END IF
+                        dTaudy_RA(J, M, N) = &
+                        ( FF -  &
+                        ( YCL2ND_WFF(J) * Tau_Mean_RA(J,  M, N) + &
+                        YCL2ND_WFB(J) * Tau_Mean_RA(J - 1, M, N) ) ) * DYFI(J)
+
                     ELSE
-                        FF = 0.0_WP
+                        dTaudy_RA(J, M, N) = &
+                        ( ( YCL2ND_WFF(J + 1) * Tau_Mean_RA(J + 1, M, N) + &
+                        YCL2ND_WFB(J + 1) * Tau_Mean_RA(J,  M, N) ) -  &
+                        ( YCL2ND_WFF(J) * Tau_Mean_RA(J,  M, N) + &
+                        YCL2ND_WFB(J) * Tau_Mean_RA(J - 1, M, N) ) ) * DYFI(J)
                     END IF
-                    dTaudy_RA(J, M, N) = &
-                    ( FF -  &
-                    ( YCL2ND_WFF(J) * Tau_Mean_RA(J,  M, N) + &
-                    YCL2ND_WFB(J) * Tau_Mean_RA(J - 1, M, N) ) ) * DYFI(J)
-
-                ELSE
-                    dTaudy_RA(J, M, N) = &
-                    ( ( YCL2ND_WFF(J + 1) * Tau_Mean_RA(J + 1, M, N) + &
-                    YCL2ND_WFB(J + 1) * Tau_Mean_RA(J,  M, N) ) -  &
-                    ( YCL2ND_WFF(J) * Tau_Mean_RA(J,  M, N) + &
-                    YCL2ND_WFB(J) * Tau_Mean_RA(J - 1, M, N) ) ) * DYFI(J)
-                END IF
+                END DO
             END DO
-        END DO
 
-        DO M = 1, NDV
-            DO N = 1, NDV
-                IF(M >  N) THEN
-                    dTaudy_RA(J, M, N) = dTaudy_RA(J, N, M)
-                END IF
+            DO M = 1, NDV
+                DO N = 1, NDV
+                    IF(M >  N) THEN
+                        dTaudy_RA(J, M, N) = dTaudy_RA(J, N, M)
+                    END IF
+                END DO
             END DO
+
         END DO
-
-    END DO
-    CALL CHKHDL(' ==>Calculated dTaudy_RA', MYID)
+        CALL CHKHDL(' ==>Calculated dTaudy_RA', MYID)
 
 
-    !========= D<R_mn>/ DY = DTSSdy_RA(J, M, N) ============
-    !========= D<\rho u"_m u"_n>/ Dy = d (<\rho> {u"_m u"_n}) / Dy
-    DO J = 1, NCL2
+        !========= D<R_mn>/ DY = DTSSdy_RA(J, M, N) ============
+        !========= D<\rho u"_m u"_n>/ Dy = d (<\rho> {u"_m u"_n}) / Dy
+        DO J = 1, NCL2
 
-        DO M = 1, NDV
-            DO N = 1, NDV
-                IF(M >  N) CYCLE
-                IF(J == 1) THEN
-                    dTSSdy_RA(J, M, N) = &
-                    ( ( YCL2ND_WFF(J + 1) * Uff2d_FA(J + 1, M, N) + &
-                    YCL2ND_WFB(J + 1) * Uff2d_FA(J,  M, N) ) -  &
-                    0.0_WP ) * DYFI(J)
+            DO M = 1, NDV
+                DO N = 1, NDV
+                    IF(M >  N) CYCLE
+                    IF(J == 1) THEN
+                        dTSSdy_RA(J, M, N) = &
+                        ( ( YCL2ND_WFF(J + 1) * Uff2d_FA(J + 1, M, N) + &
+                        YCL2ND_WFB(J + 1) * Uff2d_FA(J,  M, N) ) -  &
+                        0.0_WP ) * DYFI(J)
 
-                ELSE IF(J == NCL2) THEN
-                    dTSSdy_RA(J, M, N) = &
-                    ( 0.0_WP -  &
-                    ( YCL2ND_WFF(J) * Uff2d_FA(J,  M, N) + &
-                    YCL2ND_WFB(J) * Uff2d_FA(J - 1, M, N) ) ) * DYFI(J)
+                    ELSE IF(J == NCL2) THEN
+                        dTSSdy_RA(J, M, N) = &
+                        ( 0.0_WP -  &
+                        ( YCL2ND_WFF(J) * Uff2d_FA(J,  M, N) + &
+                        YCL2ND_WFB(J) * Uff2d_FA(J - 1, M, N) ) ) * DYFI(J)
 
-                ELSE
-                    dTSSdy_RA(J, M, N) = &
-                    ( ( YCL2ND_WFF(J + 1) * Uff2d_FA(J + 1, M, N) + &
-                    YCL2ND_WFB(J + 1) * Uff2d_FA(J,  M, N) ) -  &
-                    ( YCL2ND_WFF(J) * Uff2d_FA(J,  M, N) + &
-                    YCL2ND_WFB(J) * Uff2d_FA(J - 1, M, N) ) ) * DYFI(J)
-                END IF
+                    ELSE
+                        dTSSdy_RA(J, M, N) = &
+                        ( ( YCL2ND_WFF(J + 1) * Uff2d_FA(J + 1, M, N) + &
+                        YCL2ND_WFB(J + 1) * Uff2d_FA(J,  M, N) ) -  &
+                        ( YCL2ND_WFF(J) * Uff2d_FA(J,  M, N) + &
+                        YCL2ND_WFB(J) * Uff2d_FA(J - 1, M, N) ) ) * DYFI(J)
+                    END IF
+                END DO
             END DO
-        END DO
 
-        DO M = 1, NDV
-            DO N = 1, NDV
-                IF(M >  N) THEN
-                    dTSSdy_RA(J, M, N) = dTSSdy_RA(J, N, M)
-                END IF
+            DO M = 1, NDV
+                DO N = 1, NDV
+                    IF(M >  N) THEN
+                        dTSSdy_RA(J, M, N) = dTSSdy_RA(J, N, M)
+                    END IF
+                END DO
             END DO
+
         END DO
-
-    END DO
-    CALL CHKHDL(' ==>Calculated dTSSdy_RA', MYID)
+        CALL CHKHDL(' ==>Calculated dTSSdy_RA', MYID)
 
 
-    !========<du_M / DX_n * \tau_hp >======================
-    ! Eq. = <d(u_m) / D(x_n) * mu * d(u_h) / D(x_p) > +
-    !       <d(u_m) / D(x_n) * mu * d(u_p) / D(x_h) > - 2 / 3 * Delta_hp
-    !       <d(u_m) / D(x_n) * mu * d(u_l) / D(x_l) >
-    ! (M - 1) * NDV + H
-    DO J = 1, NCL2
-        DO M = 1, NDV
-            DO N = 1, NDV
-                DO H = 1, NDV
-                    DO P = 1, NDV
-                        TauDvDL_RA(J, M, N, H, P) = (     &
-                        DVDL2MxztL_F0_io(J, (M - 1) * 3 + N, (H- 1) * 3 + P ) + &
-                        DVDL2MxztL_F0_io(J, (M - 1) * 3 + N, (P - 1) * 3 + H ) - &
-                        2.0_WP / 3.0_WP * DBLE(Kronecker_Delta(H,P)) * (&
-                        DVDL2MxztL_F0_io(J, (M - 1) * 3 + N, (1- 1) * 3 + 1 ) + &
-                        DVDL2MxztL_F0_io(J, (M - 1) * 3 + N, (2 - 1) * 3 + 2 ) + &
-                        DVDL2MxztL_F0_io(J, (M - 1) * 3 + N, (3- 1) * 3 +3 ) ) ) * CVISC
+        !========<du_M / DX_n * \tau_hp >======================
+        ! Eq. = <d(u_m) / D(x_n) * mu * d(u_h) / D(x_p) > +
+        !       <d(u_m) / D(x_n) * mu * d(u_p) / D(x_h) > - 2 / 3 * Delta_hp
+        !       <d(u_m) / D(x_n) * mu * d(u_l) / D(x_l) >
+        ! (M - 1) * NDV + H
+        DO J = 1, NCL2
+            DO M = 1, NDV
+                DO N = 1, NDV
+                    DO H = 1, NDV
+                        DO P = 1, NDV
+                            TauDvDL_RA(J, M, N, H, P) = (     &
+                            DVDL2MxztL_F0_io(J, (M - 1) * 3 + N, (H- 1) * 3 + P ) + &
+                            DVDL2MxztL_F0_io(J, (M - 1) * 3 + N, (P - 1) * 3 + H ) - &
+                            2.0_WP / 3.0_WP * DBLE(Kronecker_Delta(H,P)) * (&
+                            DVDL2MxztL_F0_io(J, (M - 1) * 3 + N, (1- 1) * 3 + 1 ) + &
+                            DVDL2MxztL_F0_io(J, (M - 1) * 3 + N, (2 - 1) * 3 + 2 ) + &
+                            DVDL2MxztL_F0_io(J, (M - 1) * 3 + N, (3- 1) * 3 +3 ) ) ) * CVISC
 
+                        END DO
                     END DO
                 END DO
             END DO
         END DO
-    END DO
-    CALL CHKHDL(' ==>Calculated TauDvDL_RA', MYID)
+        CALL CHKHDL(' ==>Calculated TauDvDL_RA', MYID)
 
 
-    !        DO J = 1, NCL2
-    !            DO M = 1, NDV
-    !                DO N = 1, NDV
-    !                    Tau_ik_Du_jDX_i_RA(J, M, N) = ( &
-    !                            DVDL2MxztL_F0_io(J, (M - 1) * 3 + 1, (N - 1) * 3 + 1 ) + &
-    !                            DVDL2MxztL_F0_io(J, (M - 1) * 3 + 2, (N - 1) * 3 + 2 ) + &
-    !                            DVDL2MxztL_F0_io(J, (M - 1) * 3 +3, (N - 1) * 3 +3 ) + &
-    !                            DVDL2MxztL_F0_io(J, (1- 1) * 3 +M, (N - 1) * 3 + 1 ) + &
-    !                            DVDL2MxztL_F0_io(J, (2 - 1) * 3 +M, (N - 1) * 3 + 2 ) + &
-    !                            DVDL2MxztL_F0_io(J, (3- 1) * 3 +M, (N - 1) * 3 +3 ) - &
-    !                            2.0_WP / 3.0_WP * ( &
-    !                            DVDL2MxztL_F0_io(J, (1- 1) * 3 + 1, (N - 1) * 3 + 1 ) * DBLE(Kronecker_Delta(M, 1)) + &
-    !                            DVDL2MxztL_F0_io(J, (1- 1) * 3 + 1, (N - 1) * 3 + 2 ) * DBLE(Kronecker_Delta(M, 2)) + &
-    !                            DVDL2MxztL_F0_io(J, (1- 1) * 3 + 1, (N - 1) * 3 +3 ) * DBLE(Kronecker_Delta(M, 3)) + &
-    !                            DVDL2MxztL_F0_io(J, (2 - 1) * 3 + 2, (N - 1) * 3 + 1 ) * DBLE(Kronecker_Delta(M, 1)) + &
-    !                            DVDL2MxztL_F0_io(J, (2 - 1) * 3 + 2, (N - 1) * 3 + 2 ) * DBLE(Kronecker_Delta(M, 2)) + &
-    !                            DVDL2MxztL_F0_io(J, (2 - 1) * 3 + 2, (N - 1) * 3 +3 ) * DBLE(Kronecker_Delta(M, 3)) + &
-    !                            DVDL2MxztL_F0_io(J, (3- 1) * 3 +3, (N - 1) * 3 + 1 ) * DBLE(Kronecker_Delta(M, 1)) + &
-    !                            DVDL2MxztL_F0_io(J, (3- 1) * 3 +3, (N - 1) * 3 + 2 ) * DBLE(Kronecker_Delta(M, 2)) + &
-    !                            DVDL2MxztL_F0_io(J, (3- 1) * 3 +3, (N - 1) * 3 +3 ) * DBLE(Kronecker_Delta(M, 3)) ) &
-    !                            ) * CVISC
-    !                END DO
-    !            END DO
-    !        END DO
+        !        DO J = 1, NCL2
+        !            DO M = 1, NDV
+        !                DO N = 1, NDV
+        !                    Tau_ik_Du_jDX_i_RA(J, M, N) = ( &
+        !                            DVDL2MxztL_F0_io(J, (M - 1) * 3 + 1, (N - 1) * 3 + 1 ) + &
+        !                            DVDL2MxztL_F0_io(J, (M - 1) * 3 + 2, (N - 1) * 3 + 2 ) + &
+        !                            DVDL2MxztL_F0_io(J, (M - 1) * 3 +3, (N - 1) * 3 +3 ) + &
+        !                            DVDL2MxztL_F0_io(J, (1- 1) * 3 +M, (N - 1) * 3 + 1 ) + &
+        !                            DVDL2MxztL_F0_io(J, (2 - 1) * 3 +M, (N - 1) * 3 + 2 ) + &
+        !                            DVDL2MxztL_F0_io(J, (3- 1) * 3 +M, (N - 1) * 3 +3 ) - &
+        !                            2.0_WP / 3.0_WP * ( &
+        !                            DVDL2MxztL_F0_io(J, (1- 1) * 3 + 1, (N - 1) * 3 + 1 ) * DBLE(Kronecker_Delta(M, 1)) + &
+        !                            DVDL2MxztL_F0_io(J, (1- 1) * 3 + 1, (N - 1) * 3 + 2 ) * DBLE(Kronecker_Delta(M, 2)) + &
+        !                            DVDL2MxztL_F0_io(J, (1- 1) * 3 + 1, (N - 1) * 3 +3 ) * DBLE(Kronecker_Delta(M, 3)) + &
+        !                            DVDL2MxztL_F0_io(J, (2 - 1) * 3 + 2, (N - 1) * 3 + 1 ) * DBLE(Kronecker_Delta(M, 1)) + &
+        !                            DVDL2MxztL_F0_io(J, (2 - 1) * 3 + 2, (N - 1) * 3 + 2 ) * DBLE(Kronecker_Delta(M, 2)) + &
+        !                            DVDL2MxztL_F0_io(J, (2 - 1) * 3 + 2, (N - 1) * 3 +3 ) * DBLE(Kronecker_Delta(M, 3)) + &
+        !                            DVDL2MxztL_F0_io(J, (3- 1) * 3 +3, (N - 1) * 3 + 1 ) * DBLE(Kronecker_Delta(M, 1)) + &
+        !                            DVDL2MxztL_F0_io(J, (3- 1) * 3 +3, (N - 1) * 3 + 2 ) * DBLE(Kronecker_Delta(M, 2)) + &
+        !                            DVDL2MxztL_F0_io(J, (3- 1) * 3 +3, (N - 1) * 3 +3 ) * DBLE(Kronecker_Delta(M, 3)) ) &
+        !                            ) * CVISC
+        !                END DO
+        !            END DO
+        !        END DO
 
-    IF(iThermoDynamics == 1) THEN
         DO J = 1, NCL2
             DO M = 1, NDV
                 DO N = 1, NDV
@@ -2641,84 +2642,85 @@ SUBROUTINE PP_FLOW_BASIC_VARS_XZ_io
 
         END DO
         CALL CHKHDL(' ==>LumleyAxis_FA', MYID)
+    
+
+        ! calculate DrivenForce in Streamwise direction for periodic directions.
+        DO J = 1, NCL2
+
+            IF(J == 1) THEN
+                FF = ( ( YCL2ND_WFF(J + 1) * (Tau_Mean_RA(J + 1, 1, 2) - Uff2d_FA(J + 1, 1, 2)) + &
+                YCL2ND_WFB(J + 1) * (Tau_Mean_RA(J,  1, 2) - Uff2d_FA(J,  1, 2)) ) -  &
+                DABS(Tauw_io(1)) ) * DYFI(J)
+
+
+            ELSE IF(J == NCL2) THEN
+                FF = ( - DABS(Tauw_io(2)) -  &
+                ( YCL2ND_WFF(J) * (Tau_Mean_RA(J,  1, 2) - Uff2d_FA(J,  1, 2)) + &
+                YCL2ND_WFB(J) * (Tau_Mean_RA(J - 1, 1, 2) - Uff2d_FA(J - 1, 1, 2)) ) ) * DYFI(J)
+
+
+            ELSE
+                FF = ( ( YCL2ND_WFF(J + 1) * (Tau_Mean_RA(J + 1, 1, 2) - Uff2d_FA(J + 1, 1, 2)) + &
+                YCL2ND_WFB(J + 1) * (Tau_Mean_RA(J,  1, 2) - Uff2d_FA(J,  1, 2)) ) -  &
+                ( YCL2ND_WFF(J) * (Tau_Mean_RA(J,  1, 2) - Uff2d_FA(J,  1, 2)) + &
+                YCL2ND_WFB(J) * (Tau_Mean_RA(J - 1, 1, 2) - Uff2d_FA(J - 1, 1, 2)) ) ) * DYFI(J)
+
+            END IF
+
+            DrivenForce(J) = (FF+F_A* IBuoF(1) * D1xztL_F0_io(J)) * (-1.0_WP)
+            !!WRITE(*, *) YCC(J), DrivenForce(J), FF, F_A* IBuoF(1) * D1xztL_F0_io(J)
+        END DO
+
+        DrivenFCTT1  = 0.0_WP
+        DrivenFCTT2  = 0.0_WP
+        DrivenFCTTU1 = 0.0_WP
+        DrivenFCTTU2 = 0.0_WP
+        DO J = 1, NCL2
+            DrivenFCTT1 = DrivenFCTT1 + DrivenForce(J) / DYFI(J)
+            DrivenFCTTU1 = DrivenFCTTU1 + DrivenForce(J) * U_FA(J, 1) / DYFI(J)
+
+            DrivenFCTT2 = DrivenFCTT2 +FUxztL_F0_io(J, 4) / DYFI(J)
+            DrivenFCTTU2 = DrivenFCTTU2 +FUxztL_F0_io(J, 4) * U_FA(J, 1) / DYFI(J)
+        END DO
+
+        WRITE(PNTIM, '(1ES15.9)') PhyTIME_io
+        OPEN(TECFLG, FILE = TRIM(FilePath4) // 'Result.IO.Table.WallandBulk.' // TRIM(PNTIM) // '.plt', POSITION = 'APPEND')
+        WRITE(TECFLG, '(A)') '==================================== '
+        WRITE(TECFLG, '(A, 2ES20.7)') 'Driven Force (Constant) & its MKE production = ', DrivenFCTT2, DrivenFCTTU2
+        WRITE(TECFLG, '(A, 2ES20.7)') 'Driven Force (inversed) & its MKE production = ', DrivenFCTT1, DrivenFCTTU1
+        CLOSE(TECFLG)
+
+        CALL CHKHDL(' ==>DrivenForce', MYID)
+
+
+        !=============================================================
+        ddenintg = 0.0_WP
+        deNMintg = 0.0_WP
+        bdfciNTG = 0.0_WP
+        DensIntg = 0.0_WP
+        DO J = 1, NCL2
+            ! second order intgeral
+            !            IF(J == 1) THEN
+            !                DENtemp = 0.5_WP * ( ( YCL2ND_WFB(J + 1) * D1xztL_F0_io(J) + YCL2ND_WFF(J + 1) * D1xztL_F0_io(J + 1) ) +             &
+            !                                  Dwal(1) )
+            !            ELSE IF(J == NCL2) THEN
+            !                DENtemp = 0.5_WP * ( Dwal(2) +             &
+            !                                  ( YCL2ND_WFF(J) * D1xztL_F0_io(J) + YCL2ND_WFB(J) * D1xztL_F0_io(J - 1) ) )
+            !            ELSE
+            !                DENtemp = 0.5_WP * ( ( YCL2ND_WFB(J + 1) * D1xztL_F0_io(J) + YCL2ND_WFF(J + 1) * D1xztL_F0_io(J + 1) ) +             &
+            !                                  ( YCL2ND_WFF(J) * D1xztL_F0_io(J) + YCL2ND_WFB(J) * D1xztL_F0_io(J - 1) ) )
+            !            END IF
+            !first order integral
+            DENtemp = D1xztL_F0_io(J)
+
+            deNMintg = deNMintg+ DENtemP / DYFI(J)
+            DensIntg(J) = deNMintg !; !WRITE(*, *) J, DENtemp, DensIntg(J)
+
+            ddenintg = ddenintg + (DENtemP - DenAvew) / DYFI(J)
+            bdfcintg(J) = F_A* Ddenintg
+        END DO
+        CALL CHKHDL(' ==>Calculated bodyforce distribution', MYID)
     END IF
-
-    ! calculate DrivenForce in Streamwise direction for periodic directions.
-    DO J = 1, NCL2
-
-        IF(J == 1) THEN
-            FF = ( ( YCL2ND_WFF(J + 1) * (Tau_Mean_RA(J + 1, 1, 2) - Uff2d_FA(J + 1, 1, 2)) + &
-            YCL2ND_WFB(J + 1) * (Tau_Mean_RA(J,  1, 2) - Uff2d_FA(J,  1, 2)) ) -  &
-            DABS(Tauw_io(1)) ) * DYFI(J)
-
-
-        ELSE IF(J == NCL2) THEN
-            FF = ( - DABS(Tauw_io(2)) -  &
-            ( YCL2ND_WFF(J) * (Tau_Mean_RA(J,  1, 2) - Uff2d_FA(J,  1, 2)) + &
-            YCL2ND_WFB(J) * (Tau_Mean_RA(J - 1, 1, 2) - Uff2d_FA(J - 1, 1, 2)) ) ) * DYFI(J)
-
-
-        ELSE
-            FF = ( ( YCL2ND_WFF(J + 1) * (Tau_Mean_RA(J + 1, 1, 2) - Uff2d_FA(J + 1, 1, 2)) + &
-            YCL2ND_WFB(J + 1) * (Tau_Mean_RA(J,  1, 2) - Uff2d_FA(J,  1, 2)) ) -  &
-            ( YCL2ND_WFF(J) * (Tau_Mean_RA(J,  1, 2) - Uff2d_FA(J,  1, 2)) + &
-            YCL2ND_WFB(J) * (Tau_Mean_RA(J - 1, 1, 2) - Uff2d_FA(J - 1, 1, 2)) ) ) * DYFI(J)
-
-        END IF
-
-        DrivenForce(J) = (FF+F_A* IBuoF(1) * D1xztL_F0_io(J)) * (-1.0_WP)
-        !!WRITE(*, *) YCC(J), DrivenForce(J), FF, F_A* IBuoF(1) * D1xztL_F0_io(J)
-    END DO
-
-    DrivenFCTT1  = 0.0_WP
-    DrivenFCTT2  = 0.0_WP
-    DrivenFCTTU1 = 0.0_WP
-    DrivenFCTTU2 = 0.0_WP
-    DO J = 1, NCL2
-        DrivenFCTT1 = DrivenFCTT1 + DrivenForce(J) / DYFI(J)
-        DrivenFCTTU1 = DrivenFCTTU1 + DrivenForce(J) * U_FA(J, 1) / DYFI(J)
-
-        DrivenFCTT2 = DrivenFCTT2 +FUxztL_F0_io(J, 4) / DYFI(J)
-        DrivenFCTTU2 = DrivenFCTTU2 +FUxztL_F0_io(J, 4) * U_FA(J, 1) / DYFI(J)
-    END DO
-
-    WRITE(PNTIM, '(1ES15.9)') PhyTIME_io
-    OPEN(TECFLG, FILE = TRIM(FilePath4) // 'Result.IO.Table.WallandBulk.' // TRIM(PNTIM) // '.plt', POSITION = 'APPEND')
-    WRITE(TECFLG, '(A)') '==================================== '
-    WRITE(TECFLG, '(A, 2ES20.7)') 'Driven Force (Constant) & its MKE production = ', DrivenFCTT2, DrivenFCTTU2
-    WRITE(TECFLG, '(A, 2ES20.7)') 'Driven Force (inversed) & its MKE production = ', DrivenFCTT1, DrivenFCTTU1
-    CLOSE(TECFLG)
-
-    CALL CHKHDL(' ==>DrivenForce', MYID)
-
-
-    !=============================================================
-    ddenintg = 0.0_WP
-    deNMintg = 0.0_WP
-    bdfciNTG = 0.0_WP
-    DensIntg = 0.0_WP
-    DO J = 1, NCL2
-        ! second order intgeral
-        !            IF(J == 1) THEN
-        !                DENtemp = 0.5_WP * ( ( YCL2ND_WFB(J + 1) * D1xztL_F0_io(J) + YCL2ND_WFF(J + 1) * D1xztL_F0_io(J + 1) ) +             &
-        !                                  Dwal(1) )
-        !            ELSE IF(J == NCL2) THEN
-        !                DENtemp = 0.5_WP * ( Dwal(2) +             &
-        !                                  ( YCL2ND_WFF(J) * D1xztL_F0_io(J) + YCL2ND_WFB(J) * D1xztL_F0_io(J - 1) ) )
-        !            ELSE
-        !                DENtemp = 0.5_WP * ( ( YCL2ND_WFB(J + 1) * D1xztL_F0_io(J) + YCL2ND_WFF(J + 1) * D1xztL_F0_io(J + 1) ) +             &
-        !                                  ( YCL2ND_WFF(J) * D1xztL_F0_io(J) + YCL2ND_WFB(J) * D1xztL_F0_io(J - 1) ) )
-        !            END IF
-        !first order integral
-        DENtemp = D1xztL_F0_io(J)
-
-        deNMintg = deNMintg+ DENtemP / DYFI(J)
-        DensIntg(J) = deNMintg !; !WRITE(*, *) J, DENtemp, DensIntg(J)
-
-        ddenintg = ddenintg + (DENtemP - DenAvew) / DYFI(J)
-        bdfcintg(J) = F_A* Ddenintg
-    END DO
-    CALL CHKHDL(' ==>Calculated bodyforce distribution', MYID)
 
 
     RETURN

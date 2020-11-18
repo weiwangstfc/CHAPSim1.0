@@ -57,28 +57,28 @@ SUBROUTINE MEMO_ALLOCT_AVERAGE_TG
     USE init_info
     IMPLICIT NONE
 
-    ALLOCATE( U1xztL_F0_tg( NCL2, NDV + 1 ) )
-    ALLOCATE( UPxztL_F0_tg( NCL2, NDV   )  )
-    ALLOCATE( U2xztL_F0_tg( NCL2, NDV * (7 - NDV) / 2 + NDV - 3 )   )
-    ALLOCATE( U3xztL_F0_tg( NCL2, NDV * (6 - NDV) + (NDV * (7 - NDV)) / 2 + NDV - 8  ) )
+    ALLOCATE( U1xztL_F0_tg( NCL2, NDV + 1 ) ); U1xztL_F0_tg = 0.0_WP
+    ALLOCATE( UPxztL_F0_tg( NCL2, NDV   )  ); UPxztL_F0_tg = 0.0_WP
+    ALLOCATE( U2xztL_F0_tg( NCL2, NDV * (7 - NDV) / 2 + NDV - 3 )   ); U2xztL_F0_tg = 0.0_WP
+    ALLOCATE( U3xztL_F0_tg( NCL2, NDV * (6 - NDV) + (NDV * (7 - NDV)) / 2 + NDV - 8  ) ); U3xztL_F0_tg = 0.0_WP
 
-    ALLOCATE( DVDL1xztL_F0_tg( NCL2, NDV, NDV  ) )
-    ALLOCATE( DVDLPxztL_F0_tg( NCL2, NDV, NDV  ) )
-    ALLOCATE( DVDL2xztL_F0_tg( NCL2, NDV * NDV, NDV * NDV  ) )
+    ALLOCATE( DVDL1xztL_F0_tg( NCL2, NDV, NDV  ) ); DVDL1xztL_F0_tg = 0.0_WP
+    ALLOCATE( DVDLPxztL_F0_tg( NCL2, NDV, NDV  ) ); DVDLPxztL_F0_tg = 0.0_WP
+    ALLOCATE( DVDL2xztL_F0_tg( NCL2, NDV * NDV, NDV * NDV  ) ); DVDL2xztL_F0_tg = 0.0_WP
 
-    ALLOCATE( U2PER(NCL2, NDV, NDV)                     )
-    ALLOCATE( U3PER(NCL2, NDV, NDV, NDV)            )
-    ALLOCATE( VORper2(NCL2, NDV)                     )
-    ALLOCATE( DUDX1(NCL2, NDV, NDV)                     )
-    ALLOCATE( Skewness(NCL2, NDV)                    )
+    ALLOCATE( U2PER(NCL2, NDV, NDV)                     ); U2PER = 0.0_WP
+    ALLOCATE( U3PER(NCL2, NDV, NDV, NDV)            ); U3PER = 0.0_WP
+    ALLOCATE( VORper2(NCL2, NDV)                     ); VORper2 = 0.0_WP
+    ALLOCATE( DUDX1(NCL2, NDV, NDV)                     ); DUDX1 = 0.0_WP
+    ALLOCATE( Skewness(NCL2, NDV)                    ); Skewness = 0.0_WP
 
 
-    ALLOCATE(Budg_productn( NCL2, (NDV * (7 - NDV)) / 2 + NDV - 3 ) )
-    ALLOCATE(Budg_Tpr_diff( NCL2, (NDV * (7 - NDV)) / 2 + NDV - 3 ) )
-    ALLOCATE(Budg_VIS_diff( NCL2, (NDV * (7 - NDV)) / 2 + NDV - 3 ) )
-    ALLOCATE(Budg_VPG_diff( NCL2, (NDV * (7 - NDV)) / 2 + NDV - 3 ) )
-    ALLOCATE(Budg_VPG_stra( NCL2, (NDV * (7 - NDV)) / 2 + NDV - 3 ) )
-    ALLOCATE(Budg_DISsipat( NCL2, (NDV * (7 - NDV)) / 2 + NDV - 3 ) )
+    ALLOCATE(Budg_productn( NCL2, (NDV * (7 - NDV)) / 2 + NDV - 3 ) ); Budg_productn = 0.0_WP
+    ALLOCATE(Budg_Tpr_diff( NCL2, (NDV * (7 - NDV)) / 2 + NDV - 3 ) ); Budg_Tpr_diff = 0.0_WP
+    ALLOCATE(Budg_VIS_diff( NCL2, (NDV * (7 - NDV)) / 2 + NDV - 3 ) ); Budg_VIS_diff = 0.0_WP
+    ALLOCATE(Budg_VPG_diff( NCL2, (NDV * (7 - NDV)) / 2 + NDV - 3 ) ); Budg_VPG_diff = 0.0_WP
+    ALLOCATE(Budg_VPG_stra( NCL2, (NDV * (7 - NDV)) / 2 + NDV - 3 ) ); Budg_VPG_stra = 0.0_WP
+    ALLOCATE(Budg_DISsipat( NCL2, (NDV * (7 - NDV)) / 2 + NDV - 3 ) ); Budg_DISsipat = 0.0_WP
 
 
     RETURN

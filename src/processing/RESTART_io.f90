@@ -34,7 +34,7 @@ SUBROUTINE ReStart_INSTANT_VARS_io(TFM)  ! FOR BOTH KINDS OF DOMAINS....
 
     IF(MYID == 0) CALL CHKHDL('IO: ReStart instantanous flow field', MYID)
 
-    ALLOCATE(DUMMY(NCL1E, N2DO(MYID), NCL3))
+    ALLOCATE(DUMMY(NCL1E, N2DO(MYID), NCL3)); DUMMY = 0.0_WP
     WRITE(PNTIM, '(1ES15.9)') TFM !TimeReStart_io
 
     IF(TgFlowFlg .AND. IoFlowFlg) THEN
@@ -258,7 +258,7 @@ SUBROUTINE ReStart_AVERAGE_VARS_nonXperiodic_io
     NDV + NDV + (NDV - 1) * NDV + NDV
     NSZ4 = 1 + 1 + 1 + 1 + 1 + 1 + NDV +  NDV + (NDV - 1) * NDV + NDV
 
-    ALLOCATE( DUMMY(1 : NCL1_io, 1 : N2DO(MYID), NSZ3, NSZ4 ) )
+    ALLOCATE( DUMMY(1 : NCL1_io, 1 : N2DO(MYID), NSZ3, NSZ4 ) ); DUMMY = 0.0_WP
     DUMMY = 0.0_WP
 
     DFLG = 100
@@ -462,7 +462,7 @@ SUBROUTINE ReStart_AVERAGE_VARS_THERMAL_nonXperiodic_io
     IF(MYID == 0) CALL CHKHDL(' IO: ReStart averaged thermal field', MYID)
 
     NARRAY = 3
-    ALLOCATE( DUMMY(1 : NCL1_io, 1 : N2DO(MYID), 7+ 2 * NDV + 4) )
+    ALLOCATE( DUMMY(1 : NCL1_io, 1 : N2DO(MYID), 7+ 2 * NDV + 4) ); DUMMY = 0.0_WP
     DUMMY = 0.0_WP
 
     DFLG = 100
@@ -683,8 +683,8 @@ SUBROUTINE ReStart_AVERAGE_VARS_Xperiodic_io
     !NSZ = NSZ + 12 * (8* QUADHN)
 
 
-    ALLOCATE( DUMMY (1 : N2DO(MYID), NSZ ) )
-    ALLOCATE( DUMMY1(1 : N2DO(MYID), NSZ ) )
+    ALLOCATE( DUMMY (1 : N2DO(MYID), NSZ ) ); DUMMY = 0.0_WP
+    ALLOCATE( DUMMY1(1 : N2DO(MYID), NSZ ) ); DUMMY1 = 0.0_WP
     DUMMY  = 0.0_WP
     DUMMY1 = 0.0_WP
 
@@ -756,7 +756,7 @@ SUBROUTINE ReStart_AVERAGE_VARS_Xperiodic_io
 
     !=========== Read data2 ==============================================================
     IF(tRunAve_Reset < PhyTIME_io .AND. tRunAve_Reset > tRunAve1) THEN
-        ALLOCATE( DUMMY2(1 : N2DO(MYID), NSZ ) )
+        ALLOCATE( DUMMY2(1 : N2DO(MYID), NSZ ) ); DUMMY2 = 0.0_WP
         DUMMY2 = 0.0_WP
 
         DFLG = 101
@@ -1230,8 +1230,8 @@ SUBROUTINE ReStart_AVERAGE_VARS_THERMAL_Xperiodic_io
     !!NSZ = 9+5* NDV + ((NDV * (7 - NDV)) / 2 + NDV - 3) + 4* NDV * NDV +3 * NDV * NDV * NDV
     NSZ = 9 + 5 * NDV + ((NDV * (7 - NDV)) / 2 + NDV - 3) +3 * NDV * NDV +3 * NDV * NDV * NDV + &
             ((NDV - 1) * NDV + NDV) * ((NDV - 1) * NDV + NDV)
-    ALLOCATE( DUMMY (1 : N2DO(MYID), NSZ ) )
-    ALLOCATE( DUMMY1(1 : N2DO(MYID), NSZ ) )
+    ALLOCATE( DUMMY (1 : N2DO(MYID), NSZ ) ); DUMMY = 0.0_WP
+    ALLOCATE( DUMMY1(1 : N2DO(MYID), NSZ ) ); DUMMY1 = 0.0_WP
     DUMMY  = 0.0_WP
     DUMMY1 = 0.0_WP
 
@@ -1306,7 +1306,7 @@ SUBROUTINE ReStart_AVERAGE_VARS_THERMAL_Xperiodic_io
 
     !!=========== Read data2 ==============================================================
     IF(tRunAve_Reset < PhyTIME_io) THEN
-        ALLOCATE( DUMMY2 (1 : N2DO(MYID), NSZ ) )
+        ALLOCATE( DUMMY2 (1 : N2DO(MYID), NSZ ) ); DUMMY2 = 0.0_WP
         DUMMY2 = 0.0_WP
 
         DFLG = 101

@@ -150,103 +150,103 @@ SUBROUTINE MEMO_ALLOCT_AVERAGE_nonXperiodic_io
     USE init_info
     IMPLICIT NONE
 
-    ALLOCATE( U1ztL_F0_io( NCL1_io, NCL2, NDV + 1 ) )
-    ALLOCATE( G1ztL_F0_io( NCL1_io, NCL2, NDV   ) )
-    ALLOCATE( UPztL_F0_io( NCL1_io, NCL2, NDV   ) )
+    ALLOCATE( U1ztL_F0_io( NCL1_io, NCL2, NDV + 1 ) ) ; U1ztL_F0_io = 0.0_WP
+    ALLOCATE( G1ztL_F0_io( NCL1_io, NCL2, NDV   ) ) ; G1ztL_F0_io = 0.0_WP
+    ALLOCATE( UPztL_F0_io( NCL1_io, NCL2, NDV   ) ) ; UPztL_F0_io = 0.0_WP
 
-    ALLOCATE( U2ztL_F0_io( NCL1_io, NCL2, NDV * (7 - NDV) / 2 + NDV - 3 ) )
-    ALLOCATE( UGztL_F0_io( NCL1_io, NCL2, NDV * (7 - NDV) / 2 + NDV - 3 ) )
+    ALLOCATE( U2ztL_F0_io( NCL1_io, NCL2, NDV * (7 - NDV) / 2 + NDV - 3 ) ) ; U2ztL_F0_io = 0.0_WP
+    ALLOCATE( UGztL_F0_io( NCL1_io, NCL2, NDV * (7 - NDV) / 2 + NDV - 3 ) ) ; UGztL_F0_io = 0.0_WP
 
-    ALLOCATE( UGUztL_F0_io(NCL1_io, NCL2, NDV * (6 - NDV) + (NDV * (7 - NDV)) / 2 + NDV - 8) )
+    ALLOCATE( UGUztL_F0_io(NCL1_io, NCL2, NDV * (6 - NDV) + (NDV * (7 - NDV)) / 2 + NDV - 8) ) ; UGUztL_F0_io = 0.0_WP
 
-    ALLOCATE( DVDL1ztL_F0_io( NCL1_io, NCL2, NDV, NDV  ) )
-    ALLOCATE( DVDLPztL_F0_io( NCL1_io, NCL2, NDV, NDV  ) )
-    ALLOCATE( DVDL2ztL_F0_io( NCL1_io, NCL2, NDV * (7 - NDV) / 2 + NDV - 3, NDV  ) )
+    ALLOCATE( DVDL1ztL_F0_io( NCL1_io, NCL2, NDV, NDV  ) ) ; DVDL1ztL_F0_io = 0.0_WP
+    ALLOCATE( DVDLPztL_F0_io( NCL1_io, NCL2, NDV, NDV  ) ) ; DVDLPztL_F0_io = 0.0_WP
+    ALLOCATE( DVDL2ztL_F0_io( NCL1_io, NCL2, NDV * (7 - NDV) / 2 + NDV - 3, NDV  ) ) ; DVDL2ztL_F0_io = 0.0_WP
 
     ALLOCATE( D1ztL_F0_io( NCL1_io, NCL2 ) ) ;  D1ztL_F0_io = 1.0_WP
 
     IF(iThermoDynamics == 1) THEN
 
-        ALLOCATE( T1ztL_F0_io( NCL1_io, NCL2 ) )
+        ALLOCATE( T1ztL_F0_io( NCL1_io, NCL2 ) ) ; T1ztL_F0_io = 0.0_WP
 
-        ALLOCATE( H1ztL_F0_io( NCL1_io, NCL2 ) )
+        ALLOCATE( H1ztL_F0_io( NCL1_io, NCL2 ) ) ; H1ztL_F0_io = 0.0_WP
 
-        ALLOCATE( T2ztL_F0_io( NCL1_io, NCL2 ) )
-        ALLOCATE( D2ztL_F0_io( NCL1_io, NCL2 ) )
-        ALLOCATE( H2ztL_F0_io( NCL1_io, NCL2 ) )
+        ALLOCATE( T2ztL_F0_io( NCL1_io, NCL2 ) ) ; T2ztL_F0_io = 0.0_WP
+        ALLOCATE( H2ztL_F0_io( NCL1_io, NCL2 ) ) ; H2ztL_F0_io = 0.0_WP
+        ALLOCATE( H2ztL_F0_io( NCL1_io, NCL2 ) ) ; H2ztL_F0_io = 0.0_WP
 
-        ALLOCATE( DHztL_F0_io( NCL1_io, NCL2 ) )
+        ALLOCATE( DHztL_F0_io( NCL1_io, NCL2 ) ) ; DHztL_F0_io = 0.0_WP
 
-        ALLOCATE( UHztL_F0_io( NCL1_io, NCL2, NDV ) )
-        ALLOCATE( GHztL_F0_io( NCL1_io, NCL2, NDV ) )
+        ALLOCATE( UHztL_F0_io( NCL1_io, NCL2, NDV ) ) ; UHztL_F0_io = 0.0_WP
+        ALLOCATE( GHztL_F0_io( NCL1_io, NCL2, NDV ) ) ; GHztL_F0_io = 0.0_WP
 
-        ALLOCATE( MDOt(NCL1_io) )
-        ALLOCATE( Gbuk(NCL1_io) )
-        ALLOCATE( DHDOt(NCL1_io) )
-        ALLOCATE( Hbuk(NCL1_io) )
-        ALLOCATE( DHbuk(NCL1_io) )
+        ALLOCATE( MDOt(NCL1_io) ) ; MDOt = 0.0_WP
+        ALLOCATE( Gbuk(NCL1_io) ) ; Gbuk = 0.0_WP
+        ALLOCATE( DHDOt(NCL1_io) ) ; DHDOt = 0.0_WP
+        ALLOCATE( Hbuk(NCL1_io) ) ; Hbuk = 0.0_WP
+        ALLOCATE( DHbuk(NCL1_io) ) ; DHbuk = 0.0_WP
 
-        ALLOCATE( Tbuk(NCL1_io) )
-        ALLOCATE( Dbuk(NCL1_io) )
-        ALLOCATE( Mbuk(NCL1_io) )
-        ALLOCATE( Kbuk(NCL1_io) )
-        ALLOCATE(Bbuk(NCL1_io) )
-        ALLOCATE( Cpbk(NCL1_io) )
+        ALLOCATE( Tbuk(NCL1_io) ) ; Tbuk = 0.0_WP
+        ALLOCATE( Dbuk(NCL1_io) ) ; Dbuk = 0.0_WP
+        ALLOCATE( Mbuk(NCL1_io) ) ; Mbuk = 0.0_WP
+        ALLOCATE( Kbuk(NCL1_io) ) ; Kbuk = 0.0_WP
+        ALLOCATE( Bbuk(NCL1_io) ) ; Bbuk = 0.0_WP
+        ALLOCATE( Cpbk(NCL1_io) ) ; Cpbk = 0.0_WP
 
-        ALLOCATE( Hwalz_FA(NCL1_io, 2) )
-        ALLOCATE( Hwalz_RA(NCL1_io, 2) )
-        ALLOCATE( DHwalz_RA(NCL1_io, 2) )
-        ALLOCATE( Twalz(NCL1_io, 2) )
-        ALLOCATE( Dwalz(NCL1_io, 2) )
-        ALLOCATE( Mwalz(NCL1_io, 2) )
-        ALLOCATE( Kwalz(NCL1_io, 2) )
-        ALLOCATE( Cpwalz(NCL1_io, 2) )
+        ALLOCATE( Hwalz_FA(NCL1_io, 2) ) ; Hwalz_FA = 0.0_WP
+        ALLOCATE( Hwalz_RA(NCL1_io, 2) ) ; Hwalz_RA = 0.0_WP
+        ALLOCATE( DHwalz_RA(NCL1_io, 2) ) ; DHwalz_RA = 0.0_WP
+        ALLOCATE( Twalz(NCL1_io, 2) ) ; Twalz = 0.0_WP
+        ALLOCATE( Dwalz(NCL1_io, 2) ) ; Dwalz = 0.0_WP
+        ALLOCATE( Mwalz(NCL1_io, 2) ) ; Mwalz = 0.0_WP
+        ALLOCATE( Kwalz(NCL1_io, 2) ) ; Kwalz = 0.0_WP
+        ALLOCATE( Cpwalz(NCL1_io, 2) ) ; Cpwalz = 0.0_WP
 
-        ALLOCATE( qw_D(NCL1_io, 2) )
-        ALLOCATE( hc_D(NCL1_io, 2) )
-        ALLOCATE( Hwalz_RA_D(NCL1_io, 2) )
-        ALLOCATE( Twalz_D(NCL1_io, 2) )
-        ALLOCATE( Dwalz_D(NCL1_io, 2) )
-        ALLOCATE( Mwalz_D(NCL1_io, 2) )
-        ALLOCATE( Kwalz_D(NCL1_io, 2) )
-        ALLOCATE( Cpwalz_D(NCL1_io, 2) )
+        ALLOCATE( qw_D(NCL1_io, 2) ) ; qw_D = 0.0_WP
+        ALLOCATE( hc_D(NCL1_io, 2) ) ; hc_D = 0.0_WP
+        ALLOCATE( Hwalz_RA_D(NCL1_io, 2) ) ; Hwalz_RA_D = 0.0_WP
+        ALLOCATE( Twalz_D(NCL1_io, 2) ) ; Twalz_D = 0.0_WP
+        ALLOCATE( Dwalz_D(NCL1_io, 2) ) ; Dwalz_D = 0.0_WP
+        ALLOCATE( Mwalz_D(NCL1_io, 2) ) ; Mwalz_D = 0.0_WP
+        ALLOCATE( Cpwalz_D(NCL1_io, 2) ) ; Cpwalz_D = 0.0_WP
+        ALLOCATE( Cpwalz_D(NCL1_io, 2) ) ; Cpwalz_D = 0.0_WP
 
-        ALLOCATE( Gbuk_D(NCL1_io) )
-        ALLOCATE( Ubuk_D(NCL1_io) )
-        ALLOCATE( Hbuk_D(NCL1_io) )
-        ALLOCATE( Tbuk_D(NCL1_io) )
-        ALLOCATE( Dbuk_D(NCL1_io) )
-        ALLOCATE( Mbuk_D(NCL1_io) )
-        ALLOCATE( Kbuk_D(NCL1_io) )
-        ALLOCATE(Bbuk_D(NCL1_io) )
-        ALLOCATE( Cpbk_D(NCL1_io) )
+        ALLOCATE( Gbuk_D(NCL1_io) ) ; Gbuk_D = 0.0_WP
+        ALLOCATE( Ubuk_D(NCL1_io) ) ; Ubuk_D = 0.0_WP
+        ALLOCATE( Hbuk_D(NCL1_io) ) ; Hbuk_D = 0.0_WP
+        ALLOCATE( Tbuk_D(NCL1_io) ) ; Tbuk_D = 0.0_WP
+        ALLOCATE( Dbuk_D(NCL1_io) ) ; Dbuk_D = 0.0_WP
+        ALLOCATE( Mbuk_D(NCL1_io) ) ; Mbuk_D = 0.0_WP
+        ALLOCATE( Kbuk_D(NCL1_io) ) ; Kbuk_D = 0.0_WP
+        ALLOCATE( Bbuk_D(NCL1_io) ) ; Bbuk_D = 0.0_WP
+        ALLOCATE( Cpbk_D(NCL1_io) ) ; Cpbk_D = 0.0_WP
 
 
 
-        ALLOCATE( Ubuk(NCL1_io) )
-        ALLOCATE( Rebk(NCL1_io) )
-        ALLOCATE( Prbk(NCL1_io) )
-        ALLOCATE( Grbk(NCL1_io, 2) )
+        ALLOCATE( Ubuk(NCL1_io) ) ; Ubuk = 0.0_WP
+        ALLOCATE( Rebk(NCL1_io) ) ; Rebk = 0.0_WP
+        ALLOCATE( Prbk(NCL1_io) ) ; Prbk = 0.0_WP
+        ALLOCATE( Grbk(NCL1_io, 2) ) ; Grbk = 0.0_WP
 
-        ALLOCATE( Nubk(NCL1_io, 2) )
-        ALLOCATE(Bobk(NCL1_io) )
+        ALLOCATE( Nubk(NCL1_io, 2) ) ; Nubk = 0.0_WP
+        ALLOCATE( Bobk(NCL1_io) ) ; Bobk = 0.0_WP
 
-        ALLOCATE( Cfbk_A(NCL1_io) )
-        ALLOCATE( Cfbk_L(NCL1_io) )
-        ALLOCATE( Cfbk_U(NCL1_io) )
+        ALLOCATE( Cfbk_A(NCL1_io) ) ; Cfbk_A = 0.0_WP
+        ALLOCATE( Cfbk_L(NCL1_io) ) ; Cfbk_L = 0.0_WP
+        ALLOCATE( Cfbk_U(NCL1_io) ) ; Cfbk_U = 0.0_WP
     END IF
 
-    ALLOCATE( Cf_LW_io(NCL1_io) )
-    ALLOCATE( Cf_UW_io(NCL1_io) )
-    ALLOCATE( Cf_AVE_io(NCL1_io) )
+    ALLOCATE( Cf_LW_io(NCL1_io) ) ; Cf_LW_io = 0.0_WP
+    ALLOCATE( Cf_UW_io(NCL1_io) ) ; Cf_UW_io = 0.0_WP
+    ALLOCATE( Cf_AVE_io(NCL1_io) ) ; Cf_AVE_io = 0.0_WP
 
-    ALLOCATE( U_tau_LW_io(NCL1_io) )
-    ALLOCATE( U_tau_UW_io(NCL1_io) )
-    ALLOCATE( U_tau_AVE_io(NCL1_io) )
+    ALLOCATE( U_tau_LW_io(NCL1_io) ) ; U_tau_LW_io = 0.0_WP
+    ALLOCATE( U_tau_UW_io(NCL1_io) ) ; U_tau_UW_io = 0.0_WP
+    ALLOCATE( U_tau_AVE_io(NCL1_io) ) ; U_tau_AVE_io = 0.0_WP
 
-    ALLOCATE( Re_tau_LW_io(NCL1_io) )
-    ALLOCATE( Re_tau_UW_io(NCL1_io) )
-    ALLOCATE( Re_tau_AVE_io(NCL1_io) )
+    ALLOCATE( Re_tau_LW_io(NCL1_io) ) ; Re_tau_LW_io = 0.0_WP
+    ALLOCATE( Re_tau_UW_io(NCL1_io) ) ; Re_tau_UW_io = 0.0_WP
+    ALLOCATE( Re_tau_AVE_io(NCL1_io) ) ; Re_tau_AVE_io = 0.0_WP
 
 
     RETURN
@@ -370,31 +370,31 @@ SUBROUTINE MEMO_ALLOCT_INTP_nonXperiodic_io
     USE init_info
     IMPLICIT NONE
 
-    ALLOCATE( U1ztL_F0_INTP_io( NND1_io, NND2, NDV + 1 ) )
-    ALLOCATE( G1ztL_F0_INTP_io( NND1_io, NND2, NDV   ) )
-    ALLOCATE( UPztL_F0_INTP_io( NND1_io, NND2, NDV  ) )
+    ALLOCATE( U1ztL_F0_INTP_io( NND1_io, NND2, NDV + 1 ) ) ; U1ztL_F0_INTP_io = 0.0_WP
+    ALLOCATE( G1ztL_F0_INTP_io( NND1_io, NND2, NDV   ) ) ; G1ztL_F0_INTP_io = 0.0_WP
+    ALLOCATE( UPztL_F0_INTP_io( NND1_io, NND2, NDV  ) ) ; UPztL_F0_INTP_io = 0.0_WP
 
-    ALLOCATE( U2ztL_F0_INTP_io( NND1_io, NND2, NDV * (7 - NDV) / 2 + NDV - 3 ) )
-    ALLOCATE( UGztL_F0_INTP_io( NND1_io, NND2, NDV * (7 - NDV) / 2 + NDV - 3 ) )
+    ALLOCATE( U2ztL_F0_INTP_io( NND1_io, NND2, NDV * (7 - NDV) / 2 + NDV - 3 ) ) ; U2ztL_F0_INTP_io = 0.0_WP
+    ALLOCATE( UGztL_F0_INTP_io( NND1_io, NND2, NDV * (7 - NDV) / 2 + NDV - 3 ) ) ; UGztL_F0_INTP_io = 0.0_WP
 
-    ALLOCATE( UGUztL_F0_INTP_io(NND1_io, NND2, NDV * (6 - NDV) + (NDV * (7 - NDV)) / 2 + NDV - 8) )
+    ALLOCATE( UGUztL_F0_INTP_io(NND1_io, NND2, NDV * (6 - NDV) + (NDV * (7 - NDV)) / 2 + NDV - 8) ) ; UGUztL_F0_INTP_io = 0.0_WP
 
     ALLOCATE( D1ztL_F0_INTP_io( NND1_io, NND2 ) )  ; D1ztL_F0_INTP_io = 1.0_WP
 
     IF(iThermoDynamics == 1) THEN
 
-        ALLOCATE( T1ztL_F0_INTP_io( NND1_io, NND2 ) )
+        ALLOCATE( T1ztL_F0_INTP_io( NND1_io, NND2 ) ) ; T1ztL_F0_INTP_io = 0.0_WP
 
-        ALLOCATE( H1ztL_F0_INTP_io( NND1_io, NND2 ) )
+        ALLOCATE( H1ztL_F0_INTP_io( NND1_io, NND2 ) ) ; H1ztL_F0_INTP_io = 0.0_WP
 
-        ALLOCATE( T2ztL_F0_INTP_io( NND1_io, NND2 ) )
-        ALLOCATE( D2ztL_F0_INTP_io( NND1_io, NND2 ) )
-        ALLOCATE( H2ztL_F0_INTP_io( NND1_io, NND2 ) )
+        ALLOCATE( T2ztL_F0_INTP_io( NND1_io, NND2 ) ) ; T2ztL_F0_INTP_io = 0.0_WP
+        ALLOCATE( D2ztL_F0_INTP_io( NND1_io, NND2 ) ) ; D2ztL_F0_INTP_io = 0.0_WP
+        ALLOCATE( H2ztL_F0_INTP_io( NND1_io, NND2 ) ) ; H2ztL_F0_INTP_io = 0.0_WP
 
-        ALLOCATE( DHztL_F0_INTP_io( NND1_io, NND2 ) )
+        ALLOCATE( DHztL_F0_INTP_io( NND1_io, NND2 ) ) ; DHztL_F0_INTP_io = 0.0_WP
 
-        ALLOCATE( UHztL_F0_INTP_io( NND1_io, NND2, NDV ) )
-        ALLOCATE( GHztL_F0_INTP_io( NND1_io, NND2, NDV ) )
+        ALLOCATE( UHztL_F0_INTP_io( NND1_io, NND2, NDV ) ) ; UHztL_F0_INTP_io = 0.0_WP
+        ALLOCATE( GHztL_F0_INTP_io( NND1_io, NND2, NDV ) ) ; GHztL_F0_INTP_io = 0.0_WP
     END IF
 
 

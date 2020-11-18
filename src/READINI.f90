@@ -707,8 +707,7 @@ SUBROUTINE BCAST_READINI
     CALL MPI_BCAST( pp_instn_sz,  1, MPI_INTEGER4,         0, ICOMM, IERROR )
     IF(iPostProcess == 2) THEN
         IF(MYID /= 0) THEN
-            allocate(pp_instn_tim(pp_instn_sz))
-            pp_instn_tim = 0.0_WP
+            allocate(pp_instn_tim(pp_instn_sz)); pp_instn_tim = 0.0_WP
         END IF
         CALL MPI_BCAST( pp_instn_tim, pp_instn_sz, MPI_DOUBLE_PRECISION,         0, ICOMM, IERROR )
     END IF

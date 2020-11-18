@@ -215,9 +215,9 @@ SUBROUTINE CALL_TEC360
             NI = 4
             !NJ = 4
             NK = 2
-            ALLOCATE( IID(NI) )
+            ALLOCATE( IID(NI) ); IID = 0
             !ALLOCATE( JID(NJ) )
-            ALLOCATE( KID(NK) )
+            ALLOCATE( KID(NK) ); KID = 0
 
             CALL TEC360_EXTRPLAT2ND_MASTER_TG
             CALL TEC360_EXTRPLAT2ND_MASTER_io
@@ -228,9 +228,9 @@ SUBROUTINE CALL_TEC360
             NI = 1
             !NJ = 8
             NK = 1
-            ALLOCATE( IID(NI) )
+            ALLOCATE( IID(NI) ); IID = 0
             !ALLOCATE( JID(NJ) )
-            ALLOCATE( KID(NK) )
+            ALLOCATE( KID(NK) ); KID = 0
         END IF
 
         IF (TgFlowFlg) THEN
