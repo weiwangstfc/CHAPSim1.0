@@ -729,10 +729,7 @@ SUBROUTINE MEMO_ALLOCT_AVERAGE_XZ_io
         ALLOCATE(Budg_viscs_diffu_thf(NCL2, NDV) ) ; Budg_viscs_diffu_thF = 0.0_WP
         ALLOCATE(Budg_viscs_dissp_thf(NCL2, NDV) ) ; Budg_viscs_dissp_thF = 0.0_WP
         ALLOCATE(Budg_Balance1_thf    (NCL2, NDV) ) ; Budg_Balance1_thf  = 0.0_WP
-        !========================body forcE =================================
-        ALLOCATE(Budg_prodc_gvfc2_thf(NCL2)     ) ; Budg_prodc_gvfc2_thF = 0.0_WP
-
-
+        
         ALLOCATE(Budg_prodc_stres_IEN(NCL2) ) ; Budg_prodc_stres_IEN = 0.0_WP
         ALLOCATE(Budg_prodc_enthg_IEN(NCL2) ) ; Budg_prodc_enthg_IEN = 0.0_WP
         ALLOCATE(Budg_Turbu_diffu_IEN(NCL2) ) ; Budg_Turbu_diffu_IEN = 0.0_WP
@@ -746,6 +743,8 @@ SUBROUTINE MEMO_ALLOCT_AVERAGE_XZ_io
         ALLOCATE(Budg_viscs_diffu_IEN(NCL2) ) ; Budg_viscs_diffu_IEN = 0.0_WP
         ALLOCATE(Budg_viscs_dissp_IEN(NCL2) ) ; Budg_viscs_dissp_IEN = 0.0_WP
         ALLOCATE(Budg_Balance1_IEN    (NCL2) ) ; Budg_Balance1_IEN  = 0.0_WP
+!========================body forcE =================================
+        ALLOCATE(Budg_prodc_gvfc2_thf(NCL2)     ) ; Budg_prodc_gvfc2_thF = 0.0_WP
 
     END IF
 
@@ -772,7 +771,7 @@ SUBROUTINE MEMO_DEALLT_AVERAGE_XZ_io
     DEALLOCATE( DVDL1xztL_F0_io )
     DEALLOCATE( DVDLPxztL_F0_io )
     DEALLOCATE( DVDL2xztL_F0_io )
-
+    IF(iPPQuadrants == 1)  THEN
     DEALLOCATE( QuadUVxztL_F0_io )
     DEALLOCATE( QuadVzxztL_F0_io )
     DEALLOCATE( QuadTKxztL_F0_io )
@@ -793,6 +792,7 @@ SUBROUTINE MEMO_DEALLT_AVERAGE_XZ_io
     DEALLOCATE( OctDDRxztL_F0_io )
     DEALLOCATE( OctDDUV1xztL_F0_io )
     DEALLOCATE( OctDDUV2xztL_F0_io )
+    END IF
 
     DEALLOCATE( FUxztL_F0_io )
     !========================================
@@ -1080,7 +1080,7 @@ SUBROUTINE WRT_AVERAGE_PPED_Xperiodic_io
     !=========Calculate data=======================
     CALL PP_FLOW_BASIC_VARS_XZ_io
     CALL PP_FLOW_FA_RSTE_Budg_XZ_io
-    CALL PP_SSzero_SIDED(1)
+    IF(iThermoDynamics == 1) CALL PP_SSzero_SIDED(1)
     !==========WRITE out wall info=================
     IF(iThermoDynamics == 1) THEN
         CALL WRT_HeatTransfer_Table_XZ_io
@@ -3289,7 +3289,7 @@ SUBROUTINE PP_FLOW_FA_RSTE_Budg_XZ_io
         END DO
     END DO
     CALL CHKHDL(' ==>Calculated Budg_viscs_diffu_Duiuj', MYID)
-
+    IF(iThermoDynamics == 1) THEN
     !====FA==========below 1 first decomPOSITION method ===========================================
     !==FA=====pressure acceleration term, including alL ======== (FA) ===========>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     DO J = 1, NCL2
@@ -3510,6 +3510,7 @@ SUBROUTINE PP_FLOW_FA_RSTE_Budg_XZ_io
         END DO
 
     END DO
+END IF
 
 
     !======== Stress related===================
@@ -4251,7 +4252,7 @@ SUBROUTINE PP_FLOW_RA_noDen_RSTE_Budg_XZ_io
 
     END DO
     CALL CHKHDL(' ==>Calculated Budg_viscs_diffu_Duiuj', MYID)
-
+    IF(iThermoDynamics == 1) THEN
     !================BODY FORCE/ BUOYANCY PRODUCTION, whICh IS pARt of pressure acceleration terM ===========
     !       ! not an independe contribution, but belongs to pARt of Budg_press_accl1_Duiuj
     Budg_prodc_gvfc2_DuiuJ = 0.0_WP
@@ -4313,7 +4314,7 @@ SUBROUTINE PP_FLOW_RA_noDen_RSTE_Budg_XZ_io
         Budg_prodc_Dvfc1_MKE(J) = DrivenForce(J) * U_FA(J, 1)
 
     END DO
-
+END IF
     !==== RA===========BALANCE ===================
     DO J = 1, NCL2
         !==============for TKE and MKE ==================
@@ -5308,7 +5309,7 @@ SUBROUTINE WRT_FLOW_RA_Profile_XZ_io
     CALL WRT_FLOW_Budgets_Profile_XZ_io('Reynd')
 
     !======================= Quadrant termS =======================
-
+if(iPPQuadrants == 1) then
     WRITE(PNTIM, '(1ES15.9)') PhyTIME_io
     FLNM = TRIM(FilePath4) // 'Result.IO.' // TRIM(STDIM(1)) // '.Profile.Quad.Reynd.' // TRIM(PNTIM) // '.plt'
 
@@ -5636,6 +5637,8 @@ SUBROUTINE WRT_FLOW_RA_Profile_XZ_io
 
     END DO
     CLOSE(TECFLG_ReyAG(1))
+
+end if
 
     RETURN
 END SUBROUTINE

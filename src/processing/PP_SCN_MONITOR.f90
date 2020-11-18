@@ -905,6 +905,8 @@ SUBROUTINE PP_wall_thermal_shear(flg_xzt)
         Ldist_io(2) = DABS( 1.0_WP + DABS(Tau_diff / Tau_avag))
         !WRITE(*, *) 'test',Ret_io(1:2), Ldist_io(1:2)
         Ret_io(1:2) = Ret_io(1:2) * Ldist_io(1:2)
+    ELSE
+        Ldist_io = 1.0_WP
     END IF
 
     !============== Averaged tauw based variables ====================
