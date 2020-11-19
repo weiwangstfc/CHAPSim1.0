@@ -1,12 +1,12 @@
 [geometry]
 iCase = 1  ; INT: 1 =plane Channel (Cartesian), 2 =Circular tube (cylindrical), 3 = Annular tube (cylindrical), 4 = Taylor Green vortex
-HX_tG_io = 6.0, 0.00            ; DBL: scaled Streamwise length. (#1) for periodic DOmAIn, (#2) for inlet /outlet DOmAIn
+HX_tG_io = 6.0, 0.00            ; DBL: scaled Streamwise length. (#1) for periodic domain, (#2) for inlet /outlet domain
 HZ = 3.0  ; DBL: scaled spanWISe length, IF Channel flow, it's in the periodic direction. IF pipe flow, it's default 2 * PI
 HR = -0.5, 0.5   ; DBL: (#1) for bottom Y Coordinate, (#2) = for top Y Coordinate
 NFLOW= 1  ; INT: 1, 2 or 3. for x, Y,z direction for Streamwise direction
 
 [mesh]
-NCL1_tG_io = 64, 00              ; INT: cell number in X direction. (#1) for tg periodic, (#2) for inoutflow DOmAIn
+NCL1_tG_io = 64, 00              ; INT: cell number in X direction. (#1) for tg periodic, (#2) for inoutflow domain
 NCL2 = 64  ; INT: cell number in Y direction.
 NCL3 = 64  ; INT: cell number in Z direction.
 STR2 = 3.75 ; DBL: coefficient in coordinates transformation

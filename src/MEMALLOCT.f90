@@ -125,6 +125,7 @@ SUBROUTINE MEM_ALLOCAT
         ALLOCATE ( DVDLPxztL_tg( N2DO(0), NDV, NDV  ) )              ; DVDLPxztL_tg = 0.0_WP
         ALLOCATE ( DVDL2xztL_tg( N2DO(0), NDV * NDV, NDV * NDV  ) )  ; DVDL2xztL_tg = 0.0_WP
         IF(iPPQuadrants == 1) THEN
+            IF(MYID == 0) CALL CHKHDL   ('   Allocating TG Quadrants variables ...', MYID)
             ALLOCATE ( QUADUVxzL_tg (N2DO(0), 4, QUADHN) ) ; QUADUVxzL_tg = 0.0_WP
             ALLOCATE ( QUADVzxzL_tg (N2DO(0), 4, QUADHN) ) ; QUADVzxzL_tg = 0.0_WP
             ALLOCATE ( QUADTKxzL_tg (N2DO(0), 4, QUADHN) ) ; QUADTKxzL_tg = 0.0_WP

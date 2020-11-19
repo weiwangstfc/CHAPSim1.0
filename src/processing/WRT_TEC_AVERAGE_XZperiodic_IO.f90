@@ -6261,7 +6261,7 @@ SUBROUTINE WRT_HeatTransfer_Table_XZ_io
 
     WRITE(TECFLG, '(A)         ') '%########dimensional (1)on the cold wall, (2)on the hot wall, (3)averaged (cold, hot)###'
     WRITE(TECFLG, '(A, 3ES17.9)') 'Qw: Wall heat flux(W/ M2)          = ', qw_D(1:2),    qw_D_ave
-    WRITE(TECFLG, '(A         )') '1:==based on whole DOmAIn L === '
+    WRITE(TECFLG, '(A         )') '1:==based on whole domain L === '
     WRITE(TECFLG, '(A, 2ES17.9)') '1:Dint:    Integral DENSITY(Kg/ M3) = ', D_int, D_int_D
     WRITE(TECFLG, '(A, 3ES17.9)') '1:hC = Qw/ (Th- Tc) (W/ M2 / K)          = ', hc_DTw_D(1:2), hc_DTw_D_ave
     WRITE(TECFLG, '(A, 3ES17.9)') '1 : Nu= HC *2R/ Kb                     = ', Nubk_DTw(1:2), Nubk_DTw_ave

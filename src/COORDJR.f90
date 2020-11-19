@@ -5,7 +5,7 @@
 !> SUBROUTINE: COORDJR (in MYID = 0)
 !>             mesh generation for the Y direction (wall-normal), a stretching mesh in Y
 !> SUBROUTINE: AREA_INOUTLET (in MYID = 0)
-!>             to calculate the ARea of crosS -Section and volume of the DOmAIn
+!>             to calculate the ARea of crosS -Section and volume of the domain
 !> SUBROUTINE: MESH_YWEIGHT_FACTORS (in MYID = 0)
 !>             to calculate the wEIGhting fractor YCL2ND_WFF and YCL2ND_WFB
 !> SUBROUTINE: BCAST_COORDJR (in MYID = all)
@@ -46,7 +46,7 @@ SUBROUTINE COORDJR
 
         COE1  = 0.5_WP
         DO J = 1, NND2             !!> @note: DO J = 1, NND2
-            X2 = DBLE(J - 1) / DBLE(NND2 - 1)   !!> @note: X2 = (J - 1) / (NND2 - 1), epslon, the relative computational DOmAIn
+            X2 = DBLE(J - 1) / DBLE(NND2 - 1)   !!> @note: X2 = (J - 1) / (NND2 - 1), epslon, the relative computational domain
             YND(J) = DTANH(STR2 * (X2 -COE1)) / DTANH(STR2 * COE1)
         END DO
 
@@ -81,7 +81,7 @@ SUBROUTINE COORDJR
 
         COE1  = 0.5_WP
         DO J = 1, NND2             !!> @note: DO J = 1, NND2
-            X2 = DBLE(J - 1) / DBLE(NND2 - 1)   !!> @note: X2 = (J - 1) / (NND2 - 1), epslon, the relative computational DOmAIn
+            X2 = DBLE(J - 1) / DBLE(NND2 - 1)   !!> @note: X2 = (J - 1) / (NND2 - 1), epslon, the relative computational domain
             RNDI1(J) = 1.0_WP / ( (DTANH(STR2 * (X2 -COE1)) / DTANH(STR2 * COE1) + 1.0_WP) * 0.5_WP * (HYT - HYB) + HYB)
             RNDI2(J) = RNDI1(J) * RNDI1(J)
             YND(J) = (DTANH(STR2 * (X2 -COE1)) / DTANH(STR2 * COE1) + 1.0_WP) * 0.5_WP * (HYT - HYB) + HYB
@@ -106,7 +106,7 @@ SUBROUTINE COORDJR
 
         COE1  = 0.5_WP
         DO J = 1, NND2             !!> @note: DO J = 1, NND2
-            X2 = DBLE(J - 1) / DBLE(NND2 - 1)   !!> @note: X2 = (J - 1) / (NND2 - 1), epslon, the relative computational DOmAIn
+            X2 = DBLE(J - 1) / DBLE(NND2 - 1)   !!> @note: X2 = (J - 1) / (NND2 - 1), epslon, the relative computational domain
             YND(J) = DTANH(STR2 * (X2 -COE1)) / DTANH(STR2 * COE1)
         END DO
 

@@ -727,7 +727,7 @@ SUBROUTINE TEC360_EXTRPLAT2ND_MASTER_io
 
     !=== instantanous variables ==u, V,w,P =======================================
     ALLOCATE ( U_INTP_io(NND1_io, NND2, NND3, NDV + 1) )
-    !============ main DOmAIn without b.c. points ==========
+    !============ main domain without b.c. points ==========
     DO I = 1, NCL1_io
         IM = IMV_io(I)
         DO K = 1, NCL3
@@ -787,7 +787,7 @@ SUBROUTINE TEC360_EXTRPLAT2ND_MASTER_io
         ALLOCATE ( T_INTP_io(NND1_io, NND2, NND3) )
         ALLOCATE ( D_INTP_io(NND1_io, NND2, NND3) )
         ALLOCATE ( M_INTP_io(NND1_io, NND2, NND3) )
-        !============ main DOmAIn without b.c. points ==========
+        !============ main domain without b.c. points ==========
         DO I = 1, NCL1_io
             IM = IMV_io(I)
 

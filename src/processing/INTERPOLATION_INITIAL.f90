@@ -1,6 +1,8 @@
 !**********************************************************************************************************************************
 !> @brief
-!>        postprocessing
+!>        data mapping form one mesh to another.
+!>        step 1: repeating/cutting the original domain to match the current domain.
+!>        step 2: mapping
 !> @details
 !> module: INTP_VARS
 !> SUBROUTINE: INITIAL_INTERP_MESH (in MYID = all)
@@ -21,10 +23,13 @@ MODULE INTP_VARS
     USE POSTPROCESS_INFO
     USE thermal_info
 
-    INTEGER(4) :: NCLO1, NCLO2, NCLO3, NCL1
+    ! the initial mesh info
     INTEGER(4) :: NCLOO1, NCLOO3
+    REAL(WP) :: HXOO, HZOO
 
-    REAL(WP) :: HXO, HZO, HXOO, HZOO, HX
+    ! the real used (processed old) mesh for data mapping
+    INTEGER(4) :: NCLO1, NCLO2, NCLO3
+    REAL(WP) :: HXO, HZO
     INTEGER(4), ALLOCATABLE :: N2DOO(:)
     INTEGER(4), ALLOCATABLE :: N3DOO(:)
     REAL(WP), ALLOCATABLE :: XNDO(:)
@@ -33,6 +38,10 @@ MODULE INTP_VARS
     REAL(WP), ALLOCATABLE :: XCCO(:)
     REAL(WP), ALLOCATABLE :: YCCO(:)
     REAL(WP), ALLOCATABLE :: ZCCO(:)
+
+    ! the current mesh info
+    INTEGER(4) :: NCL1
+    REAL(WP) :: HX
     !REAL(WP), ALLOCATABLE :: ZCC(:)
     REAL(WP), ALLOCATABLE :: XND(:)
     REAL(WP), ALLOCATABLE :: XCC(:)
@@ -121,11 +130,17 @@ SUBROUTINE INITIAL_INTERP_MESH
     HZO = HZ
 
     IF(MYID == 0) THEN
-        CALL CHKHDL    ('      Repeating the originl DOmAIn to the real DOmAIn', MYID)
+        CALL CHKHDL    ('      Repeating/cutting the originl domain to the real domain', MYID)
         CALL CHK2RLHDL ('         Lx00->Lx0', MYID, HXOO, HXO)
         CALL CHK2RLHDL ('         Lz00->Lz0', MYID, HZOO, HZO)
         CALL CHK2INTHDL('         Nx00->Nx0', MYID, NCLOO1, NCLO1)
         CALL CHK2INTHDL('         Nz00->Nz0', MYID, NCLOO3, NCLO3)
+
+        CALL CHKHDL    ('      Mapping domain from the given to the current', MYID)
+        CALL CHK2RLHDL ('         Lx0->Lx', MYID, HXO, HX)
+        CALL CHK2RLHDL ('         Lz0->Lz', MYID, HZO, HZ)
+        CALL CHK2INTHDL('         Nx0->Nx', MYID, NCLO1, NCL1)
+        CALL CHK2INTHDL('         Nz0->Nz', MYID, NCLO3, NCL3)
     END IF
 
 
@@ -298,7 +313,7 @@ SUBROUTINE INITIAL_INTERP_io
     ALLOCATE( QN    (NCL1, N2DO(MYID), NCL3 )  ); QN = 0.0_WP
 
     !========== STEP 3 READ IN OLD DATA AND INTP INTO NEW ONES ===============
-    WRITE(PNTIM, '(1ES15.9)') TimeReStart_tg
+    WRITE(PNTIM, '(1ES15.9)') TimeReStart_io
     DO N = 1, NDV + 1
         !========== (1) FILE NAME ===========
         IF(N == 1)  WRITE(WRT_RST_FNM, '(A)') TRIM(FilePath3) // 'DNS_perixz_INSTANT_T' // TRIM(PNTIM) // '_U.D'
@@ -568,6 +583,7 @@ SUBROUTINE INITIAL_INTERP_io
     DEALLOCATE (DUMMY)
     DEALLOCATE (QO)
     DEALLOCATE (QN)
+
     DEALLOCATE  (N2DOO)
     DEALLOCATE  (N3DOO)
     DEALLOCATE  (XNDO)
@@ -582,8 +598,6 @@ SUBROUTINE INITIAL_INTERP_io
 
 
     IF(MYID == 0) CALL CHKRLHDL('    IO: END of interplating from a coarse mesh at time', MYID, PhyTIME_io)
-
-
 
     RETURN
 END SUBROUTINE
