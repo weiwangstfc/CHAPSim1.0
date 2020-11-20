@@ -6957,6 +6957,7 @@ SUBROUTINE WRITE_SPECO_AVE_PROFILE(STR)
     INTEGER(4) :: N, JJ, L, KC, IC, M
 
     IF(MYID /= 0) RETURN
+    IF(iPPSpectra /= 1) RETURN
 
     IF(TRIM(STR) == 'FLOW') M = 1
     IF(TRIM(STR) == 'HEAT') M = 2

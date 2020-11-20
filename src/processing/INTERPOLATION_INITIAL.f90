@@ -180,6 +180,7 @@ SUBROUTINE INITIAL_INTERP_MESH
     !DO K = 1, NCL3
     !ZCC(K) = 0.5_WP * ( ZND(K) + ZND(K+ 1) )
     !END DO
+    CALL MPI_BARRIER(ICOMM, IERROR)
 
     RETURN
 END SUBROUTINE
@@ -320,10 +321,10 @@ SUBROUTINE INITIAL_INTERP_io
         IF(N == 2)  WRITE(WRT_RST_FNM, '(A)') TRIM(FilePath3) // 'DNS_perixz_INSTANT_T' // TRIM(PNTIM) // '_V.D'
         IF(N == 3)  WRITE(WRT_RST_FNM, '(A)') TRIM(FilePath3) // 'DNS_perixz_INSTANT_T' // TRIM(PNTIM) // '_W.D'
         IF(N == 4)  WRITE(WRT_RST_FNM, '(A)') TRIM(FilePath3) // 'DNS_perixz_INSTANT_T' // TRIM(PNTIM) // '_P.D'
-
+print*, myid, 'test1'
         !========== (2) READ IN DATA===========
-        CALL READ_3D_VARS(NCLOO1, NCLO2, NCLOO3, N2DOO(MYID), N2DOO(0) * MYID, ITERG0_TG,PhyTIME_TG, DUMMY, WRT_RST_FNM)
-
+        CALL READ_3D_VARS(NCLOO1, NCLO2, NCLOO3, N2DOO(MYID), N2DOO(0) * MYID, ITERG0_io, PhyTIME_IO, DUMMY, WRT_RST_FNM)
+print*, myid, 'test2'
         !========== (3) EXPAND READ -IN TO REAL LENGTH ===========
         DO I = 1, NCLO1
             DO J = 1, N2DOO(MYID)
