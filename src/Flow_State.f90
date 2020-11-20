@@ -441,16 +441,16 @@ SUBROUTINE BCAST_THERMAL_INIT
 
     IF(MYID /= 0) THEN
         IF(iThermalWallType(iTopWall) == BC_Fixed_Heat_Flux .OR. iThermalWallType(iBotWall) == BC_Fixed_Heat_Flux) THEN
-            ALLOCATE (WALLFLUX(NCL1S : NCL1E, 2, NCL3)  )
+            ALLOCATE (WALLFLUX(NCL1S : NCL1E, 2, NCL3)  );  WALLFLUX = 0.0_WP
         END IF
 
         IF(iThermalWallType(iTopWall) == BC_Fixed_Temperature .OR. iThermalWallType(iBotWall) == BC_Fixed_Temperature) THEN
-            ALLOCATE (T_WAL_GV(NCL1S : NCL1E, 2)  )
-            ALLOCATE (H_WAL_GV(NCL1S : NCL1E, 2)  )
-            ALLOCATE (D_WAL_GV(NCL1S : NCL1E, 2)  )
-            ALLOCATE (M_WAL_GV(NCL1S : NCL1E, 2)  )
-            ALLOCATE (K_WAL_GV(NCL1S : NCL1E, 2)  )
-            ALLOCATE (Cp_WAL_GV(NCL1S : NCL1E, 2)  )
+            ALLOCATE (T_WAL_GV(NCL1S : NCL1E, 2)  );  T_WAL_GV = 0.0_WP
+            ALLOCATE (H_WAL_GV(NCL1S : NCL1E, 2)  );  H_WAL_GV = 0.0_WP
+            ALLOCATE (D_WAL_GV(NCL1S : NCL1E, 2)  );  D_WAL_GV = 0.0_WP
+            ALLOCATE (M_WAL_GV(NCL1S : NCL1E, 2)  );  M_WAL_GV = 0.0_WP
+            ALLOCATE (K_WAL_GV(NCL1S : NCL1E, 2)  );  K_WAL_GV = 0.0_WP
+            ALLOCATE (Cp_WAL_GV(NCL1S : NCL1E, 2)  ); Cp_WAL_GV = 0.0_WP
         END IF
     END IF
 

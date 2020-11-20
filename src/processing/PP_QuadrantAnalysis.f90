@@ -90,6 +90,8 @@ SUBROUTINE PP_QUADRANTANALYSIS_xzL(iDomain_tmp)
         U1xzL = U1xzL_io
         DVDL1xzL = DVDL1xzL_io
     ELSE
+        NCL1 = NCL1_io
+        VL1313 = VL1313_io
     END IF
 
 

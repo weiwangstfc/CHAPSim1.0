@@ -71,7 +71,7 @@ SUBROUTINE random_initialize ( seed )
     !
     !  Allocate a seed of the right size.
     !
-    allocate ( seed_vector(seed_size) )
+    allocate ( seed_vector(seed_size) ); seed_vector = 0
 
     IF ( seed /= 0 ) THEN
 

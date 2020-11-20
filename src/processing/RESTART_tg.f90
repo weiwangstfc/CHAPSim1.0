@@ -84,13 +84,13 @@ SUBROUTINE ReStart_AVERAGE_VARS_TG
 
     !============================
     NARRAY = 2
-    ALLOCATE ( SIZES_ARRAY(NARRAY) )
-    ALLOCATE ( SUBSIZES   (NARRAY) )
-    ALLOCATE ( STARTS     (NARRAY) )
+    ALLOCATE ( SIZES_ARRAY(NARRAY) ) ; SIZES_ARRAY = 0
+    ALLOCATE ( SUBSIZES   (NARRAY) ) ; SUBSIZES = 0
+    ALLOCATE ( STARTS     (NARRAY) ) ; STARTS = 0
     INISIZE = 4
     IRLSIZE = 3
-    ALLOCATE ( INTMPI(INISIZE)       )
-    ALLOCATE ( RLEMPI(IRLSIZE)       )
+    ALLOCATE ( INTMPI(INISIZE)       ) ; INTMPI = 0
+    ALLOCATE ( RLEMPI(IRLSIZE)       ) ; RLEMPI = 0
 
     NSZ = NDV + 1 + NDV + NDV * (7 - NDV) / 2 + NDV - 3 +  NDV * (6 - NDV) + &
     (NDV * (7 - NDV)) / 2 + NDV - 8  + NDV * NDV  + NDV * NDV +  &

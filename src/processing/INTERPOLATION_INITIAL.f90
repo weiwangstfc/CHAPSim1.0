@@ -87,7 +87,7 @@ SUBROUTINE INITIAL_INTERP_MESH
 
     !******* Allocate variables*************************************************
 
-    ALLOCATE (YNDO(NCLO2 + 1))
+    ALLOCATE (YNDO(NCLO2 + 1));  YNDO = 0.0_WP
     READ(INI, *) SECT
     LENS = LEN_TRIM(SECT)
     IF (MYID == 0) CALL CHKHDL('      Read in ' // SECT(1:LENS), MYID)
@@ -112,8 +112,8 @@ SUBROUTINE INITIAL_INTERP_MESH
             HX  = HX_io
             NCL1  = NCL1_io
         END IF
-        ALLOCATE (XND(NCL1 + 1))
-        ALLOCATE (XCC(NCL1))
+        ALLOCATE (XND(NCL1 + 1)) ;  XND = 0.0_WP
+        ALLOCATE (XCC(NCL1)) ;  XCC = 0.0_WP
         IF(TgFlowFlg) THEN
             XND = XND_tg
             XCC = XCC_tg
@@ -145,16 +145,16 @@ SUBROUTINE INITIAL_INTERP_MESH
 
 
 
-    ALLOCATE (N3DOO(0 : NPSLV))
-    ALLOCATE (N2DOO(0 : NPSLV))
+    ALLOCATE (N3DOO(0 : NPSLV)) ;  N3DOO = 0
+    ALLOCATE (N2DOO(0 : NPSLV)) ;  N2DOO = 0
     N2DOO(0 : NPSLV) = INT(NCLO2 / NPTOT)
     N3DOO(0 : NPSLV) = INT(NCLO3 / NPTOT)
     !********* OLD AND NEW COORDINATES******************************************************************
-    ALLOCATE (YCCO(NCLO2) )
-    ALLOCATE (XNDO(NCLO1 + 1))
-    ALLOCATE (ZNDO(NCLO3 + 1))
-    ALLOCATE (XCCO(NCLO1))
-    ALLOCATE (ZCCO(NCLO3))
+    ALLOCATE (YCCO(NCLO2) ) ;  YCCO = 0.0_WP
+    ALLOCATE (XNDO(NCLO1 + 1));  XNDO = 0.0_WP
+    ALLOCATE (ZNDO(NCLO3 + 1));  ZNDO = 0.0_WP
+    ALLOCATE (XCCO(NCLO1));  XCCO = 0.0_WP
+    ALLOCATE (ZCCO(NCLO3));  ZCCO = 0.0_WP
     !ALLOCATE (ZCC(NCL3))
 
     DO I = 1, (NCLO1 + 1)
@@ -197,6 +197,8 @@ SUBROUTINE INITIAL_INTERP_tg
     REAL(WP), ALLOCATABLE :: DUMMY(:, :, :)
     REAL(WP), ALLOCATABLE :: QO   (:, :, :)
     REAL(WP), ALLOCATABLE :: QN   (:, :, :)
+
+    if(iIniField_tg /= 1) return
 
     IF(MYID == 0) CALL CHKHDL(' TG: Interpolating from one mesh to another', MYID)
 
@@ -252,6 +254,13 @@ SUBROUTINE INITIAL_INTERP_tg
 
     END DO
 
+    PhyTIME_tg = 0.0_WP
+    ITERG0_tg= 0
+    PhyTIME = PhyTIME_tg
+    ITERG0 = ITERG0_tg
+
+
+
     DEALLOCATE (DUMMY)
     DEALLOCATE (QO)
     DEALLOCATE (QN)
@@ -303,6 +312,8 @@ SUBROUTINE INITIAL_INTERP_io
     REAL(WP), ALLOCATABLE :: QO   (:, :, :)
     REAL(WP), ALLOCATABLE :: QN   (:, :, :)
 
+    if(iIniField_tg /= 1) return
+
     IF(MYID == 0) CALL CHKHDL(' IO: Interpolating from one mesh to another', MYID)
 
     !========= STEP 1, GENERATE MESH INFO==================
@@ -321,10 +332,10 @@ SUBROUTINE INITIAL_INTERP_io
         IF(N == 2)  WRITE(WRT_RST_FNM, '(A)') TRIM(FilePath3) // 'DNS_perixz_INSTANT_T' // TRIM(PNTIM) // '_V.D'
         IF(N == 3)  WRITE(WRT_RST_FNM, '(A)') TRIM(FilePath3) // 'DNS_perixz_INSTANT_T' // TRIM(PNTIM) // '_W.D'
         IF(N == 4)  WRITE(WRT_RST_FNM, '(A)') TRIM(FilePath3) // 'DNS_perixz_INSTANT_T' // TRIM(PNTIM) // '_P.D'
-print*, myid, 'test1'
+
         !========== (2) READ IN DATA===========
         CALL READ_3D_VARS(NCLOO1, NCLO2, NCLOO3, N2DOO(MYID), N2DOO(0) * MYID, ITERG0_io, PhyTIME_IO, DUMMY, WRT_RST_FNM)
-print*, myid, 'test2'
+
         !========== (3) EXPAND READ -IN TO REAL LENGTH ===========
         DO I = 1, NCLO1
             DO J = 1, N2DOO(MYID)
@@ -411,7 +422,7 @@ print*, myid, 'test2'
             IF(N == 3)  WRITE(WRT_RST_FNM, '(A)') TRIM(FilePath3) // 'DNS_perixz_INSTANT_T' // TRIM(PNTIM) // '_E.D'
 
             !========== (2) READ IN DATA===========
-            CALL READ_3D_VARS(NCLOO1, NCLO2, NCLOO3, N2DOO(MYID), N2DOO(0) * MYID, ITERG0_TG,PhyTIME_TG, DUMMY, WRT_RST_FNM)
+            CALL READ_3D_VARS(NCLOO1, NCLO2, NCLOO3, N2DOO(MYID), N2DOO(0) * MYID, ITERG0_IO, PhyTIME_IO, DUMMY, WRT_RST_FNM)
 
             !========== (3) EXPAND READ -IN TO REAL LENGTH ===========
             DO I = 1, NCLO1
@@ -581,6 +592,11 @@ print*, myid, 'test2'
 
     END IF
 
+    PhyTIME_io = 0.0_WP
+    ITERG0_io = 0
+    PhyTIME = PhyTIME_io
+    ITERG0 = ITERG0_io
+
     DEALLOCATE (DUMMY)
     DEALLOCATE (QO)
     DEALLOCATE (QN)
@@ -597,7 +613,7 @@ print*, myid, 'test2'
 
     CALL CALL_TEC360
 
-
+    CALL MPI_BARRIER(ICOMM, IERROR)
     IF(MYID == 0) CALL CHKRLHDL('    IO: END of interplating from a coarse mesh at time', MYID, PhyTIME_io)
 
     RETURN

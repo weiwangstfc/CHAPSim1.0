@@ -289,13 +289,13 @@ SUBROUTINE GATHERING_TG
     INTEGER(4) :: N, I, JJ, K, KS
 
     !=======================global =============================
-    ALLOCATE ( U_F0_tg     (NCL1_tg, NCL2, NCL3, NDV + 1) )
-    ALLOCATE ( U1xzL_F0_tg (NCL2, NDV + 1 ) )
+    ALLOCATE ( U_F0_tg     (NCL1_tg, NCL2, NCL3, NDV + 1) ) ;  U_F0_tg = 0.0_WP
+    ALLOCATE ( U1xzL_F0_tg (NCL2, NDV + 1 ) ) ;  U1xzL_F0_tg = 0.0_WP
 
     !=========================gather U,P ==========================
     N = 4
-    ALLOCATE ( VARLoc1(NCL1_tg, 0:(N2DO(0) + 1), NCL3, N))
-    ALLOCATE ( VARGlb1(NCL1_tg, NCL2,         NCL3, N))
+    ALLOCATE ( VARLoc1(NCL1_tg, 0:(N2DO(0) + 1), NCL3, N)) ;  VARLoc1 = 0.0_WP
+    ALLOCATE ( VARGlb1(NCL1_tg, NCL2,         NCL3, N)) ;  VARGlb1 = 0.0_WP
 
     VARLoc1(1 : NCL1_tg, 0:(N2DO(0) + 1), 1 : NCL3, 1:3) = Q_tg (1 : NCL1_tg, 0:(N2DO(0) + 1), 1 : NCL3, 1:3)
     VARLoc1(1 : NCL1_tg, 0:(N2DO(0) + 1), 1 : NCL3, 4) = PR_tg(1 : NCL1_tg, 0:(N2DO(0) + 1), 1 : NCL3    )
@@ -324,8 +324,8 @@ SUBROUTINE GATHERING_TG
 
     !=========================gather averaged==========================
     N = 4
-    ALLOCATE ( VARLoc2(1 : N2DO(0), N))
-    ALLOCATE ( VARGlb2(NCL2,     N))
+    ALLOCATE ( VARLoc2(1 : N2DO(0), N)) ; VARLoc2 = 0.0_WP
+    ALLOCATE ( VARGlb2(NCL2,     N)); VARGlb2 = 0.0_WP
 
     VARLoc2(1 : N2DO(0), 1:4) = U1xzL_tg (1 : N2DO(0), 1:4)   ! should space and time averaged? or just space averaged?
 
@@ -355,34 +355,34 @@ SUBROUTINE GATHERING_io
     INTEGER(4) :: N, I, K, JJ, KS
 
     !======================globaL ===================================
-    ALLOCATE ( U_F0_io(NCL1S : NCL1E, NCL2, NCL3, NDV + 1) )
+    ALLOCATE ( U_F0_io(NCL1S : NCL1E, NCL2, NCL3, NDV + 1) ); U_F0_io = 0.0_WP
 
     IF(iThermoDynamics == 1) THEN
-        ALLOCATE ( G_F0_io(NCL1S : NCL1E, NCL2, NCL3, NDV) )
-        ALLOCATE ( T_F0_io(NCL1S : NCL1E, NCL2, NCL3) )
-        ALLOCATE ( D_F0_io(NCL1S : NCL1E, NCL2, NCL3) )
-        ALLOCATE ( M_F0_io(NCL1S : NCL1E, NCL2, NCL3) )
-        ALLOCATE ( H_F0_io(NCL1S : NCL1E, NCL2, NCL3) )
+        ALLOCATE ( G_F0_io(NCL1S : NCL1E, NCL2, NCL3, NDV) ); G_F0_io = 0.0_WP
+        ALLOCATE ( T_F0_io(NCL1S : NCL1E, NCL2, NCL3) ); T_F0_io = 0.0_WP
+        ALLOCATE ( D_F0_io(NCL1S : NCL1E, NCL2, NCL3) ); D_F0_io = 0.0_WP
+        ALLOCATE ( M_F0_io(NCL1S : NCL1E, NCL2, NCL3) ); M_F0_io = 0.0_WP
+        ALLOCATE ( H_F0_io(NCL1S : NCL1E, NCL2, NCL3) ); H_F0_io = 0.0_WP
     END IF
 
     IF(TgFlowFlg) THEN
-        ALLOCATE ( U1zL_F0_io(NCL1S : NCL1E, NCL2, NDV + 1 ) )
+        ALLOCATE ( U1zL_F0_io(NCL1S : NCL1E, NCL2, NDV + 1 ) ); U1zL_F0_io = 0.0_WP
         IF(iThermoDynamics == 1) THEN
-            ALLOCATE ( G1zL_F0_io(NCL1S : NCL1E, NCL2, NDV ) )
-            ALLOCATE ( H1zL_F0_io(NCL1S : NCL1E, NCL2      ) )
-            ALLOCATE ( T1zL_F0_io(NCL1S : NCL1E, NCL2      ) )
-            ALLOCATE ( D1zL_F0_io(NCL1S : NCL1E, NCL2      ) )
-            ALLOCATE ( M1zL_F0_io(NCL1S : NCL1E, NCL2      ) )
+            ALLOCATE ( G1zL_F0_io(NCL1S : NCL1E, NCL2, NDV ) ); G1zL_F0_io = 0.0_WP
+            ALLOCATE ( H1zL_F0_io(NCL1S : NCL1E, NCL2      ) ); H1zL_F0_io = 0.0_WP
+            ALLOCATE ( T1zL_F0_io(NCL1S : NCL1E, NCL2      ) ); T1zL_F0_io = 0.0_WP
+            ALLOCATE ( D1zL_F0_io(NCL1S : NCL1E, NCL2      ) ); D1zL_F0_io = 0.0_WP
+            ALLOCATE ( M1zL_F0_io(NCL1S : NCL1E, NCL2      ) ); M1zL_F0_io = 0.0_WP
 
         END IF
     ELSE
-        ALLOCATE ( U1xzL_F0_io(NCL2, NDV + 1 ) )
+        ALLOCATE ( U1xzL_F0_io(NCL2, NDV + 1 ) ); U1xzL_F0_io = 0.0_WP
         IF(iThermoDynamics == 1) THEN
-            ALLOCATE ( G1xzL_F0_io(NCL2, NDV ) )
-            ALLOCATE ( H1xzL_F0_io(NCL2      ) )
-            ALLOCATE ( T1xzL_F0_io(NCL2      ) )
-            ALLOCATE ( D1xzL_F0_io(NCL2      ) )
-            ALLOCATE ( M1xzL_F0_io(NCL2      ) )
+            ALLOCATE ( G1xzL_F0_io(NCL2, NDV ) ); G1xzL_F0_io = 0.0_WP
+            ALLOCATE ( H1xzL_F0_io(NCL2      ) ); H1xzL_F0_io = 0.0_WP
+            ALLOCATE ( T1xzL_F0_io(NCL2      ) ); T1xzL_F0_io = 0.0_WP
+            ALLOCATE ( D1xzL_F0_io(NCL2      ) ); D1xzL_F0_io = 0.0_WP
+            ALLOCATE ( M1xzL_F0_io(NCL2      ) ); M1xzL_F0_io = 0.0_WP
         END IF
     END IF
 
@@ -392,8 +392,8 @@ SUBROUTINE GATHERING_io
     ELSE
         N = 4
     END IF
-    ALLOCATE ( VARLoc1(NCL1S : NCL1E, 0:(N2DO(0) + 1), NCL3, N))
-    ALLOCATE ( VARGlb1(NCL1S : NCL1E, NCL2,         NCL3, N))
+    ALLOCATE ( VARLoc1(NCL1S : NCL1E, 0:(N2DO(0) + 1), NCL3, N)); VARLoc1 = 0.0_WP
+    ALLOCATE ( VARGlb1(NCL1S : NCL1E, NCL2,         NCL3, N)); VARGlb1 = 0.0_WP
 
     VARLoc1(NCL1S : NCL1E, 0:(N2DO(0) + 1), 1 : NCL3, 1:3) = Q_io(NCL1S : NCL1E, 0:(N2DO(0) + 1), 1 : NCL3, 1:3)
     VARLoc1(NCL1S : NCL1E, 0:(N2DO(0) + 1), 1 : NCL3, 4) = PR_io(NCL1S : NCL1E, 0:(N2DO(0) + 1), 1 : NCL3    )
@@ -454,8 +454,8 @@ SUBROUTINE GATHERING_io
     IF(TgFlowFlg) THEN
 
         N = 4
-        ALLOCATE ( VARLoc3(NCL1S : NCL1E, 1 : N2DO(0), N))
-        ALLOCATE ( VARGlb3(NCL1S : NCL1E, NCL2,     N))
+        ALLOCATE ( VARLoc3(NCL1S : NCL1E, 1 : N2DO(0), N)) ; VARLoc3 = 0.0_WP
+        ALLOCATE ( VARGlb3(NCL1S : NCL1E, NCL2,     N))  ; VARGlb3 = 0.0_WP
 
         VARLoc3(NCL1S : NCL1E, 1 : N2DO(0), 1:4) = U1zL_io(NCL1S : NCL1E, 1 : N2DO(0), 1:4)
 
@@ -470,8 +470,8 @@ SUBROUTINE GATHERING_io
         IF(iThermoDynamics == 1) THEN
             N = 7
 
-            ALLOCATE ( VARLoc3(NCL1S : NCL1E, 1 : N2DO(0), N))
-            ALLOCATE ( VARGlb3(NCL1S : NCL1E, NCL2,     N))
+            ALLOCATE ( VARLoc3(NCL1S : NCL1E, 1 : N2DO(0), N)) ; VARLoc3 = 0.0_WP
+            ALLOCATE ( VARGlb3(NCL1S : NCL1E, NCL2,     N)) ; VARGlb3 = 0.0_WP
 
             VARLoc3(NCL1S : NCL1E, 1 : N2DO(0), 1:3) = G1zL_io(NCL1S : NCL1E, 1 : N2DO(0), 1:3)
             VARLoc3(NCL1S : NCL1E, 1 : N2DO(0), 4) = H1zL_io(NCL1S : NCL1E, 1 : N2DO(0)    )
@@ -494,8 +494,8 @@ SUBROUTINE GATHERING_io
         END IF
     ELSE
         N = 4
-        ALLOCATE ( VARLoc2(1 : N2DO(0), N))
-        ALLOCATE ( VARGlb2(NCL2,     N))
+        ALLOCATE ( VARLoc2(1 : N2DO(0), N)); VARLoc2 = 0.0_WP
+        ALLOCATE ( VARGlb2(NCL2,     N)); VARGlb2 = 0.0_WP
 
         VARLoc2(1 : N2DO(0), 1:4) = U1xzL_io(1 : N2DO(0), 1:4)
 
@@ -511,8 +511,8 @@ SUBROUTINE GATHERING_io
         IF(iThermoDynamics == 1) THEN
             N = 7
 
-            ALLOCATE ( VARLoc2(1 : N2DO(0), N))
-            ALLOCATE ( VARGlb2(NCL2,     N))
+            ALLOCATE ( VARLoc2(1 : N2DO(0), N)); VARLoc2 = 0.0_WP
+            ALLOCATE ( VARGlb2(NCL2,     N)); VARGlb2 = 0.0_WP
 
             VARLoc2(1 : N2DO(0), 1:3) = G1xzL_io(1 : N2DO(0), 1:3)
             VARLoc2(1 : N2DO(0), 4) = H1xzL_io(1 : N2DO(0)    )
@@ -654,7 +654,7 @@ SUBROUTINE TEC360_EXTRPLAT2ND_MASTER_TG
 
     IF (MYID /= 0) RETURN
 
-    ALLOCATE ( U1xzL_INTP_tg(NND2, NDV + 1 ) )
+    ALLOCATE ( U1xzL_INTP_tg(NND2, NDV + 1 ) ); U1xzL_INTP_tg = 0.0_WP
 
     DO J = 2, NCL2
         JM = J - 1
@@ -666,7 +666,7 @@ SUBROUTINE TEC360_EXTRPLAT2ND_MASTER_TG
     U1xzL_INTP_tg(NND2, 4) = U1xzL_F0_tg(NCL2, 4)
 
 
-    ALLOCATE ( U_INTP_tg(NND1_tg, NND2, NND3, NDV + 1) )
+    ALLOCATE ( U_INTP_tg(NND1_tg, NND2, NND3, NDV + 1) ); U_INTP_tg = 0.0_WP
 
     !>============= INTERPOLATION ALL VALUES TO POINTS FOR X, Z periodic B.C.==========
 
@@ -726,7 +726,7 @@ SUBROUTINE TEC360_EXTRPLAT2ND_MASTER_io
 
 
     !=== instantanous variables ==u, V,w,P =======================================
-    ALLOCATE ( U_INTP_io(NND1_io, NND2, NND3, NDV + 1) )
+    ALLOCATE ( U_INTP_io(NND1_io, NND2, NND3, NDV + 1) ); U_INTP_io = 0.0_WP
     !============ main domain without b.c. points ==========
     DO I = 1, NCL1_io
         IM = IMV_io(I)
@@ -782,11 +782,11 @@ SUBROUTINE TEC360_EXTRPLAT2ND_MASTER_io
 
     !=== instantanous variables \rho u,\rho v,\rho w, h, t, \rho, mu=======================================
     IF(iThermoDynamics == 1) THEN
-        ALLOCATE ( G_INTP_io(NND1_io, NND2, NND3, NDV) )
-        ALLOCATE ( H_INTP_io(NND1_io, NND2, NND3) )
-        ALLOCATE ( T_INTP_io(NND1_io, NND2, NND3) )
-        ALLOCATE ( D_INTP_io(NND1_io, NND2, NND3) )
-        ALLOCATE ( M_INTP_io(NND1_io, NND2, NND3) )
+        ALLOCATE ( G_INTP_io(NND1_io, NND2, NND3, NDV) ) ; G_INTP_io = 0.0_WP
+        ALLOCATE ( H_INTP_io(NND1_io, NND2, NND3) ) ; H_INTP_io = 0.0_WP
+        ALLOCATE ( T_INTP_io(NND1_io, NND2, NND3) ) ; T_INTP_io = 0.0_WP
+        ALLOCATE ( D_INTP_io(NND1_io, NND2, NND3) ) ; D_INTP_io = 0.0_WP
+        ALLOCATE ( M_INTP_io(NND1_io, NND2, NND3) ) ; M_INTP_io = 0.0_WP
         !============ main domain without b.c. points ==========
         DO I = 1, NCL1_io
             IM = IMV_io(I)
@@ -897,7 +897,7 @@ SUBROUTINE TEC360_EXTRPLAT2ND_MASTER_io
     IF(TgFlowFlg) THEN
 
         !============= Z averaged valueS ===================
-        ALLOCATE ( U1zL_INTP_io(NND1_io, NND2, NDV + 1 ) )
+        ALLOCATE ( U1zL_INTP_io(NND1_io, NND2, NDV + 1 ) ) ; U1zL_INTP_io = 0.0_WP
         DO I = 1, NND1_io
             IM = IMV_io(I)
             DO J = 2, NCL2
@@ -912,11 +912,11 @@ SUBROUTINE TEC360_EXTRPLAT2ND_MASTER_io
         END DO
 
         IF(iThermoDynamics == 1) THEN
-            ALLOCATE ( G1zL_INTP_io(NND1_io, NND2, NDV ) )
-            ALLOCATE ( H1zL_INTP_io(NND1_io, NND2) )
-            ALLOCATE ( T1zL_INTP_io(NND1_io, NND2) )
-            ALLOCATE ( D1zL_INTP_io(NND1_io, NND2) )
-            ALLOCATE ( M1zL_INTP_io(NND1_io, NND2) )
+            ALLOCATE ( G1zL_INTP_io(NND1_io, NND2, NDV ) ); G1zL_INTP_io = 0.0_WP
+            ALLOCATE ( H1zL_INTP_io(NND1_io, NND2) ); H1zL_INTP_io = 0.0_WP
+            ALLOCATE ( T1zL_INTP_io(NND1_io, NND2) ); T1zL_INTP_io = 0.0_WP
+            ALLOCATE ( D1zL_INTP_io(NND1_io, NND2) ); D1zL_INTP_io = 0.0_WP
+            ALLOCATE ( M1zL_INTP_io(NND1_io, NND2) ); M1zL_INTP_io = 0.0_WP
 
             DO I = 1, NND1_io
                 IM = IMV_io(I)
@@ -949,7 +949,7 @@ SUBROUTINE TEC360_EXTRPLAT2ND_MASTER_io
         END IF
 
     ELSE
-        ALLOCATE ( U1xzL_INTP_io(NND2, NDV + 1 ) )
+        ALLOCATE ( U1xzL_INTP_io(NND2, NDV + 1 ) ); U1xzL_INTP_io = 0.0_WP
         DO J = 2, NCL2
             JM = J - 1
             U1xzL_INTP_io(J, 1:4) = (U1xzL_F0_io(JM, 1:4) + U1xzL_F0_io(J, 1:4)) * 0.5_WP
@@ -960,11 +960,11 @@ SUBROUTINE TEC360_EXTRPLAT2ND_MASTER_io
         U1xzL_INTP_io(NND2,  4) = U1xzL_INTP_io(NCL2,  4)
 
         IF(iThermoDynamics == 1) THEN
-            ALLOCATE ( G1xzL_INTP_io(NND2, NDV ) )
-            ALLOCATE ( H1xzL_INTP_io(NND2) )
-            ALLOCATE ( T1xzL_INTP_io(NND2) )
-            ALLOCATE ( D1xzL_INTP_io(NND2) )
-            ALLOCATE ( M1xzL_INTP_io(NND2) )
+            ALLOCATE ( G1xzL_INTP_io(NND2, NDV ) ); G1xzL_INTP_io = 0.0_WP
+            ALLOCATE ( H1xzL_INTP_io(NND2) ); H1xzL_INTP_io = 0.0_WP
+            ALLOCATE ( T1xzL_INTP_io(NND2) ); T1xzL_INTP_io = 0.0_WP
+            ALLOCATE ( D1xzL_INTP_io(NND2) ); D1xzL_INTP_io = 0.0_WP
+            ALLOCATE ( M1xzL_INTP_io(NND2) ); M1xzL_INTP_io = 0.0_WP
 
             DO J = 2, NCL2
                 JM = J - 1
@@ -1554,7 +1554,7 @@ SUBROUTINE TEC360_INSTANT_Uprime
     INTEGER(4) I, J, K
 
     IF(TgFlowFlg) THEN
-        ALLOCATE ( Uprime_tg(NND1_tg, NND2, NND3, NDV + 1) )
+        ALLOCATE ( Uprime_tg(NND1_tg, NND2, NND3, NDV + 1) ); Uprime_tg = 0.0_WP
         DO I = 1, NND1_tg
             DO K = 1, NND3
                 DO J = 1, NND2
@@ -1565,8 +1565,8 @@ SUBROUTINE TEC360_INSTANT_Uprime
     END IF
 
     IF(IoFlowFlg) THEN
-        ALLOCATE ( Uprime_io(NND1_io, NND2, NND3, NDV + 1) )
-        ALLOCATE ( UDprime_io(NND1_io, NND2, NND3, NDV) )
+        ALLOCATE ( Uprime_io(NND1_io, NND2, NND3, NDV + 1) ); Uprime_io = 0.0_WP
+        ALLOCATE ( UDprime_io(NND1_io, NND2, NND3, NDV) ); UDprime_io = 0.0_WP
 
         IF(TgFlowFlg) THEN
             DO I = 1, NND1_io
@@ -1578,11 +1578,11 @@ SUBROUTINE TEC360_INSTANT_Uprime
             END DO
             UDprime_io(:, :, :, 1) = Uprime_io(:, :, :, 1) * Uprime_io(:, :, :, 2) !u'v'
 
-            ALLOCATE ( Gprime_io(NND1_io, NND2, NND3, NDV) )
+            ALLOCATE ( Gprime_io(NND1_io, NND2, NND3, NDV) ); Gprime_io = 0.0_WP
             IF(iThermoDynamics == 1) THEN
-                ALLOCATE ( Tprime_io(NND1_io, NND2, NND3) )
-                ALLOCATE ( Dprime_io(NND1_io, NND2, NND3) )
-                ALLOCATE ( Mprime_io(NND1_io, NND2, NND3) )
+                ALLOCATE ( Tprime_io(NND1_io, NND2, NND3) ); Tprime_io = 0.0_WP
+                ALLOCATE ( Dprime_io(NND1_io, NND2, NND3) ); Dprime_io = 0.0_WP
+                ALLOCATE ( Mprime_io(NND1_io, NND2, NND3) ); Mprime_io = 0.0_WP
 
                 DO I = 1, NND1_io
                     DO K = 1, NND3
@@ -1610,11 +1610,11 @@ SUBROUTINE TEC360_INSTANT_Uprime
             END DO
             UDprime_io(:, :, :, 1) = Uprime_io(:, :, :, 1) * Uprime_io(:, :, :, 2) !u'v'
 
-            ALLOCATE ( Gprime_io(NND1_io, NND2, NND3, NDV) )
+            ALLOCATE ( Gprime_io(NND1_io, NND2, NND3, NDV) ); Gprime_io = 0.0_WP
             IF(iThermoDynamics == 1) THEN
-                ALLOCATE ( Tprime_io(NND1_io, NND2, NND3) )
-                ALLOCATE ( Dprime_io(NND1_io, NND2, NND3) )
-                ALLOCATE ( Mprime_io(NND1_io, NND2, NND3) )
+                ALLOCATE ( Tprime_io(NND1_io, NND2, NND3) ); Tprime_io = 0.0_WP
+                ALLOCATE ( Dprime_io(NND1_io, NND2, NND3) ); Dprime_io = 0.0_WP
+                ALLOCATE ( Mprime_io(NND1_io, NND2, NND3) ); Mprime_io = 0.0_WP
                 DO I = 1, NND1_io
                     DO K = 1, NND3
                         DO J = 1, NND2
@@ -1676,13 +1676,13 @@ SUBROUTINE TEC360_INSTANT_VORTEX_CRITERIA
 
 
     IF(IoFlowFlg) THEN
-        allocate (Qcr_io    (NND1_io, NND2, NND3)       )
-        allocate (Vor_io    (NND1_io, NND2, NND3, 4)     )
-        allocate (Delta_io(NND1_io, NND2, NND3)       )
-        allocate (Lambda2_io(NND1_io, NND2, NND3)       )
-        allocate (SWIrlStrength_io(NND1_io, NND2, NND3, 3) )
+        allocate (Qcr_io    (NND1_io, NND2, NND3)       ); Qcr_io = 0.0_WP
+        allocate (Vor_io    (NND1_io, NND2, NND3, 4)     ); Vor_io = 0.0_WP
+        allocate (Delta_io(NND1_io, NND2, NND3)       ); Delta_io = 0.0_WP
+        allocate (Lambda2_io(NND1_io, NND2, NND3)       ); Lambda2_io = 0.0_WP
+        allocate (SWIrlStrength_io(NND1_io, NND2, NND3, 3) ); SWIrlStrength_io = 0.0_WP
 
-        allocate (dQ_io    (NND1_io, NND2, NND3, 3, 3)   )
+        allocate (dQ_io    (NND1_io, NND2, NND3, 3, 3)   ); dQ_io = 0.0_WP
 
         !====================GET ALL du_I / DX_i on nodeS ===================================================
         DO IC = 1, NCL1_io
@@ -2042,12 +2042,12 @@ SUBROUTINE TEC360_INSTANT_VORTEX_CRITERIA
     END IF
 
     IF(TgFlowFlg)THEN
-        allocate (Qcr_tg    (NND1_tg, NND2, NND3)       )
-        allocate (Vor_tg    (NND1_tg, NND2, NND3, 4)     )
-        allocate (Delta_tg  (NND1_tg, NND2, NND3)       )
-        allocate (Lambda2_tg(NND1_tg, NND2, NND3)       )
-        allocate (SWIrlStrength_tg(NND1_tg, NND2, NND3, 3) )
-        allocate (dQ_tg     (NND1_tg, NND2, NND3, 3, 3)   )
+        allocate (Qcr_tg    (NND1_tg, NND2, NND3)       ); Qcr_tg = 0.0_WP
+        allocate (Vor_tg    (NND1_tg, NND2, NND3, 4)     ); Vor_tg = 0.0_WP
+        allocate (Delta_tg  (NND1_tg, NND2, NND3)       ); Delta_tg = 0.0_WP
+        allocate (Lambda2_tg(NND1_tg, NND2, NND3)       ); Lambda2_tg = 0.0_WP
+        allocate (SWIrlStrength_tg(NND1_tg, NND2, NND3, 3) ); SWIrlStrength_tg = 0.0_WP
+        allocate (dQ_tg     (NND1_tg, NND2, NND3, 3, 3)   ); dQ_tg = 0.0_WP
 
 
         !====================GET ALL du_I / DX_i on nodeS ===================================================
@@ -2159,7 +2159,7 @@ SUBROUTINE TEC360_INSTANT_VORTEX_CRITERIA
         END DO
 
         dQ_tg(:, NND2, :, :, :) = 2.0_WP * DQ_tg(:, NCL2, :, :, :) - DQ_tg(:, NCL2 - 1, :, :, :)
-        dQ_tg(:, 1,   :, :, :) = 2.0_WP * DQ_tg(:, 2,   :, :, :) - DQ_tg(:, 3,     :, :, :)
+        dQ_tg(:, 1,    :, :, :) = 2.0_WP * DQ_tg(:, 2,    :, :, :) - DQ_tg(:, 3,        :, :, :)
         dQ_tg(NND1_tg, :,:,   :, :) = dQ_tg(1, :, :, :, :)
         dQ_tg(:,      :, NND3, :, :) = dQ_tg(:, :, 1, :, :)
 

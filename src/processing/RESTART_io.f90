@@ -49,7 +49,7 @@ SUBROUTINE ReStart_INSTANT_VARS_io(TFM)  ! FOR BOTH KINDS OF DOMAINS....
         IF(N == 3)  WRITE(WRT_RST_FNM, '(A)') TRIM(FilePath1) // TRIM(FLNAME) // TRIM(PNTIM) // '_W.D'
         IF(N == 4)  WRITE(WRT_RST_FNM, '(A)') TRIM(FilePath1) // TRIM(FLNAME) // TRIM(PNTIM) // '_P.D'
 
-        CALL READ_3D_VARS(NCL1E, NCL2, NCL3, N2DO(MYID), JCL2G(1) - 1, ITERG0_io,PhyTIME_io, DUMMY, WRT_RST_FNM)
+        CALL READ_3D_VARS(NCL1E, NCL2, NCL3, N2DO(MYID), JCL2G(1) - 1, ITERG0_io, PhyTIME_io, DUMMY, WRT_RST_FNM)
 
         IF(iIniFieldType == 0) THEN
             DO I = 1, NCL1E
@@ -99,7 +99,7 @@ SUBROUTINE ReStart_INSTANT_VARS_io(TFM)  ! FOR BOTH KINDS OF DOMAINS....
             IF(N == 2)  WRITE(WRT_RST_FNM, '(A)') TRIM(FilePath1) // TRIM(FLNAME) // TRIM(PNTIM) // '_D.D'
             IF(N == 3)  WRITE(WRT_RST_FNM, '(A)') TRIM(FilePath1) // TRIM(FLNAME) // TRIM(PNTIM) // '_E.D'
 
-            CALL READ_3D_VARS(NCL1E, NCL2, NCL3, N2DO(MYID), JCL2G(1) - 1, ITERG0_io,PhyTIME_io, DUMMY, WRT_RST_FNM)
+            CALL READ_3D_VARS(NCL1E, NCL2, NCL3, N2DO(MYID), JCL2G(1) - 1, ITERG0_io, PhyTIME_io, DUMMY, WRT_RST_FNM)
 
             DO I = 1, NCL1E
                 DO J = 1, N2DO(MYID)
@@ -657,13 +657,13 @@ SUBROUTINE ReStart_AVERAGE_VARS_Xperiodic_io
 
     !============================
     NARRAY = 2
-    ALLOCATE ( SIZES_ARRAY(NARRAY) )
-    ALLOCATE ( SUBSIZES   (NARRAY) )
-    ALLOCATE ( STARTS     (NARRAY) )
+    ALLOCATE ( SIZES_ARRAY(NARRAY) ) ;  SIZES_ARRAY = 0
+    ALLOCATE ( SUBSIZES   (NARRAY) ) ;  SUBSIZES = 0
+    ALLOCATE ( STARTS     (NARRAY) ) ;  STARTS = 0
     INISIZE = 4
     IRLSIZE = 3
-    ALLOCATE ( INTMPI(INISIZE)       )
-    ALLOCATE ( RLEMPI(IRLSIZE)       )
+    ALLOCATE ( INTMPI(INISIZE)       ); INTMPI = 0
+    ALLOCATE ( RLEMPI(IRLSIZE)       ); RLEMPI = 0
 
     ! original
     NSZ = NDV + 1 + 2 * NDV + 2 * (NDV * (7 - NDV) / 2 + NDV - 3) + &
@@ -1218,13 +1218,13 @@ SUBROUTINE ReStart_AVERAGE_VARS_THERMAL_Xperiodic_io
 
     !============================
     NARRAY = 2
-    ALLOCATE ( SIZES_ARRAY(NARRAY) )
-    ALLOCATE ( SUBSIZES   (NARRAY) )
-    ALLOCATE ( STARTS     (NARRAY) )
+    ALLOCATE ( SIZES_ARRAY(NARRAY) ); SIZES_ARRAY = 0
+    ALLOCATE ( SUBSIZES   (NARRAY) ); SUBSIZES = 0
+    ALLOCATE ( STARTS     (NARRAY) ); STARTS = 0
     INISIZE = 4
     IRLSIZE = 3
-    ALLOCATE ( INTMPI(INISIZE)       )
-    ALLOCATE ( RLEMPI(IRLSIZE)       )
+    ALLOCATE ( INTMPI(INISIZE)       ); INTMPI = 0
+    ALLOCATE ( RLEMPI(IRLSIZE)       ); RLEMPI = 0
 
 
     !!NSZ = 9+5* NDV + ((NDV * (7 - NDV)) / 2 + NDV - 3) + 4* NDV * NDV +3 * NDV * NDV * NDV
