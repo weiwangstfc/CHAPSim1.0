@@ -23,7 +23,8 @@ DIR_FFT99= ../lib/fft99
 DIR_FISHPACK= ../lib/fishpack4.1
 DIR_EIGENV33= ../lib/eigen33
 
-FC = mpif90 #-vt       
+#FC = mpifort #-vt, for intel
+FC = mpif90
 
 #-------------------------------------------------------------------------------------#
 # CAUTION: After this line, NOTHING should be really changed!!!                       #
@@ -60,7 +61,7 @@ ifeq ($(cfg), gnu)
     FOPT4 = -Og -g -fno-range-check -fbacktrace -fbounds-check 
     
 else ifeq ($(cfg), intel)
-    FOPT12 = -O\
+    FOPT12 = -O0\
 	     -g\
 	-traceback\
 	-check all\
@@ -68,7 +69,7 @@ else ifeq ($(cfg), intel)
 	-check uninit\
 	-ftrapuv\
 	-fp-stack-check\
-	-warn all\
+	-warn all, nounused\
 	-no-ftz\
 	-debug all\
 	-fpe0\
