@@ -51,7 +51,9 @@ ifeq ($(cfg), gnu)
 	-fno-omit-frame-pointer\
 	-Wall\
 	-Wextra\
-	-Wuninitialized\
+	-Wno-unused-parameter\
+	-Wno-unused-variable\
+	-Wmaybe-uninitialized\
 	-Wmaybe-uninitialized\
 	-pedantic\
 	-pedantic-errors
