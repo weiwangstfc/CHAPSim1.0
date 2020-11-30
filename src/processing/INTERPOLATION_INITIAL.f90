@@ -312,7 +312,7 @@ SUBROUTINE INITIAL_INTERP_io
     REAL(WP), ALLOCATABLE :: QO   (:, :, :)
     REAL(WP), ALLOCATABLE :: QN   (:, :, :)
 
-    if(iIniField_tg /= 1) return
+    if(iIniField_io /= 1) return
 
     IF(MYID == 0) CALL CHKHDL(' IO: Interpolating from one mesh to another', MYID)
 

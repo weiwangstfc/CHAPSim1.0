@@ -13,123 +13,13 @@
 ! REVISION HISTORY:
 ! 06/2014 - Created, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
-SUBROUTINE WRT_INSTANT_VARS_IO
-    use cparam, only : iThermoDynamics
-
-    CALL WRT_INSTANT_VARS_FLOW_IO
-    IF(iThermoDynamics == 1) CALL WRT_INSTANT_VARS_THERMAL_IO
-
-END SUBROUTINE WRT_INSTANT_VARS_IO
-
-SUBROUTINE WRT_INSTANT_VARS_FLOW_IO
+SUBROUTINE WRT_INSTANT_VARS_io
     USE MESH_INFO
     USE FLOW_INFO
     USE INIT_INFO
     USE WRT_INFO
     USE POSTPROCESS_INFO
-    IMPLICIT NONE
-
-    CHARACTER(15) :: PNTIM
-    INTEGER(4) :: DFLG(4), IVEL, I, J, K
-    INTEGER(4) :: IERR, SIZES_ARRAY(3)
-    INTEGER(4) :: NEWTYPE, SUBSIZES(3), STARTS(3)
-    INTEGER(4) :: IRLSIZE, INTMPI(4), INTBYTE, DBLBYTE, INISIZE
-    INTEGER(4) ::  BUFSIZE, MYFILE, STATUS(MPI_STATUS_SIZE)
-    INTEGER(KIND = MPI_OFFSET_KIND)::  OFFSET
-    REAL(WP) :: RLEMPI(3)
-    REAL(WP), ALLOCATABLE :: DUMMY(:, :, :)
-    CHARACTER(20) :: FLNAME
-
-
-    IF(TgFlowFlg .AND. IoFlowFlg) THEN
-        FLNAME  = 'DNS_perioz_INSTANT_T'
-    ELSE
-        FLNAME  = 'DNS_perixz_INSTANT_T'
-    END IF
-
-    ALLOCATE(DUMMY(1 : NCL1_IO, 1 : N2DO(MYID), 1 : NCL3))
-    DUMMY = 0.0_WP
-
-    DO IVEL = 1, NDV + 1
-        !==================GENERATE FILE NAMES ===============================================
-        DFLG(IVEL) = 100 + IVEL
-        WRITE(PNTIM, '(1ES15.9)') PhyTIME
-        IF(IVEL == 1) WRITE(WRT_RST_FNM_TG(IVEL), '(A)') TRIM(FilePath1) // TRIM(FLNAME) // TRIM(PNTIM) // '_U.D'
-        IF(IVEL == 2) WRITE(WRT_RST_FNM_TG(IVEL), '(A)') TRIM(FilePath1) // TRIM(FLNAME) // TRIM(PNTIM) // '_V.D'
-        IF(IVEL == 3) WRITE(WRT_RST_FNM_TG(IVEL), '(A)') TRIM(FilePath1) // TRIM(FLNAME) // TRIM(PNTIM) // '_W.D'
-        IF(IVEL == 4) WRITE(WRT_RST_FNM_TG(IVEL), '(A)') TRIM(FilePath1) // TRIM(FLNAME) // TRIM(PNTIM) // '_P.D'
-
-        !======================== RE - ASSIGN variables =======================================
-        DO I = 1, NCL1_IO
-            DO J = 1, N2DO(MYID)
-                DO K = 1, NCL3
-                    IF(IVEL == 1) DUMMY(I, J, K) = Q_IO(I, J, K, 1) !U
-                    IF(IVEL == 2) DUMMY(I, J, K) = Q_IO(I, J, K, 2) !V
-                    IF(IVEL == 3) DUMMY(I, J, K) = Q_IO(I, J, K, 3) !W
-                    IF(IVEL == 4) DUMMY(I, J, K) = PR_IO(I, J, K)  !P
-                END DO
-            END DO
-        END DO
-
-        SIZES_ARRAY(1) = NCL1_IO
-        SIZES_ARRAY(2) = NCL2
-        SIZES_ARRAY(3) = NCL3
-
-        SUBSIZES(1) = NCL1_IO
-        SUBSIZES(2) = N2DO(MYID)
-        SUBSIZES(3) = NCL3
-
-        STARTS(1) = 0
-        STARTS(2) = JCL2G(1) - 1  !SUBSIZES(2) * MYID
-        STARTS(3) = 0
-        BUFSIZE  = SUBSIZES(1) * SUBSIZES(2) * SUBSIZES(3)
-
-        CALL MPI_TYPE_CREATE_SUBARRAY(3, SIZES_ARRAY, SUBSIZES, STARTS, MPI_ORDER_FORTRAN, MPI_DOUBLE_PRECISION, NEWTYPE, IERR)
-        CALL MPI_TYPE_COMMIT(NEWTYPE, IERR)
-
-        CALL MPI_FILE_OPEN(ICOMM, WRT_RST_FNM_TG(IVEL), MPI_MODE_WRONLY + MPI_MODE_CREATE, MPI_INFO_NULL, MYFILE, IERR)
-
-        INISIZE = 4
-        IRLSIZE = 3
-
-        INTMPI(1) = NCL1_IO
-        INTMPI(2) = NCL2
-        INTMPI(3) = NCL3
-        INTMPI(4) = ITERG
-
-        RLEMPI(1) = PhyTIME
-        RLEMPI(2) = REN
-        RLEMPI(3) = DT
-
-
-        OFFSET = 0_MPI_OFFSET_KIND
-        CALL MPI_FILE_SET_VIEW(MYFILE,OFFSET, MPI_DOUBLE_PRECISION, MPI_DOUBLE_PRECISION,"NATIVE", MPI_INFO_NULL, IERR)
-        CALL MPI_FILE_WRITE(MYFILE, INTMPI, INISIZE, MPI_INTEGER4, MPI_STATUS_IGNORE, IERR)
-        CALL MPI_FILE_WRITE(MYFILE,RLEMPI, IRLSIZE, MPI_DOUBLE_PRECISION, MPI_STATUS_IGNORE, IERR)
-        CALL MPI_TYPE_SIZE(MPI_INTEGER4, INTBYTE, IERR)
-        CALL MPI_TYPE_SIZE(MPI_DOUBLE_PRECISION, DBLBYTE, IERR)
-
-        OFFSET = 0_MPI_OFFSET_KIND + INISIZE * INTBYTE + IRLSIZE * DBLBYTE
-
-        CALL MPI_FILE_SET_VIEW(MYFILE,OFFSET, MPI_DOUBLE_PRECISION, NEWTYPE,"NATIVE", MPI_INFO_NULL, IERR)
-        CALL MPI_FILE_WRITE_ALL(MYFILE, DUMMY,BUFSIZE, MPI_DOUBLE_PRECISION, MPI_STATUS_IGNORE, IERR)
-        CALL MPI_FILE_CLOSE(MYFILE, IERR)
-        CALL MPI_TYPE_FREE(NEWTYPE, IERR)
-        CALL MPI_BARRIER(ICOMM, IERROR)
-    END DO
-    DEALLOCATE (DUMMY)
-
-    RETURN
-END SUBROUTINE
-
-
-SUBROUTINE WRT_INSTANT_VARS_THERMAL_IO
-    USE MESH_INFO
-    USE FLOW_INFO
     USE thermal_info
-    USE INIT_INFO
-    USE WRT_INFO
-    USE POSTPROCESS_INFO
     IMPLICIT NONE
 
     CHARACTER(15) :: PNTIM
@@ -139,10 +29,10 @@ SUBROUTINE WRT_INSTANT_VARS_THERMAL_IO
     INTEGER(4) :: IRLSIZE, INTMPI(4), INTBYTE, DBLBYTE, INISIZE
     INTEGER(4) ::  BUFSIZE, MYFILE, STATUS(MPI_STATUS_SIZE)
     INTEGER(KIND = MPI_OFFSET_KIND)::  OFFSET
+    INTEGER :: amode = MPI_MODE_CREATE + MPI_MODE_WRONLY
     REAL(WP) :: RLEMPI(3)
     REAL(WP), ALLOCATABLE :: DUMMY(:, :, :)
-    CHARACTER(20) :: FLNAME
-
+    CHARACTER(64) :: FLNAME
 
     IF(TgFlowFlg .AND. IoFlowFlg) THEN
         FLNAME  = 'DNS_perioz_INSTANT_T'
@@ -150,53 +40,52 @@ SUBROUTINE WRT_INSTANT_VARS_THERMAL_IO
         FLNAME  = 'DNS_perixz_INSTANT_T'
     END IF
 
-    ALLOCATE(DUMMY(1 : NCL1_IO, 1 : N2DO(MYID), 1 : NCL3))
-    DUMMY = 0.0_WP
+    DFLG(:) = 100
 
-    DO IVEL = 1, 5
+    DO IVEL = 1, NDV + 1
+        if( allocated(DUMMY) ) deallocate (DUMMY)
+        ALLOCATE(DUMMY(NCL1S : NCL1E, 1 : N2DO(MYID), 1 : NCL3))
+        DUMMY(:, :, :) = 0.0_WP
         !==================GENERATE FILE NAMES ===============================================
-        DFLG(IVEL) = 100 + IVEL
+        DFLG(IVEL) = DFLG(IVEL) + IVEL
         WRITE(PNTIM, '(1ES15.9)') PhyTIME
-        IF(IVEL == 1) WRITE(WRT_RST_FNM_TG(IVEL), '(A)') TRIM(FilePath1) // TRIM(FLNAME) // TRIM(PNTIM) // '_T.D'
-        IF(IVEL == 2) WRITE(WRT_RST_FNM_TG(IVEL), '(A)') TRIM(FilePath1) // TRIM(FLNAME) // TRIM(PNTIM) // '_D.D'
-        IF(IVEL == 3) WRITE(WRT_RST_FNM_TG(IVEL), '(A)') TRIM(FilePath1) // TRIM(FLNAME) // TRIM(PNTIM) // '_H.D'
-        IF(IVEL == 4) WRITE(WRT_RST_FNM_TG(IVEL), '(A)') TRIM(FilePath1) // TRIM(FLNAME) // TRIM(PNTIM) // '_M.D'
-        IF(IVEL == 5) WRITE(WRT_RST_FNM_TG(IVEL), '(A)') TRIM(FilePath1) // TRIM(FLNAME) // TRIM(PNTIM) // '_K.D'
+        IF(IVEL == 1) WRITE(WRT_RST_FNM_io(IVEL), '(A)') TRIM(FilePath1) // TRIM(FLNAME) // TRIM(PNTIM) // '_U.D'
+        IF(IVEL == 2) WRITE(WRT_RST_FNM_io(IVEL), '(A)') TRIM(FilePath1) // TRIM(FLNAME) // TRIM(PNTIM) // '_V.D'
+        IF(IVEL == 3) WRITE(WRT_RST_FNM_io(IVEL), '(A)') TRIM(FilePath1) // TRIM(FLNAME) // TRIM(PNTIM) // '_W.D'
+        IF(IVEL == 4) WRITE(WRT_RST_FNM_io(IVEL), '(A)') TRIM(FilePath1) // TRIM(FLNAME) // TRIM(PNTIM) // '_P.D'
+
         !======================== RE - ASSIGN variables =======================================
-        DO I = 1, NCL1_IO
+        DO K = 1, NCL3
             DO J = 1, N2DO(MYID)
-                DO K = 1, NCL3
-                    IF(IVEL == 1) DUMMY(I, J, K) = TEMPERATURE(I, J, K) 
-                    IF(IVEL == 2) DUMMY(I, J, K) = DENSITY(I, J, K)
-                    IF(IVEL == 3) DUMMY(I, J, K) = ENTHALPY(I, J, K)
-                    IF(IVEL == 4) DUMMY(I, J, K) = Viscousity(I, J, K)
-                    IF(IVEL == 5) DUMMY(I, J, K) = THERMCONDT(I, J, K)
+                DO I = NCL1S, NCL1E   
+                    IF(IVEL == 1) DUMMY(I, J, K) = G_io(I, J, K, 1) !U
+                    IF(IVEL == 2) DUMMY(I, J, K) = G_io(I, J, K, 2) !V
+                    IF(IVEL == 3) DUMMY(I, J, K) = G_io(I, J, K, 3) !W
+                    IF(IVEL == 4) DUMMY(I, J, K) = PR_io(I, J, K)
+                    !print*, DUMMY(I, J, K)
                 END DO
             END DO
         END DO
 
-        SIZES_ARRAY(1) = NCL1_IO
+        SIZES_ARRAY(1) = NCL1E - NCL1S + 1
         SIZES_ARRAY(2) = NCL2
         SIZES_ARRAY(3) = NCL3
 
-        SUBSIZES(1) = NCL1_IO
+        SUBSIZES(1) = SIZES_ARRAY(1)
         SUBSIZES(2) = N2DO(MYID)
-        SUBSIZES(3) = NCL3
+        SUBSIZES(3) = SIZES_ARRAY(3)
 
         STARTS(1) = 0
-        STARTS(2) = JCL2G(1) - 1  !SUBSIZES(2) * MYID
+        STARTS(2) = SUBSIZES(2) * MYID !JCL2G(1) - 1  !
         STARTS(3) = 0
-        BUFSIZE  = SUBSIZES(1) * SUBSIZES(2) * SUBSIZES(3)
+        BUFSIZE = SUBSIZES(1) * SUBSIZES(2) * SUBSIZES(3)
 
-        CALL MPI_TYPE_CREATE_SUBARRAY(3, SIZES_ARRAY, SUBSIZES, STARTS, MPI_ORDER_FORTRAN, MPI_DOUBLE_PRECISION, NEWTYPE, IERR)
+        CALL MPI_TYPE_CREATE_SUBARRAY(3, SIZES_ARRAY, SUBSIZES, STARTS, MPI_ORDER_FORTRAN, &
+            MPI_DOUBLE_PRECISION, NEWTYPE, IERR)
         CALL MPI_TYPE_COMMIT(NEWTYPE, IERR)
+        CALL MPI_FILE_OPEN(ICOMM, TRIM(WRT_RST_FNM_io(IVEL)), amode, MPI_INFO_NULL, MYFILE, IERR)
 
-        CALL MPI_FILE_OPEN(ICOMM, WRT_RST_FNM_TG(IVEL), MPI_MODE_WRONLY + MPI_MODE_CREATE, MPI_INFO_NULL, MYFILE, IERR)
-
-        INISIZE = 4
-        IRLSIZE = 3
-
-        INTMPI(1) = NCL1_IO
+        INTMPI(1) = NCL1E - NCL1S + 1
         INTMPI(2) = NCL2
         INTMPI(3) = NCL3
         INTMPI(4) = ITERG
@@ -205,9 +94,12 @@ SUBROUTINE WRT_INSTANT_VARS_THERMAL_IO
         RLEMPI(2) = REN
         RLEMPI(3) = DT
 
+        INISIZE = 4
+        IRLSIZE = 3
 
         OFFSET = 0_MPI_OFFSET_KIND
-        CALL MPI_FILE_SET_VIEW(MYFILE,OFFSET, MPI_DOUBLE_PRECISION, MPI_DOUBLE_PRECISION,"NATIVE", MPI_INFO_NULL, IERR)
+        CALL MPI_FILE_SET_VIEW(MYFILE,OFFSET, MPI_DOUBLE_PRECISION, MPI_DOUBLE_PRECISION, &
+            "NATIVE", MPI_INFO_NULL, IERR)
         CALL MPI_FILE_WRITE(MYFILE, INTMPI, INISIZE, MPI_INTEGER4, MPI_STATUS_IGNORE, IERR)
         CALL MPI_FILE_WRITE(MYFILE,RLEMPI, IRLSIZE, MPI_DOUBLE_PRECISION, MPI_STATUS_IGNORE, IERR)
         CALL MPI_TYPE_SIZE(MPI_INTEGER4, INTBYTE, IERR)
@@ -220,13 +112,101 @@ SUBROUTINE WRT_INSTANT_VARS_THERMAL_IO
         CALL MPI_FILE_CLOSE(MYFILE, IERR)
         CALL MPI_TYPE_FREE(NEWTYPE, IERR)
         CALL MPI_BARRIER(ICOMM, IERROR)
+
+        if( allocated(DUMMY) ) deallocate (DUMMY)
     END DO
-    DEALLOCATE (DUMMY)
+
+    
+    IF(iThermoDynamics == 1) THEN
+        DO IVEL = 1, 5
+
+            if( allocated(DUMMY) ) deallocate (DUMMY)
+            ALLOCATE(DUMMY(NCL1S : NCL1E, 1 : N2DO(MYID), 1 : NCL3))
+            DUMMY(:, :, :) = 0.0_WP
+
+            !==================GENERATE FILE NAMES ===============================================
+            DFLG(IVEL) = 120 + IVEL
+            WRITE(PNTIM, '(1ES15.9)') PhyTIME
+            IF(IVEL == 1) WRITE(WRT_RST_FNM_io(IVEL), '(A)') TRIM(FilePath1) // TRIM(FLNAME) // TRIM(PNTIM) // '_T.D'
+            IF(IVEL == 2) WRITE(WRT_RST_FNM_io(IVEL), '(A)') TRIM(FilePath1) // TRIM(FLNAME) // TRIM(PNTIM) // '_D.D'
+            IF(IVEL == 3) WRITE(WRT_RST_FNM_io(IVEL), '(A)') TRIM(FilePath1) // TRIM(FLNAME) // TRIM(PNTIM) // '_E.D'
+            !Added by Junjie, 2017/03 /06
+            IF(IVEL == 4) WRITE(WRT_RST_FNM_io(IVEL), '(A)') TRIM(FilePath1) // TRIM(FLNAME) // TRIM(PNTIM) // '_M.D'
+            IF(IVEL == 5) WRITE(WRT_RST_FNM_io(IVEL), '(A)') TRIM(FilePath1) // TRIM(FLNAME) // TRIM(PNTIM) // '_K.D'
+            !IF(IVEL == 4) WRITE(WRT_RST_FNM_io(IVEL), '(A)') TRIM(FilePath1) // TRIM(FLNAME) // TRIM(PNTIM) // '_D0.D'
+
+            !======================== RE - ASSIGN variables =======================================
+            DO I = 1, NCL1E
+                DO J = 1, N2DO(MYID)
+                    DO K = 1, NCL3
+                        IF(IVEL == 1) DUMMY(I, J, K) = TEMPERATURE(I, J, K)
+                        IF(IVEL == 2) DUMMY(I, J, K) = DENSITY(I, J, K)
+                        IF(IVEL == 3) DUMMY(I, J, K) = ENTHALPY(I, J, K)
+                        !Added by Junjie, 2017/03 /06
+                        IF(IVEL == 4) DUMMY(I, J, K) = Viscousity(I, J, K)
+                        IF(IVEL == 5) DUMMY(I, J, K) = THERMCONDT(I, J, K)
+                        !IF(IVEL == 4) DUMMY(I, J, K) = DENSITY0(I, J, K)
+                    END DO
+                END DO
+            END DO
+
+            SIZES_ARRAY(1) = NCL1E
+            SIZES_ARRAY(2) = NCL2
+            SIZES_ARRAY(3) = NCL3
+
+            SUBSIZES(1) = SIZES_ARRAY(1)
+            SUBSIZES(2) = N2DO(MYID)
+            SUBSIZES(3) = SIZES_ARRAY(3)
+
+            STARTS(1) = 0
+            STARTS(2) = JCL2G(1) - 1  !SUBSIZES(2) * MYID
+            STARTS(3) = 0
+
+            BUFSIZE = SUBSIZES(1) * SUBSIZES(2) * SUBSIZES(3)
+
+            CALL MPI_TYPE_CREATE_SUBARRAY(3,SIZES_ARRAY, SUBSIZES, STARTS, MPI_ORDER_FORTRAN, &
+            MPI_DOUBLE_PRECISION, NEWTYPE, IERR)
+            CALL MPI_TYPE_COMMIT(NEWTYPE, IERR)
+            CALL MPI_FILE_OPEN(ICOMM,WRT_RST_FNM_io(IVEL), MPI_MODE_WRONLY + MPI_MODE_CREATE, MPI_INFO_NULL, MYFILE, IERR)
+
+
+            INTMPI(1) = NCL1E
+            INTMPI(2) = NCL2
+            INTMPI(3) = NCL3
+            INTMPI(4) = ITERG
+
+            RLEMPI(1) = PhyTIME
+            RLEMPI(2) = REN
+            RLEMPI(3) = DT
+
+            INISIZE = 4
+            IRLSIZE = 3
+
+            OFFSET = 0_MPI_OFFSET_KIND
+            CALL MPI_FILE_SET_VIEW(MYFILE,OFFSET, MPI_DOUBLE_PRECISION, MPI_DOUBLE_PRECISION,"NATIVE", MPI_INFO_NULL, IERR)
+            CALL MPI_FILE_WRITE(MYFILE, INTMPI, INISIZE, MPI_INTEGER4, MPI_STATUS_IGNORE, IERR)
+            CALL MPI_FILE_WRITE(MYFILE,RLEMPI, IRLSIZE, MPI_DOUBLE_PRECISION, MPI_STATUS_IGNORE, IERR)
+            CALL MPI_TYPE_SIZE(MPI_INTEGER4, INTBYTE, IERR)
+            CALL MPI_TYPE_SIZE(MPI_DOUBLE_PRECISION, DBLBYTE, IERR)
+
+            OFFSET = 0_MPI_OFFSET_KIND + INISIZE * INTBYTE + IRLSIZE * DBLBYTE
+
+            CALL MPI_FILE_SET_VIEW(MYFILE,OFFSET, MPI_DOUBLE_PRECISION, NEWTYPE,"NATIVE", MPI_INFO_NULL, IERR)
+            CALL MPI_FILE_WRITE_ALL(MYFILE, DUMMY,BUFSIZE, MPI_DOUBLE_PRECISION, MPI_STATUS_IGNORE, IERR)
+            CALL MPI_FILE_CLOSE(MYFILE, IERR)
+            CALL MPI_TYPE_FREE(NEWTYPE, IERR)
+            CALL MPI_BARRIER(ICOMM, IERROR)
+
+            if( allocated(DUMMY) ) deallocate (DUMMY)
+        END DO
+
+    END IF
+
+
+
 
     RETURN
 END SUBROUTINE
-
-
 !**********************************************************************************************************************************
 SUBROUTINE WRT_AVERAGE_VARS_nonXperiodic_io
     USE MESH_INFO

@@ -431,6 +431,10 @@ SUBROUTINE READINI
         IF(iIniField_tg == IniField_extrapolation) &
         CALL CHKHDL ('iIniField_tg = TG: Start from interpolation of a coarse mesh', MYID)
         IF(iIniField_tg == IniField_reStart)       CALL CHKHDL ('iIniField_tg = TG: ReStart from last step', MYID)
+        IF(iIniField_tg == IniField_random) THEN
+            CALL CHKRLHDL  ('VPERG (initial velocity perturbation)  = ', MYID, VPERG)
+            CALL CHKRLHDL  ('SVPERG (initial velocity perturbuatio near 1/4 Y-wall) = ', MYID, SVPERG)
+        END IF
     END IF
 
     IF(IoFlowFlg) THEN
@@ -439,16 +443,16 @@ SUBROUTINE READINI
         CALL CHKHDL ('iIniField_io = IO: Start from interpolation of a coarse mesh', MYID)
         IF(iIniField_io == IniField_reStart)       CALL CHKHDL ('iIniField_io = IO: ReStart from last step', MYID)
         IF(iIniField_io == IniField_extrapolation .OR. iIniField_io == IniField_reStart) THEN
+            IF(iThermoDynamics == 0) iIniFieldType = 1
             IF(iIniFieldType == 0)  CALL CHKHDL ('iIniFieldType = IO: ReStart both flow and thermal fields', MYID)
             IF(iIniFieldType == 1)  CALL CHKHDL ('iIniFieldType = IO: ReStart only flow field, no thermal field', MYID)
             IF(iIniFieldTime == 0)  CALL CHKHDL ('iIniFieldTime = IO: ReStart following previous time.', MYID)
             IF(iIniFieldTime == 1)  CALL CHKHDL ('iIniFieldTime = IO: ReStart with re-setting time to zero', MYID)
         END IF
-    END IF
-
-    IF(iIniField_io == IniField_random .OR. iIniField_tg == IniField_random) THEN
-        CALL CHKRLHDL  ('VPERG (initial velocity perturbation)  = ', MYID, VPERG)
-        CALL CHKRLHDL  ('SVPERG (initial velocity perturbuatio near 1/4 Y-wall) = ', MYID, SVPERG)
+        IF(iIniField_io == IniField_random) THEN
+            CALL CHKRLHDL  ('VPERG (initial velocity perturbation)  = ', MYID, VPERG)
+            CALL CHKRLHDL  ('SVPERG (initial velocity perturbuatio near 1/4 Y-wall) = ', MYID, SVPERG)
+        END IF
     END IF
 
     !========== Reading Section [numerics]===================

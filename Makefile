@@ -24,7 +24,7 @@ DIR_FISHPACK= ../lib/fishpack4.1
 DIR_EIGENV33= ../lib/eigen33
 
 #FC = mpifort #-vt, for intel
-FC = mpif90
+FC = mpifort
 
 #-------------------------------------------------------------------------------------#
 # CAUTION: After this line, NOTHING should be really changed!!!                       #
@@ -53,7 +53,6 @@ ifeq ($(cfg), gnu)
 	-Wextra\
 	-Wno-unused-parameter\
 	-Wno-unused-variable\
-	-Wmaybe-uninitialized\
 	-Wmaybe-uninitialized\
 	-pedantic\
 	-pedantic-errors
