@@ -54,10 +54,10 @@ SUBROUTINE WRT_INSTANT_VARS_FLOW_IO
         !==================GENERATE FILE NAMES ===============================================
         DFLG(IVEL) = 100 + IVEL
         WRITE(PNTIM, '(1ES15.9)') PhyTIME
-        IF(IVEL == 1) WRITE(WRT_RST_FNM_TG(IVEL), '(A)') TRIM(FilePath1) // TRIM(FLNAME) // TRIM(PNTIM) // '_U.D'
-        IF(IVEL == 2) WRITE(WRT_RST_FNM_TG(IVEL), '(A)') TRIM(FilePath1) // TRIM(FLNAME) // TRIM(PNTIM) // '_V.D'
-        IF(IVEL == 3) WRITE(WRT_RST_FNM_TG(IVEL), '(A)') TRIM(FilePath1) // TRIM(FLNAME) // TRIM(PNTIM) // '_W.D'
-        IF(IVEL == 4) WRITE(WRT_RST_FNM_TG(IVEL), '(A)') TRIM(FilePath1) // TRIM(FLNAME) // TRIM(PNTIM) // '_P.D'
+        IF(IVEL == 1) WRITE(WRT_RST_FNM_IO(IVEL), '(A)') TRIM(FilePath1) // TRIM(FLNAME) // TRIM(PNTIM) // '_U.D'
+        IF(IVEL == 2) WRITE(WRT_RST_FNM_IO(IVEL), '(A)') TRIM(FilePath1) // TRIM(FLNAME) // TRIM(PNTIM) // '_V.D'
+        IF(IVEL == 3) WRITE(WRT_RST_FNM_IO(IVEL), '(A)') TRIM(FilePath1) // TRIM(FLNAME) // TRIM(PNTIM) // '_W.D'
+        IF(IVEL == 4) WRITE(WRT_RST_FNM_IO(IVEL), '(A)') TRIM(FilePath1) // TRIM(FLNAME) // TRIM(PNTIM) // '_P.D'
 
         !======================== RE - ASSIGN variables =======================================
         DO I = 1, NCL1_IO
@@ -87,7 +87,7 @@ SUBROUTINE WRT_INSTANT_VARS_FLOW_IO
         CALL MPI_TYPE_CREATE_SUBARRAY(3, SIZES_ARRAY, SUBSIZES, STARTS, MPI_ORDER_FORTRAN, MPI_DOUBLE_PRECISION, NEWTYPE, IERR)
         CALL MPI_TYPE_COMMIT(NEWTYPE, IERR)
 
-        CALL MPI_FILE_OPEN(ICOMM, WRT_RST_FNM_TG(IVEL), MPI_MODE_WRONLY + MPI_MODE_CREATE, MPI_INFO_NULL, MYFILE, IERR)
+        CALL MPI_FILE_OPEN(ICOMM, WRT_RST_FNM_IO(IVEL), MPI_MODE_WRONLY + MPI_MODE_CREATE, MPI_INFO_NULL, MYFILE, IERR)
 
         INISIZE = 4
         IRLSIZE = 3
@@ -157,11 +157,11 @@ SUBROUTINE WRT_INSTANT_VARS_THERMAL_IO
         !==================GENERATE FILE NAMES ===============================================
         DFLG(IVEL) = 100 + IVEL
         WRITE(PNTIM, '(1ES15.9)') PhyTIME
-        IF(IVEL == 1) WRITE(WRT_RST_FNM_TG(IVEL), '(A)') TRIM(FilePath1) // TRIM(FLNAME) // TRIM(PNTIM) // '_T.D'
-        IF(IVEL == 2) WRITE(WRT_RST_FNM_TG(IVEL), '(A)') TRIM(FilePath1) // TRIM(FLNAME) // TRIM(PNTIM) // '_D.D'
-        IF(IVEL == 3) WRITE(WRT_RST_FNM_TG(IVEL), '(A)') TRIM(FilePath1) // TRIM(FLNAME) // TRIM(PNTIM) // '_H.D'
-        IF(IVEL == 4) WRITE(WRT_RST_FNM_TG(IVEL), '(A)') TRIM(FilePath1) // TRIM(FLNAME) // TRIM(PNTIM) // '_M.D'
-        IF(IVEL == 5) WRITE(WRT_RST_FNM_TG(IVEL), '(A)') TRIM(FilePath1) // TRIM(FLNAME) // TRIM(PNTIM) // '_K.D'
+        IF(IVEL == 1) WRITE(WRT_RST_FNM_IO(IVEL), '(A)') TRIM(FilePath1) // TRIM(FLNAME) // TRIM(PNTIM) // '_T.D'
+        IF(IVEL == 2) WRITE(WRT_RST_FNM_IO(IVEL), '(A)') TRIM(FilePath1) // TRIM(FLNAME) // TRIM(PNTIM) // '_D.D'
+        IF(IVEL == 3) WRITE(WRT_RST_FNM_IO(IVEL), '(A)') TRIM(FilePath1) // TRIM(FLNAME) // TRIM(PNTIM) // '_H.D'
+        IF(IVEL == 4) WRITE(WRT_RST_FNM_IO(IVEL), '(A)') TRIM(FilePath1) // TRIM(FLNAME) // TRIM(PNTIM) // '_M.D'
+        IF(IVEL == 5) WRITE(WRT_RST_FNM_IO(IVEL), '(A)') TRIM(FilePath1) // TRIM(FLNAME) // TRIM(PNTIM) // '_K.D'
         !======================== RE - ASSIGN variables =======================================
         DO I = 1, NCL1_IO
             DO J = 1, N2DO(MYID)
@@ -191,7 +191,7 @@ SUBROUTINE WRT_INSTANT_VARS_THERMAL_IO
         CALL MPI_TYPE_CREATE_SUBARRAY(3, SIZES_ARRAY, SUBSIZES, STARTS, MPI_ORDER_FORTRAN, MPI_DOUBLE_PRECISION, NEWTYPE, IERR)
         CALL MPI_TYPE_COMMIT(NEWTYPE, IERR)
 
-        CALL MPI_FILE_OPEN(ICOMM, WRT_RST_FNM_TG(IVEL), MPI_MODE_WRONLY + MPI_MODE_CREATE, MPI_INFO_NULL, MYFILE, IERR)
+        CALL MPI_FILE_OPEN(ICOMM, WRT_RST_FNM_IO(IVEL), MPI_MODE_WRONLY + MPI_MODE_CREATE, MPI_INFO_NULL, MYFILE, IERR)
 
         INISIZE = 4
         IRLSIZE = 3
@@ -1066,7 +1066,7 @@ SUBROUTINE WRT_AVERAGE_VARS_Xperiodic_io
         CALL CHKINTHDL('     ITERG0_io IN AVERAGED variables ', MYID, INTMPI(3))
         CALL CHKINTHDL('     NSTATIS_io IN AVERAGED variables', MYID, INTMPI(4))
 
-        CALL CHKRLHDL ('     PhyTIME_TG IN AVERAGED variables', MYID, RLEMPI(1))
+        CALL CHKRLHDL ('     PhyTIME_IO IN AVERAGED variables', MYID, RLEMPI(1))
         CALL CHKRLHDL ('     RENL       IN AVERAGED variables', MYID, RLEMPI(2))
         CALL CHKRLHDL ('     DTL        IN AVERAGED variables', MYID, RLEMPI(3))
     END IF
@@ -1376,7 +1376,7 @@ SUBROUTINE WRT_AVERAGE_VARS_THERMAL_Xperiodic_io
         CALL CHKINTHDL('     ITERG0_io IN AVERAGED variables ', MYID, INTMPI(3))
         CALL CHKINTHDL('     NSTATIS_io IN AVERAGED variables', MYID, INTMPI(4))
 
-        CALL CHKRLHDL ('     PhyTIME_TG IN AVERAGED variables', MYID, RLEMPI(1))
+        CALL CHKRLHDL ('     PhyTIME_IO IN AVERAGED variables', MYID, RLEMPI(1))
         CALL CHKRLHDL ('     RENL       IN AVERAGED variables', MYID, RLEMPI(2))
         CALL CHKRLHDL ('     DTL        IN AVERAGED variables', MYID, RLEMPI(3))
     END IF
