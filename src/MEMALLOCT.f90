@@ -855,7 +855,7 @@ SUBROUTINE MEM_DEALLOCAT
         END IF
 
         !================ Thermal info=============================
-
+        IF(iThermoDynamics == 1) THEN
         DEALLOCATE (DH        )
         DEALLOCATE (ENTHALPY    )
         DEALLOCATE (TEMPERATURE )
@@ -872,7 +872,7 @@ SUBROUTINE MEM_DEALLOCAT
         DEALLOCATE ( RHS_ENERGY  )
         DEALLOCATE ( RHS_ENERGY0 )
 
-
+        END IF
 
         IF(TgFlowFlg) THEN
             DEALLOCATE ( IPV_io )
