@@ -24,6 +24,7 @@ END MODULE WPRECISION
 !**********************************************************************************************************************************
 MODULE mpi_info
     INCLUDE 'mpif.h'
+    !use MPI
 
     INTEGER(4) ::  MYID
     INTEGER(4) ::  IERROR

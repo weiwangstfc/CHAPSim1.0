@@ -1083,8 +1083,8 @@ SUBROUTINE SPLINE_COEFFICIENTS_FOR_H
         CpMaX = -1E-14_WP
         DO I = 2, N_LIST*3
 
-            D0TMP = D_tmp
-            H0TMP = H_tmp
+            !D0TMP = D0
+            !H0TMP = H0
 
             H_tmp = LIST_H(1) + DBLE(I - 1) * (LIST_H(N_LIST) - LIST_H(1)) / DBLE(N_LIST*3)
             T_tmp = spline_interpolation_HT(H_tmp)
@@ -1094,9 +1094,9 @@ SUBROUTINE SPLINE_COEFFICIENTS_FOR_H
             Cp_tmp = spline_interpolation_HCp(H_tmp)
             B_tmp = spline_interpolation_HB(H_tmp)
 
-            dDdH0TMP = (D_tmp - D0TMP) / (H_tmp - H0TMP)
+            !dDdH0TMP = (D_tmp - D0TMP) / (H_tmp - H0TMP)
 
-            WRITE(10, '(9ES13.5)') P0, H_tmp, T_tmp, D_tmp, M_tmp, K_tmp, Cp_tmp, B_tmp, dDdH0TMP
+            WRITE(10, '(8ES13.5)') P0, H_tmp, T_tmp, D_tmp, M_tmp, K_tmp, Cp_tmp, B_tmp!, dDdH0TMP
         END DO
 
         DHmax = LIST_DH(IMAX_DH)

@@ -135,7 +135,7 @@ SUBROUTINE SOLVE
 
         !===================================================
         ENDTIME(1) = MPI_WTIME()
-        CPUTIME_tmp =ENDTIME(1) -StartTIME
+        CPUTIME_tmp =ENDTIME(1) - StartTIME
 
 
         !=======POSTPROCESS =============================

@@ -1508,6 +1508,7 @@ SUBROUTINE SPECO_WRITE_Contour(STR)
     !U_tau_avE = 0.5_WP * (Utaw_io(1) + Utaw_io(2))
 
     !===============plane y-Z =====================
+    WRITE(PNTIM, '(1ES15.9)') PhyTIME_io
     FLNAME = TRIM(FilePath5) // 'Result.IO.Spectral.' // TRIM(STR) // '.Contours.yz.' // TRIM(PNTIM) // '.plt'
     OPEN (DFLG, FILE = TRIM(ADJUSTL(FLNAME)))
 
