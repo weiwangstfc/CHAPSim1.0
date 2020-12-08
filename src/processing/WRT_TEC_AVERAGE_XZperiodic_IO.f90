@@ -4942,11 +4942,11 @@ SUBROUTINE WRT_FLOW_FA_Profile_XZ_io
     !====================Favre Avderaged profileS ===============================================================
     NMax = 1
     STDIM(1) = 'undim'
-    TECFLG_FavAG(1) = 101
+    TECFLG_FavAG(1) = 51
     IF(iPPDimension == 1) THEN
         NMax = 2
         STDIM(2) = 'dimen'
-        TECFLG_FavAG(2) = 102
+        TECFLG_FavAG(2) = 52
     END IF
 
 
@@ -5186,7 +5186,7 @@ SUBROUTINE WRT_FLOW_RA_Profile_XZ_io
     !========================== TitlE =========================================
     NMax = 1
     STDIM(1) = 'undim'
-    TECFLG_ReyAG(1) = 101
+    TECFLG_ReyAG(1) = 51
     IF(iPPDimension == 1) THEN
         NMax = 2
         STDIM(2) = 'dimen'
@@ -5674,7 +5674,7 @@ SUBROUTINE WRT_HEAT_FA_Profile_XZ_io
 
     NMax = 1
     STDIM(1) = 'undim'
-    TECFLG_FavAG(1) = 101
+    TECFLG_FavAG(1) = 51
     IF(iPPDimension == 1) THEN
         NMax = 2
         STDIM(2) = 'dimen'
@@ -6825,7 +6825,7 @@ SUBROUTINE WRT_FLOW_Budgets_Profile_XZ_io(STR)
 
     NMax = 1
     STDIM(1) = 'undim'
-    TECFLG(1) = 101
+    TECFLG(1) = 51
     IF(iPPDimension == 1) THEN
         NMax = 2
         STDIM(2) = 'dimen'
@@ -7120,7 +7120,7 @@ SUBROUTINE WRITE_SPECO_AVE_Contour(STR)
 
     CHARACTER(15) :: PNTIM
     CHARACTER(15) :: PNLOC
-    INTEGER(4) :: Dflg = 101
+    INTEGER(4) :: Dflg = 51
     CHARACTER(256) :: FLNAME
     !REAL(WP) :: Ret_ave, U_tau_ave
     REAL(WP) :: AKE

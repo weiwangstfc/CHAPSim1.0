@@ -173,7 +173,7 @@ SUBROUTINE ReStart_AVERAGE_VARS_TG
         ALLOCATE( DUMMY2(1 : N2DO(MYID), NSZ ) )
         DUMMY2 = 0.0_WP
 
-        DFLG = 101
+        DFLG = 51
         WRITE(PNTIM, '(1ES15.9)') tRunAve_Reset
         WRITE(WRT_AVE_FNM_TG, '(A)') TRIM(FilePath2) // 'DNS_perixz_AVERAGD_T' // TRIM(PNTIM) // '_FLOW.D'
 

@@ -60,7 +60,7 @@ SUBROUTINE LAMPOISLPROF
     U1mean = U1mean / Area_inlet
 
 
-    FLLG = 101
+    FLLG = 50
     OPEN(FLLG, FILE = TRIM(FilePath0) // 'CHK_INIL_Poiseuille.dat')
     WRITE(FLLG, '(A)') '#  YCC, Uini'
     DO J = 1, NCL2

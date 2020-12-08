@@ -1493,7 +1493,7 @@ SUBROUTINE SPECO_WRITE_Contour(STR)
 
     CHARACTER(15) :: PNTIM
     CHARACTER(15) :: PNLOC
-    INTEGER(4) :: Dflg = 101
+    INTEGER(4) :: Dflg = 51
     CHARACTER(256) :: FLNAME
     !REAL(WP) :: Ret_ave, U_tau_ave
     REAL(WP) :: AKE

@@ -1202,8 +1202,8 @@ SUBROUTINE POSITIONS_nonXperiodic_io
     den, tem, enh, drms, trms, hrms, Thfx, thfy, thfz
     REAL(WP) :: COE1, COE2,COE
     INTEGER(4) :: I, J, K
-    INTEGER(4) :: TECFLG1 = 101
-    INTEGER(4) :: TECFLG2 = 102
+    INTEGER(4) :: TECFLG1 = 51
+    INTEGER(4) :: TECFLG2 = 52
 
 
     !==========================pluS ==================================================================
