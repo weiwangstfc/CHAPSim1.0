@@ -172,7 +172,7 @@ SUBROUTINE MEMO_ALLOCT_AVERAGE_nonXperiodic_io
         ALLOCATE( H1ztL_F0_io( NCL1_io, NCL2 ) ) ; H1ztL_F0_io = 0.0_WP
 
         ALLOCATE( T2ztL_F0_io( NCL1_io, NCL2 ) ) ; T2ztL_F0_io = 0.0_WP
-        ALLOCATE( H2ztL_F0_io( NCL1_io, NCL2 ) ) ; H2ztL_F0_io = 0.0_WP
+        ALLOCATE( D2ztL_F0_io( NCL1_io, NCL2 ) ) ; D2ztL_F0_io = 0.0_WP
         ALLOCATE( H2ztL_F0_io( NCL1_io, NCL2 ) ) ; H2ztL_F0_io = 0.0_WP
 
         ALLOCATE( DHztL_F0_io( NCL1_io, NCL2 ) ) ; DHztL_F0_io = 0.0_WP
@@ -208,7 +208,7 @@ SUBROUTINE MEMO_ALLOCT_AVERAGE_nonXperiodic_io
         ALLOCATE( Twalz_D(NCL1_io, 2) ) ; Twalz_D = 0.0_WP
         ALLOCATE( Dwalz_D(NCL1_io, 2) ) ; Dwalz_D = 0.0_WP
         ALLOCATE( Mwalz_D(NCL1_io, 2) ) ; Mwalz_D = 0.0_WP
-        ALLOCATE( Cpwalz_D(NCL1_io, 2) ) ; Cpwalz_D = 0.0_WP
+        ALLOCATE( Kwalz_D(NCL1_io, 2) ) ; Kwalz_D = 0.0_WP
         ALLOCATE( Cpwalz_D(NCL1_io, 2) ) ; Cpwalz_D = 0.0_WP
 
         ALLOCATE( Gbuk_D(NCL1_io) ) ; Gbuk_D = 0.0_WP

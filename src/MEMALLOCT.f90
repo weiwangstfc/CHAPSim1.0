@@ -975,9 +975,10 @@ SUBROUTINE MEM_DEALLOCAT
 
             DEALLOCATE ( D1xzL_io  )
             DEALLOCATE ( D1xztL_io )
-            DEALLOCATE ( D2xztL_io )
-            DEALLOCATE ( D2xzL_io  )
+            
             IF(iThermoDynamics == 1) THEN
+                DEALLOCATE ( D2xztL_io )
+                DEALLOCATE ( D2xzL_io  )
                 DEALLOCATE ( T1xzL_io )
                 DEALLOCATE ( H1xzL_io )
 

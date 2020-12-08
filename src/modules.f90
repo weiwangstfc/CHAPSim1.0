@@ -348,7 +348,7 @@ MODULE init_info
     REAL(WP) :: DT0    ! given time step
     REAL(WP) :: DTMIN  ! the minimum time step
 
-    REAL(WP) :: CPUTIME, CPUTIME_tmp
+    REAL(WP) :: CPUTIME(2), CPUTIME_tmp(2)
     REAL(WP) :: CFLGV
 
 
