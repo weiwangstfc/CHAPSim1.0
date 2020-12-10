@@ -19,7 +19,7 @@
 ! 06/2014- Created, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 MODULE WPRECISION
-    INTEGER, PARAMETER :: WP = 8 !KIND(0.0D0) !WORKING PRECESION
+    INTEGER, PARAMETER :: WP = selected_real_kind( p = 15, r = 307 )
 END MODULE WPRECISION
 !**********************************************************************************************************************************
 MODULE mpi_info
@@ -50,10 +50,10 @@ MODULE cparam
     INTEGER(4), PARAMETER :: IniField_extrapolation = 1
     INTEGER(4), PARAMETER :: IniField_reStart = 2
 
-    REAL(WP), PARAMETER :: REALMIN = 1.0E-14_WP
-    REAL(WP), PARAMETER :: REALMAX = 1.0E+14_WP
-    REAL(WP), PARAMETER :: Cmu0 = 0.09_WP
-    REAL(WP), PARAMETER :: TK2C = 273.15_WP
+    REAL(WP), PARAMETER :: REALMIN = 1.0E-14
+    REAL(WP), PARAMETER :: REALMAX = 1.0E+14
+    REAL(WP), PARAMETER :: Cmu0 = 0.09
+    REAL(WP), PARAMETER :: TK2C = 273.15
 
     INTEGER(4), PARAMETER :: IINLET = -1
     INTEGER(4), PARAMETER :: IOULET = 1
@@ -190,9 +190,9 @@ MODULE WRT_INFO
     CHARACTER(10) :: time
 
     CHARACTER(18) :: fllog
-    INTEGER(4) :: logflg_pg = 200
-    INTEGER(4) :: logflg_tg = 201
-    INTEGER(4) :: logflg_io = 202
+    INTEGER(4) :: logflg_pg = 20
+    INTEGER(4) :: logflg_tg = 21
+    INTEGER(4) :: logflg_io = 22
 
 
     CHARACTER(LEN = 256) :: WRT_RST_FNM_TG(NDV + 1)

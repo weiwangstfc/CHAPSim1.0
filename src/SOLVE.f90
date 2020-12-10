@@ -230,7 +230,7 @@ SUBROUTINE BCAST_COMM_STEP
         IF(IoFlowFlg) CALL POSTPROCESS_io
 
         CALL MPI_BARRIER(ICOMM, IERROR)
-        STOP
+        STOP "Finished3."
     END IF
 
 

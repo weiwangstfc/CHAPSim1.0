@@ -142,7 +142,7 @@ PROGRAM CHAPSim_DNS_Solver
         CALL POSTPROCESS_INTEGRAL_INSTANS
         CALL MPI_BARRIER(ICOMM, IERROR)
         IF(MYID == 0) CALL CHKHDL('<===Only postprocessed given instantanous results, now the code stops...==>', MYID)
-        STOP
+        STOP "Finished postprocessing"
     END IF
 
     !==== The main CFD Solver ==========
@@ -152,6 +152,6 @@ PROGRAM CHAPSim_DNS_Solver
     CALL MEM_DEALLOCAT
     IF (MYID == 0) CALL CHKHDL('15. The CFD solver finished.', MYID)
     CALL MPI_FINALIZE(IERROR)
-    STOP
+    STOP "The simulation has completed."
 
 END PROGRAM CHAPSim_DNS_Solver

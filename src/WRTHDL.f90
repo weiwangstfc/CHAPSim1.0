@@ -55,7 +55,7 @@ SUBROUTINE ERRHDL(MSG, RANK)
 
     WRITE(logflg_pg, TRIM(FORMAT_ERROR)) '# Error in MYID ', RANK, MSG
 
-    STOP
+    STOP   "Error"
 
 END SUBROUTINE ERRHDL
 !**********************************************************************************************************************************

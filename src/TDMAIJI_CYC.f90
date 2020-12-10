@@ -64,7 +64,7 @@
 ! REVISION HISTORY:
 ! 30/01/2013- Initial Version, by Wei Wang
 !**********************************************************************************************************************************
-SUBROUTINE TDMAIJI_CYC(A,B,C,R, IS, ISZ, JS, JSZ)
+SUBROUTINE TDMAIJI_CYC(A, B, C, R, IS, ISZ, JS, JSZ)
     USE WPRECISION
     IMPLICIT NONE
 
