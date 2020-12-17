@@ -39,9 +39,9 @@
       Ref: Temperature (K) T0 =     3.000000000E+02
    Inlet: Temperature (K) Ti =      3.000000000E+02
     iThermalWallType (bottom wall) = Constant Wall Heat Flux
-                     Wall Heat flux (W/M2) on the bottom walL =     0.000000000E+00
+                     Wall Heat flux (W/M2) on the bottom walL =     1.000000000E+03
     iThermalWallType (topwall) = Constant Wall Heat Flux
-                        Wall Heat flux (W/M2) on the top walL =     0.000000000E+00
+                        Wall Heat flux (W/M2) on the top walL =     1.000000000E+03
     --------------------------------
     Read in [conjugateHeatTransfer]
     [conjugateHeatTransfer] is not considered.

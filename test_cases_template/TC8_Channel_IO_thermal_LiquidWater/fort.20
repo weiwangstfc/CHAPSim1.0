@@ -19,8 +19,8 @@
               Initial M_inlet =     1.000000000E+00
              Initial CP_inlet =     1.000000000E+00
              Initial DH_inlet =     0.000000000E+00
-   REF WALHFLX TOPWALL (W/M2) =     0.000000000E+00
-   REF WALHFLX BOTWALL (W/M2) =     0.000000000E+00
+   REF WALHFLX TOPWALL (W/M2) =     1.000000000E+03
+   REF WALHFLX BOTWALL (W/M2) =     1.000000000E+03
     Reference States (dimensionless)
                       REF CP0 =     4.180751549E+03
                        REF RE =     2.800000000E+03
@@ -32,8 +32,8 @@
     REF Gr0/ RE^2.7(Top Wall) =     0.000000000E+00
                         REF Gr0/ RE^3.425/Pr^0.8(Bottom Wall) =     0.000000000E+00
                            REF Gr0/ RE^3.425/Pr^0.8(Top Wall) =     0.000000000E+00
-                               REF Q+ (WHFLUX0) (Bottom Wall) =     0.000000000E+00
-  REF Q+ (WHFLUX0) (Top Wall) =     0.000000000E+00
+                               REF Q+ (WHFLUX0) (Bottom Wall) =     1.093819645E-02
+  REF Q+ (WHFLUX0) (Top Wall) =     1.093819645E-02
     13. The main CFD solver Starts...
     14. IO: Flow initialization from random velocity field
     (1-2) IO: Generating random velocity
