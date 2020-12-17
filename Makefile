@@ -93,6 +93,8 @@ endif
 OBJ1= \
         modules.o\
         MEMALLOCT.o\
+        possion3d_FFT99.o\
+	possion3d_fishpack.o\
         DNS_THERMAL.o\
         BC_COUTLET_ENEG_RK3.o\
         BC_COUTLET_MOM_RK3.o\
@@ -120,8 +122,6 @@ OBJ1= \
         TDMA_COEF.o\
         MASSFLUX_CALC_IO.o\
         mesh_decomp.o\
-        possion3d_FFT99.o\
-        possion3d_fishpack.o\
         MOMFA_tg.o\
         MOMFA_io.o\
         PRESSURE_CORRECTION.o\

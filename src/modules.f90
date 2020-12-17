@@ -19,7 +19,7 @@
 ! 06/2014- Created, by Wei Wang (wei.wang@sheffield.ac.uk)
 !**********************************************************************************************************************************
 MODULE WPRECISION
-    INTEGER, PARAMETER :: WP = selected_real_kind( p = 15, r = 307 )
+    INTEGER, PARAMETER :: WP = 8 !KIND(0.0D0) !WORKING PRECESION
 END MODULE WPRECISION
 !**********************************************************************************************************************************
 MODULE mpi_info
@@ -50,10 +50,10 @@ MODULE cparam
     INTEGER(4), PARAMETER :: IniField_extrapolation = 1
     INTEGER(4), PARAMETER :: IniField_reStart = 2
 
-    REAL(WP), PARAMETER :: REALMIN = 1.0E-14
-    REAL(WP), PARAMETER :: REALMAX = 1.0E+14
-    REAL(WP), PARAMETER :: Cmu0 = 0.09
-    REAL(WP), PARAMETER :: TK2C = 273.15
+    REAL(WP), PARAMETER :: REALMIN = 1.0E-14_WP
+    REAL(WP), PARAMETER :: REALMAX = 1.0E+14_WP
+    REAL(WP), PARAMETER :: Cmu0 = 0.09_WP
+    REAL(WP), PARAMETER :: TK2C = 273.15_WP
 
     INTEGER(4), PARAMETER :: IINLET = -1
     INTEGER(4), PARAMETER :: IOULET = 1
@@ -348,7 +348,7 @@ MODULE init_info
     REAL(WP) :: DT0    ! given time step
     REAL(WP) :: DTMIN  ! the minimum time step
 
-    REAL(WP) :: CPUTIME(2), CPUTIME_tmp(2)
+    REAL(WP) :: CPUTIME, CPUTIME_tmp
     REAL(WP) :: CFLGV
 
 

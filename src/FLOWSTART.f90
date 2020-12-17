@@ -116,7 +116,7 @@ SUBROUTINE FLOWStart
     IF(iPostProcess == 1) THEN
         CALL MPI_BARRIER(ICOMM, IERROR)
         IF(MYID == 0) CALL CHKHDL('<===Only postprocessed results, now the code stops...==>', MYID)
-        STOP "Finished postprocessing=1"
+        STOP
     END IF
 
 

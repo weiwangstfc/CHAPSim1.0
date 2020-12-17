@@ -107,8 +107,8 @@ HRt= 1.0
 #                      avoid too fine grids near the ends.
 #
 [mesh]
-NCL1_tg= 64
-NCL1_io= 64
+NCL1_tg= 32
+NCL1_io= 32
 NCL3= 64
 NCL2= 64
 STR2= 3.75
@@ -231,7 +231,7 @@ iFluidMedia= 1
 iGravity= 1
 L0= 1.5E-3
 T0= 680.15
-Ti= 645.15
+Ti= 680.15
 iThermalWallType= 2, 2
 thermalWallBC_Dim= 640.15, 660.15
 #------------------------------------------------------------------------------#
@@ -346,11 +346,11 @@ iIniFieldTime= 0
 #           the CFL number to determine the real time step.
 #
 [numerics]
-NTSTF= 10000
+NTSTF= 1000
 TSTOP= 100.0
 timeFlowStart= 0.0
 timeThermoStart= 2.0
-DT= 1.0E-3
+DT= 1.0E-4
 DtMin= 1.0E-6
 CFLGV= 1.0
 #------------------------------------------------------------------------------#
@@ -398,11 +398,11 @@ iWeightedPre= 0
 #          The first recorded y direction cell index.
 #
 [statistics]
-dtSave1= 5.0
-tRunAve= 10.0
-tRunAve_Reset= 200.0
-dtAveView= 20.0
-dtRawView= 20.0
+dtSave1= 0.05
+tRunAve= 0.1
+tRunAve_Reset= 0.0
+dtAveView= 0.2
+dtRawView= 0.3
 iterMonitor= 1
 MGRID= 4
 JINI= 2

@@ -248,6 +248,7 @@ SUBROUTINE MEM_ALLOCAT
             NDV + 1 + NDV + NDV + NDV * (7 - NDV) / 2 + NDV - 3 + NDV * (6 - NDV) + (NDV * (7 - NDV)) / 2 + NDV - 8 + &
             NDV * NDV *2 + (NDV * (7 - NDV) / 2 + NDV - 3) * NDV ) * 8
 
+            IF(iPPQuadrants == 1)  THEN
             IF(MYID == 0) CALL CHKHDL   ('   Allocating IO z averaged quadrant variables ...', MYID)
             ALLOCATE ( QUADUVzL_io  (NCL1S : NCL1E, N2DO(0), 4, QUADHN) )   ; QUADUVzL_io   = 0.0_WP
             ALLOCATE ( QUADVzzL_io  (NCL1S : NCL1E, N2DO(0), 4, QUADHN) )   ; QUADVzzL_io   = 0.0_WP
@@ -262,6 +263,7 @@ SUBROUTINE MEM_ALLOCAT
             ALLOCATE ( QUADDRztL_io  (NCL1S : NCL1E, N2DO(0), 4, QUADHN) )   ; QUADDRztL_io   = 0.0_WP
             ALLOCATE ( QUADDUV1ztL_io(NCL1S : NCL1E, N2DO(0), 4, QUADHN) )   ; QUADDUV1ztL_io = 0.0_WP
             ALLOCATE ( QUADDUV2ztL_io(NCL1S : NCL1E, N2DO(0), 4, QUADHN) )   ; QUADDUV2ztL_io = 0.0_WP
+          END IF
 
 
             IF(MYID == 0) CALL CHKHDL   ('   Allocating IO z averaged density and viscosity variables ...', MYID)
@@ -975,10 +977,9 @@ SUBROUTINE MEM_DEALLOCAT
 
             DEALLOCATE ( D1xzL_io  )
             DEALLOCATE ( D1xztL_io )
-            
+            DEALLOCATE ( D2xztL_io )
+            DEALLOCATE ( D2xzL_io  )
             IF(iThermoDynamics == 1) THEN
-                DEALLOCATE ( D2xztL_io )
-                DEALLOCATE ( D2xzL_io  )
                 DEALLOCATE ( T1xzL_io )
                 DEALLOCATE ( H1xzL_io )
 

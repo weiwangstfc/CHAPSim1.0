@@ -16,19 +16,14 @@ SUBROUTINE SOLVE
     USE thermal_info
     IMPLICIT NONE
 
-    REAL(WP) :: ENDTIME(4)
-    REAL(WP) :: StartTIME(4)
+    REAL(WP) :: ENDTIME(2)
+    REAL(WP) :: StartTIME
     REAL(WP) :: RENTMP
 
     INTEGER(4) :: NS
     INTEGER(4) :: ITERL
 
     !========= INITIAL TIME/STEP SETTING UP =======================================
-    ENDTIME(:) = 0.0_WP
-    StartTime(:) = 0.0_WP
-
-    StartTime(1) = MPI_WTIME()
-
     ITERL = 0
     IF(TgFlowFlg) THEN
         ITERG0_TG  = 0
@@ -76,16 +71,10 @@ SUBROUTINE SOLVE
         CALL CHKINTHDL(' The current iterations = ', MYID, ITERG0)
         CALL CHKHDL('*** End oF Code Configuration ***', MYID)
     END IF
-
-    EndTime(1) =  MPI_WTIME()
-    CPUTIME_tmp(1) =ENDTIME(1) - StartTIME(1)
-    CALL MPI_BARRIER(ICOMM, IERROR)
-    CALL MPI_ALLREDUCE(CPUTIME_tmp(1), CPUTIME(1), 1, MPI_DOUBLE_PRECISION, MPI_MAX, ICOMM, IERROR)
-    if(myid == 0) print*, "CPU time for flow preparation  =", CPUTIME(1)
-
-    StartTime(2) = MPI_WTIME()
+    
     DO ITERG= ITERG0 + 1, NTSTF
-        StartTIME(3) = MPI_WTIME()
+        StartTIME = MPI_WTIME()
+
         !=========== SET UP CFL ===============
         IF(TgFlowFlg) CALL CFL_tg
         IF(IoFlowFlg) CALL CFL_io
@@ -145,33 +134,17 @@ SUBROUTINE SOLVE
         END DO
 
         !===================================================
-        ENDTIME(3) = MPI_WTIME()
-        CPUTIME_tmp(1) = ENDTIME(3) - StartTIME(3)
-        CALL MPI_BARRIER(ICOMM, IERROR)
-        CALL MPI_ALLREDUCE(CPUTIME_tmp(1), CPUTIME(1), 1, MPI_DOUBLE_PRECISION, MPI_MAX, ICOMM, IERROR)
+        ENDTIME(1) = MPI_WTIME()
+        CPUTIME_tmp =ENDTIME(1) - StartTIME
+
 
         !=======POSTPROCESS =============================
-        StartTIME(4) = MPI_WTIME()
         IF( DMOD(PhyTIME, dtRawView) < DT) &
         CALL CALL_TEC360
         IF(TgFlowFlg) CALL POSTPROCESS_tg
         IF(IoFlowFlg) CALL POSTPROCESS_io
 
-        ENDTIME(4) = MPI_WTIME()
-        CPUTIME_tmp(2) =ENDTIME(4) - StartTIME(4)
-        CALL MPI_BARRIER(ICOMM, IERROR)
-        CALL MPI_ALLREDUCE(CPUTIME_tmp(2), CPUTIME(2), 1, MPI_DOUBLE_PRECISION, MPI_MAX, ICOMM, IERROR)
-
-        if(myid == 0) print*, "CPU_Time_solver_pp", ITERG, CPUTIME(1), CPUTIME(2)
-
     END DO
-
-    ENDTIME(2) = MPI_WTIME()
-    CPUTIME_tmp(2) =ENDTIME(2) - StartTIME(2)
-    CALL MPI_BARRIER(ICOMM, IERROR)
-    CALL MPI_ALLREDUCE(CPUTIME_tmp(2), CPUTIME(2), 1, MPI_DOUBLE_PRECISION, MPI_MAX, ICOMM, IERROR)
-
-    if(myid == 0) print*, "CPU time for ", NTSTF - ITERG0, " iterations = ", CPUTIME(2)
 
 
     RETURN
@@ -230,7 +203,7 @@ SUBROUTINE BCAST_COMM_STEP
         IF(IoFlowFlg) CALL POSTPROCESS_io
 
         CALL MPI_BARRIER(ICOMM, IERROR)
-        STOP "Finished3."
+        STOP
     END IF
 
 

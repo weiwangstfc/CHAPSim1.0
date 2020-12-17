@@ -56,13 +56,13 @@ FUNCTION spline_interpolation_TH(T)
         !EVAL = ( LIST_H(1) - LIST_H(2) ) / ( LIST_T(1) - LIST_T(2) ) * (T - LIST_T(1)) + LIST_H(1)
         !WRITE(logflg_io, '(A, 2F12.5)') '# WARning: T reaches its minimum value in the given NIST table.', LIST_T(1), T
         CALL CHK2RLHDL("Error! T reaches its limit. Tmin =, T = ", MYID, LIST_T(1), T)
-        STOP "Error. T min"
+        STOP
     END IF
     IF(T > LIST_T(N)) THEN
         !EVAL = ( LIST_H(N) - LIST_H(N - 1) ) / ( LIST_T(N) - LIST_T(N - 1) ) * (T - LIST_T(N)) + LIST_H(N)
         !WRITE(logflg_io, '(A, 2F12.5)') '# WARning: T reaches its maximum value in the given NIST table.', LIST_T(N), T
         CALL CHK2RLHDL("Error! T reaches its limit. Tmax =, T = ", MYID, LIST_T(N), T)
-        STOP "Error. T max"
+        STOP
     END IF
 
     !*
@@ -115,13 +115,13 @@ FUNCTION spline_interpolation_TD(T)
         !EVAL = ( LIST_D(1) - LIST_D(2) ) / ( LIST_T(1) - LIST_T(2) ) * (T - LIST_T(1)) + LIST_D(1)
         !WRITE(logflg_io, '(A, 2F12.5)') '# WARning: T reaches its minimum value in the given NIST table.', LIST_T(1), T
         CALL CHK2RLHDL("Error! T reaches its limit. Tmin =, T = ", MYID, LIST_T(1), T)
-        STOP  "Error. T min"
+        STOP
     END IF
     IF(T > LIST_T(N)) THEN
         !EVAL = ( LIST_D(N) - LIST_D(N - 1) ) / ( LIST_T(N) - LIST_T(N - 1) ) * (T - LIST_T(N)) + LIST_D(N)
         !WRITE(logflg_io, '(A, 2F12.5)') '# WARning: T reaches its maximum value in the given NIST table.', LIST_T(N), T
         CALL CHK2RLHDL("Error! T reaches its limit. Tmax =, T = ", MYID, LIST_T(N), T)
-        STOP  "Error. T max"
+        STOP
     END IF
 
     !*
@@ -174,13 +174,13 @@ FUNCTION spline_interpolation_TM(T)
         !EVAL = ( LIST_M(1) - LIST_M(2) ) / ( LIST_T(1) - LIST_T(2) ) * (T - LIST_T(1)) + LIST_M(1)
         !WRITE(logflg_io, '(A, 2F12.5)') '# WARning: T reaches its minimum value in the given NIST table.', LIST_T(1), T
         CALL CHK2RLHDL("Error! T reaches its limit. Tmin =, T = ", MYID, LIST_T(1), T)
-        STOP  "Error. T min"
+        STOP
     END IF
     IF(T > LIST_T(N)) THEN
         !EVAL = ( LIST_M(N) - LIST_M(N - 1) ) / ( LIST_T(N) - LIST_T(N - 1) ) * (T - LIST_T(N)) + LIST_M(N)
         !WRITE(logflg_io, '(A, 2F12.5)') '# WARning: T reaches its maximum value in the given NIST table.', LIST_T(N), T
         CALL CHK2RLHDL("Error! T reaches its limit. Tmax =, T = ", MYID, LIST_T(N), T)
-        STOP  "Error. T max"
+        STOP
     END IF
 
     !*
@@ -232,13 +232,13 @@ FUNCTION spline_interpolation_TK(T)
         !EVAL = ( LIST_K(1) - LIST_K(2) ) / ( LIST_T(1) - LIST_T(2) ) * (T - LIST_T(1)) + LIST_K(1)
         !WRITE(logflg_io, '(A, 2F12.5)') '# WARning: T reaches its minimum value in the given NIST table.', LIST_T(1), T
         CALL CHK2RLHDL("Error! T reaches its limit. Tmin =, T = ", MYID, LIST_T(1), T)
-        STOP  "Error. T min"
+        STOP
     END IF
     IF(T > LIST_T(N)) THEN
         !EVAL = ( LIST_K(N) - LIST_K(N - 1) ) / ( LIST_T(N) - LIST_T(N - 1) ) * (T - LIST_T(N)) + LIST_K(N)
         !WRITE(logflg_io, '(A, 2F12.5)') '# WARning: T reaches its maximum value in the given NIST table.', LIST_T(N), T
         CALL CHK2RLHDL("Error! T reaches its limit. Tmax =, T = ", MYID, LIST_T(N), T)
-        STOP  "Error. T max"
+        STOP
     END IF
 
     !*
@@ -290,13 +290,13 @@ FUNCTION spline_interpolation_TB(T)
         !EVAL = ( LIST_B(1) - LIST_B(2) ) / ( LIST_T(1) - LIST_T(2) ) * (T - LIST_T(1)) + LIST_B(1)
         !WRITE(logflg_io, '(A, 2F12.5)') '# WARning: T reaches its minimum value in the given NIST table.', LIST_T(1), T
         CALL CHK2RLHDL("Error! T reaches its limit. Tmin =, T = ", MYID, LIST_T(1), T)
-        STOP  "Error. T main"
+        STOP
     END IF
     IF(T > LIST_T(N)) THEN
         !EVAL = ( LIST_B(N) - LIST_B(N - 1) ) / ( LIST_T(N) - LIST_T(N - 1) ) * (T - LIST_T(N)) + LIST_B(N)
         !WRITE(logflg_io, '(A, 2F12.5)') '# WARning: T reaches its maximum value in the given NIST table.', LIST_T(N), T
         CALL CHK2RLHDL("Error! T reaches its limit. Tmax =, T = ", MYID, LIST_T(N), T)
-        STOP  "Error. T max"
+        STOP
     END IF
 
     !*
@@ -348,13 +348,13 @@ FUNCTION spline_interpolation_TCp(T)
         !EVAL = ( LIST_Cp(1) - LIST_Cp(2) ) / ( LIST_T(1) - LIST_T(2) ) * (T - LIST_T(1)) + LIST_Cp(1)
         !WRITE(logflg_io, '(A, 2F12.5)') '# WARning: T reaches its minimum value in the given NIST table.', LIST_T(1), T
         CALL CHK2RLHDL("Error! T reaches its limit. Tmin =, T = ", MYID, LIST_T(1), T)
-        STOP  "Error. T min"
+        STOP
     END IF
     IF(T > LIST_T(N)) THEN
         !EVAL = ( LIST_Cp(N) - LIST_Cp(N - 1) ) / ( LIST_T(N) - LIST_T(N - 1) ) * (T - LIST_T(N)) + LIST_Cp(N)
         !WRITE(logflg_io, '(A, 2F12.5)') '# WARning: T reaches its maximum value in the given NIST table.', LIST_T(N), T
         CALL CHK2RLHDL("Error! T reaches its limit. Tmax =, T = ", MYID, LIST_T(N), T)
-        STOP  "Error. T max"
+        STOP
     END IF
 
     !*
@@ -407,14 +407,14 @@ FUNCTION spline_interpolation_HT(H)
         !EVAL = ( LIST_T(1) - LIST_T(2) ) / ( LIST_H(1) - LIST_H(2) ) * (H- LIST_H(1)) + LIST_T(1)
         !WRITE(logflg_io, '(A, 2F12.5)') '# WARning: H reaches its minimum value in the given NIST table.', LIST_H(1), H
         CALL CHK2RLHDL("Error! H reaches its limit. Hmin =, H = ", MYID, LIST_H(1), H)
-        STOP  "Error. T min"
+        STOP
     END IF
     IF( (H - LIST_H(IMAX_H)) > 1.0E-8_WP ) THEN
         !EVAL = LIST_T(N)
         !EVAL = ( LIST_T(N) - LIST_T(N - 1) ) / ( LIST_H(N) - LIST_H(N - 1) ) * (H- LIST_H(N)) + LIST_T(N)
         !WRITE(logflg_io, '(A, 2F12.5)') '# WARning: H reaches its maximum value in the given NIST table.', LIST_H(N), H
         CALL CHK2RLHDL("Error! H reaches its limit. Hmax =, H = ", MYID, LIST_H(N), H)
-        STOP  "Error. T max"
+        STOP
     END IF
 
     !*
@@ -455,14 +455,14 @@ FUNCTION spline_interpolation_HD(H)
         !EVAL = ( LIST_D(1) - LIST_D(2) ) / ( LIST_H(1) - LIST_H(2) ) * (H- LIST_H(1)) + LIST_D(1)
         !WRITE(logflg_io, '(A, 2F12.5)') '# WARning: H reaches its minimum value in the given NIST table.', LIST_H(1), H
         CALL CHK2RLHDL("Error! H reaches its limit. Hmin =, H = ", MYID, LIST_H(1), H)
-        STOP  "Error. H min"
+        STOP
     END IF
     IF( (H - LIST_H(IMAX_H)) > 1.0E-8_WP ) THEN
         !EVAL = LIST_T(N)
         !EVAL = ( LIST_D(N) - LIST_D(N - 1) ) / ( LIST_H(N) - LIST_H(N - 1) ) * (H- LIST_H(N)) + LIST_D(N)
         !WRITE(logflg_io, '(A, 2F12.5)') '# WARning: H reaches its maximum value in the given NIST table.', LIST_H(N), H
         CALL CHK2RLHDL("Error! H reaches its limit. Hmax =, H = ", MYID, LIST_H(N), H)
-        STOP   "Error. H max"
+        STOP
     END IF
 
     !*
@@ -502,14 +502,14 @@ FUNCTION spline_interpolation_HM(H)
         !EVAL = ( LIST_M(1) - LIST_M(2) ) / ( LIST_H(1) - LIST_H(2) ) * (H- LIST_H(1)) + LIST_M(1)
         !WRITE(logflg_io, '(A, 2F12.5)') '# WARning: H reaches its minimum value in the given NIST table.', LIST_H(1), H
         CALL CHK2RLHDL("Error! H reaches its limit. Hmin =, H = ", MYID, LIST_H(1), H)
-        STOP   "Error. H min"
+        STOP
     END IF
     IF( (H - LIST_H(IMAX_H)) > 1.0E-8_WP ) THEN
         !EVAL = LIST_T(N)
         !EVAL = ( LIST_M(N) - LIST_M(N - 1) ) / ( LIST_H(N) - LIST_H(N - 1) ) * (H- LIST_H(N)) + LIST_M(N)
         !WRITE(logflg_io, '(A, 2F12.5)') '# WARning: H reaches its maximum value in the given NIST table.', LIST_H(N), H
         CALL CHK2RLHDL("Error! H reaches its limit. Hmax =, H = ", MYID, LIST_H(N), H)
-        STOP   "Error. H max"
+        STOP
     END IF
 
     !*
@@ -549,14 +549,14 @@ FUNCTION spline_interpolation_HK(H)
         !EVAL = ( LIST_K(1) - LIST_K(2) ) / ( LIST_H(1) - LIST_H(2) ) * (H- LIST_H(1)) + LIST_K(1)
         !WRITE(logflg_io, '(A, 2F12.5)') '# WARning: H reaches its minimum value in the given NIST table.', LIST_H(1), H
         CALL CHK2RLHDL("Error! H reaches its limit. Hmin =, H = ", MYID, LIST_H(1), H)
-        STOP   "Error. H min"
+        STOP
     END IF
     IF( (H - LIST_H(IMAX_H)) > 1.0E-8_WP ) THEN
         !EVAL = LIST_T(N)
         !EVAL = ( LIST_K(N) - LIST_K(N - 1) ) / ( LIST_H(N) - LIST_H(N - 1) ) * (H- LIST_H(N)) + LIST_K(N)
         !WRITE(logflg_io, '(A, 2F12.5)') '# WARning: H reaches its maximum value in the given NIST table.', LIST_H(N), H
         CALL CHK2RLHDL("Error! H reaches its limit. Hmax =, H = ", MYID, LIST_H(N), H)
-        STOP   "Error. H max"
+        STOP
     END IF
 
     !*
@@ -596,14 +596,14 @@ FUNCTION spline_interpolation_HB(H)
         !EVAL = ( LIST_B(1) - LIST_B(2) ) / ( LIST_H(1) - LIST_H(2) ) * (H- LIST_H(1)) + LIST_B(1)
         !WRITE(logflg_io, '(A, 2F12.5)') '# WARning: H reaches its minimum value in the given NIST table.', LIST_H(1), H
         CALL CHK2RLHDL("Error! H reaches its limit. Hmin =, H = ", MYID, LIST_H(1), H)
-        STOP   "Error. H min"
+        STOP
     END IF
     IF( (H - LIST_H(IMAX_H)) > 1.0E-8_WP ) THEN
         !EVAL = LIST_T(N)
         !EVAL = ( LIST_B(N) - LIST_B(N - 1) ) / ( LIST_H(N) - LIST_H(N - 1) ) * (H- LIST_H(N)) + LIST_B(N)
         !WRITE(logflg_io, '(A, 2F12.5)') '# WARning: H reaches its maximum value in the given NIST table.', LIST_H(N), H
         CALL CHK2RLHDL("Error! H reaches its limit. Hmax =, H = ", MYID, LIST_H(N), H)
-        STOP   "Error. H max"
+        STOP
     END IF
 
     !*
@@ -643,14 +643,14 @@ FUNCTION spline_interpolation_HCp(H)
         !EVAL = ( LIST_Cp(1) - LIST_Cp(2) ) / ( LIST_H(1) - LIST_H(2) ) * (H- LIST_H(1)) + LIST_Cp(1)
         !WRITE(logflg_io, '(A, 2F12.5)') '# WARning: H reaches its minimum value in the given NIST table.', LIST_H(1), H
         CALL CHK2RLHDL("Error! H reaches its limit. Hmin =, H = ", MYID, LIST_H(1), H)
-        STOP   "Error. H min"
+        STOP
     END IF
     IF( (H - LIST_H(IMAX_H)) > 1.0E-8_WP ) THEN
         !EVAL = LIST_T(N)
         !EVAL = ( LIST_Cp(N) - LIST_Cp(N - 1) ) / ( LIST_H(N) - LIST_H(N - 1) ) * (H- LIST_H(N)) + LIST_Cp(N)
         !WRITE(logflg_io, '(A, 2F12.5)') '# WARning: H reaches its maximum value in the given NIST table.', LIST_H(N), H
         CALL CHK2RLHDL("Error! H reaches its limit. Hmax =, H = ", MYID, LIST_H(N), H)
-        STOP   "Error. H max"
+        STOP
     END IF
 
     !*
@@ -690,14 +690,14 @@ FUNCTION spline_interpolation_DHH(RH)!by Junjie, 2017/03 / 26
         !CALL CHKHDL('min RH, MYID = ', MYID)
         !EVAL = ( LIST_DH(1) - LIST_DH(2) ) / ( LIST_RH(1) - LIST_RH(2) ) * (RH- LIST_RH(1)) + LIST_DH(1)
         CALL CHK2RLHDL("Error! DH reaches its limit in spline_interpolation_DHH. DHmin =, DH = ", MYID, LIST_DH(IMIN_DH), RH)
-        STOP   "Error. DH min"
+        STOP
     END IF
     IF( (RH - LIST_DH(IMAX_DH)) > 1.0E-8_WP ) THEN
         !EVAL = LIST_T(N)
         !CALL CHKHDL('max RH, MYID = ', MYID)
         !EVAL = ( LIST_DH(N) - LIST_DH(N - 1) ) / ( LIST_RH(N) - LIST_RH(N - 1) ) * (RH- LIST_RH(N)) + LIST_DH(N)
         CALL CHK2RLHDL("Error! DH reaches its limit in spline_interpolation_DHH. DHmax =, DH = ", MYID, LIST_DH(IMAX_DH), RH)
-        STOP  "Error. DH max"
+        STOP
     END IF
 
     !*
@@ -739,14 +739,14 @@ FUNCTION spline_interpolation_DHT(RH)
         !CALL CHKHDL('min RH, MYID = ', MYID)
         !EVAL = ( LIST_DH(1) - LIST_DH(2) ) / ( LIST_RH(1) - LIST_RH(2) ) * (RH- LIST_RH(1)) + LIST_DH(1)
         CALL CHK2RLHDL("Error! DH reaches its limit in spline_interpolation_DHT. DHmin =, DH = ", MYID, LIST_DH(IMIN_DH), RH)
-        STOP   "Error. DH min"
+        STOP
     END IF
     IF( (RH - LIST_DH(IMAX_DH)) > 1.0E-8_WP ) THEN
         !EVAL = LIST_T(N)
         !CALL CHKHDL('max RH, MYID = ', MYID)
         !EVAL = ( LIST_DH(N) - LIST_DH(N - 1) ) / ( LIST_RH(N) - LIST_RH(N - 1) ) * (RH- LIST_RH(N)) + LIST_DH(N)
         CALL CHK2RLHDL("Error! DH reaches its limit in spline_interpolation_DHT. DHmax =, DH = ", MYID, LIST_DH(IMAX_DH), RH)
-        STOP   "Error. DH max"
+        STOP
     END IF
 
     !*
@@ -1078,9 +1078,9 @@ SUBROUTINE SPLINE_COEFFICIENTS_FOR_H
         WRITE(10, '(A)') '#P(Mpa)      H     T    D    M     K      CP      BETA  dDdH'
         WRITE(10, *) '# ', N_LIST* 3 + 1
 
-        DHmax = -1.0E-14_WP
-        DHmin = +1.0E+14_WP
-        CpMaX = -1.0E-14_WP
+        DHmax = -1E-14_WP
+        DHmin = + 1E+14_WP
+        CpMaX = -1E-14_WP
         DO I = 2, N_LIST*3
 
             !D0TMP = D0
