@@ -53,6 +53,11 @@ SUBROUTINE thermophysical_function_Check_Trange(T_tmp0, dim)
                 CALL CHK3RLHDL("Tm0_LBE, Tb0_LBE, T_tmp (K) = ", MYID, Tm0_LBE, Tb0_LBE, T_tmp)
                 CALL ERRHDL("The calcualted temperature exceeds its limits in a liquid state.", MYID)
             END IF
+        CASE (iLiquidH2O)
+            IF (T_tmp < Tm0_H2O .OR. T_tmp > Tb0_H2O) THEN
+                CALL CHK3RLHDL("Tm0_H2O, Tb0_H2O, T_tmp (K) = ", MYID, Tm0_H2O, Tb0_H2O, T_tmp)
+                CALL ERRHDL("The calcualted temperature exceeds its limits in a liquid state.", MYID)
+            END IF
         CASE DEFAULT
             IF (T_tmp < Tm0_Na .OR. T_tmp > Tb0_Na) THEN
                 CALL CHK3RLHDL("Tm0_Na, Tb0_Na, T_tmp (K) = ", MYID, Tm0_Na, Tb0_Na, T_tmp)
@@ -74,6 +79,8 @@ FUNCTION thermophysical_function_TD(T_tmp0, dim)
     INTEGER(4), INTENT(IN) :: dim
     REAL(WP) :: D_tmp, T_tmp
 
+    REAL (WP) :: T_H2O, alpha_H2O, beta_H2O, TX_H2O
+
     ! dim = 0 :: dimensionless
     ! dim = 1 :: dimensional
     IF (dim == 0) THEN
@@ -92,6 +99,28 @@ FUNCTION thermophysical_function_TD(T_tmp0, dim)
             D_tmp = CoD_Bi(0) + CoD_Bi(1) * T_tmp
         CASE (iLiquidLBE)
             D_tmp = CoD_LBE(0) + CoD_LBE(1) * T_tmp
+        CASE (iLiquidH2O)
+
+            T_H2O = T_tmp / TR_H2O
+            alpha_H2O = TR_H2O / (TA_H2O - T_tmp)
+            beta_H2O = TR_H2O / (T_tmp - TB_H2O)
+            TX_H2O = T_tmp / TRX_H2O
+            
+            D_tmp = R_H2O * TR_H2O / P0_H2O * &
+                    ( A_H2O(5) + &
+                    A_H2O(6) * alpha_H2O**N_H2O(6) + &
+                    A_H2O(7) * alpha_H2O**N_H2O(7) + & 
+                    A_H2O(8) * alpha_H2O**N_H2O(8) + &
+                    A_H2O(9) * alpha_H2O**N_H2O(9) + &
+                    A_H2O(10) * alpha_H2O**N_H2O(10) + &   
+                    B_H2O(5) * beta_H2O**M_H2O(5) + &
+                    B_H2O(6) * beta_H2O**M_H2O(6) + &
+                    B_H2O(7) * beta_H2O**M_H2O(7) + &
+                    B_H2O(8) * beta_H2O**M_H2O(8) + &
+                    B_H2O(9) * beta_H2O**M_H2O(9) + &
+                    B_H2O(10) * beta_H2O**M_H2O(10) )
+            D_tmp = 1.0_WP / D_tmp
+
         CASE DEFAULT
             D_tmp = CoD_Na(0) + CoD_Na(1) * T_tmp
     END SELECT
@@ -113,6 +142,8 @@ FUNCTION thermophysical_function_TCp(T_tmp0, dim)
     INTEGER(4), INTENT(IN) :: dim
     REAL(WP) :: Cp_tmp, T_tmp
 
+    REAL (WP) :: T_H2O, alpha_H2O, beta_H2O, TX_H2O
+
     IF (dim == 0) THEN
         T_tmp = T_tmp0 * T0 ! convert undim to dim
     ELSE
@@ -130,6 +161,20 @@ FUNCTION thermophysical_function_TCp(T_tmp0, dim)
         CASE (iLiquidLBE)
             Cp_tmp = CoCp_LBE(-2) * T_tmp**(-2) + CoCp_LBE(-1) * T_tmp**(-1) + CoCp_LBE(0) + &
                      CoCp_LBE(1) * T_tmp + CoCp_LBE(2) * T_tmp**2
+        CASE (iLiquidH2O)
+            T_H2O = T_tmp / TR_H2O
+            alpha_H2O = TR_H2O / (TA_H2O - T_tmp)
+            beta_H2O = TR_H2O / (T_tmp - TB_H2O)
+            TX_H2O = T_tmp / TRX_H2O
+
+            Cp_tmp = -R_H2O * ( C_H2O(3) + T_H2O * ( &
+                    DBLE( N_H2O(1) * (N_H2O(1) + 1) ) * A_H2O(1) * alpha_H2O**(N_H2O(1) + 2) + &
+                    DBLE( N_H2O(2) * (N_H2O(2) + 1) ) * A_H2O(2) * alpha_H2O**(N_H2O(2) + 2) + &
+                    DBLE( N_H2O(3) * (N_H2O(3) + 1) ) * A_H2O(3) * alpha_H2O**(N_H2O(3) + 2) + &
+                    DBLE( M_H2O(1) * (M_H2O(1) + 1) ) * B_H2O(1) * beta_H2O**(M_H2O(1) + 2) + &
+                    DBLE( M_H2O(2) * (M_H2O(2) + 1) ) * B_H2O(2) * beta_H2O**(M_H2O(2) + 2) + &
+                    DBLE( M_H2O(3) * (M_H2O(3) + 1) ) * B_H2O(3) * beta_H2O**(M_H2O(3) + 2) + &
+                    DBLE( M_H2O(4) * (M_H2O(4) + 1) ) * B_H2O(4) * beta_H2O**(M_H2O(4) + 2) ) )
         CASE DEFAULT
             Cp_tmp = CoCp_Na(-2) * T_tmp**(-2) + CoCp_Na(-1) * T_tmp**(-1) + CoCp_Na(0) + CoCp_Na(1) * T_tmp + CoCp_Na(2) * T_tmp**2
     END SELECT
@@ -151,6 +196,7 @@ FUNCTION thermophysical_function_TM(T_tmp0, dim)
 
     INTEGER(4), INTENT(IN) :: dim
     REAL(WP) :: M_tmp, T_tmp
+    REAL (WP) :: TX_H2O
 
     IF (dim == 0) THEN
         T_tmp = T_tmp0 * T0 ! convert undim to dim
@@ -168,6 +214,12 @@ FUNCTION thermophysical_function_TM(T_tmp0, dim)
             M_tmp = CoM_Bi(0) * EXP (CoM_Bi(-1) / T_tmp)
         CASE (iLiquidLBE)
             M_tmp = CoM_LBE(0) * EXP (CoM_LBE(-1) / T_tmp)
+        CASE (iLiquidH2O)
+            TX_H2O = T_tmp / TRX_H2O
+            M_tmp = 1.0E-6_WP * ( MA_H2O(1) * TX_H2O**MB_H2O(1) + &
+                                  MA_H2O(2) * TX_H2O**MB_H2O(2) + &
+                                  MA_H2O(3) * TX_H2O**MB_H2O(3) + &
+                                  MA_H2O(4) * TX_H2O**MB_H2O(4) )
         CASE DEFAULT
             M_tmp = EXP( CoM_Na(-1) / T_tmp + CoM_Na(0) + CoM_Na(1) * LOG(T_tmp) )
     END SELECT
@@ -187,6 +239,7 @@ FUNCTION thermophysical_function_TK(T_tmp0, dim)
 
     INTEGER(4), INTENT(IN) :: dim
     REAL(WP) :: K_tmp, T_tmp
+    REAL (WP) :: TX_H2O
 
     IF (dim == 0) THEN
         T_tmp = T_tmp0 * T0 ! convert undim to dim
@@ -204,6 +257,12 @@ FUNCTION thermophysical_function_TK(T_tmp0, dim)
             K_tmp = CoK_Bi(0) + CoK_Bi(1) * T_tmp + CoK_Bi(2) * T_tmp**2
         CASE (iLiquidLBE)
             K_tmp = CoK_LBE(0) + CoK_LBE(1) * T_tmp + CoK_LBE(2) * T_tmp**2
+        CASE (iLiquidH2O)    
+            TX_H2O = T_tmp / TRX_H2O
+            K_tmp = ( KA_H2O(1) * TX_H2O**KB_H2O(1) + &
+                      KA_H2O(2) * TX_H2O**KB_H2O(2) + &
+                      KA_H2O(3) * TX_H2O**KB_H2O(3) + &
+                      KA_H2O(4) * TX_H2O**KB_H2O(4) )
         CASE DEFAULT
             K_tmp = CoK_Na(0) + CoK_Na(1) * T_tmp + CoK_Na(2) * T_tmp**2
     END SELECT
@@ -223,6 +282,7 @@ FUNCTION thermophysical_function_TB(T_tmp0, dim)
 
     INTEGER(4), INTENT(IN) :: dim
     REAL(WP) :: B_tmp, T_tmp
+    REAL (WP) :: T_H2O, alpha_H2O, beta_H2O, TX_H2O, V0_H2O, Vt0_H2O
 
     ! dim = 0 :: dimensionless
     ! dim = 1 :: dimensional
@@ -242,6 +302,37 @@ FUNCTION thermophysical_function_TB(T_tmp0, dim)
             B_tmp = 1.0_WP / (CoB_Bi - T_tmp)
         CASE (iLiquidLBE)
             B_tmp = 1.0_WP / (CoB_LBE - T_tmp)
+        CASE (iLiquidH2O)
+            T_H2O = T_tmp / TR_H2O
+            alpha_H2O = TR_H2O / (TA_H2O - T_tmp)
+            beta_H2O = TR_H2O / (T_tmp - TB_H2O)
+            TX_H2O = T_tmp / TRX_H2O
+            V0_H2O = R_H2O * TR_H2O / P0_H2O * &
+                  ( A_H2O(5) + &
+                  A_H2O(6) * alpha_H2O**N_H2O(6) + &
+                  A_H2O(7) * alpha_H2O**N_H2O(7) + & 
+                  A_H2O(8) * alpha_H2O**N_H2O(8) + &
+                  A_H2O(9) * alpha_H2O**N_H2O(9) + &
+                  A_H2O(10) * alpha_H2O**N_H2O(10) + &   
+                  B_H2O(5) * beta_H2O**M_H2O(5) + &
+                  B_H2O(6) * beta_H2O**M_H2O(6) + &
+                  B_H2O(7) * beta_H2O**M_H2O(7) + &
+                  B_H2O(8) * beta_H2O**M_H2O(8) + &
+                  B_H2O(9) * beta_H2O**M_H2O(9) + &
+                  B_H2O(10) * beta_H2O**M_H2O(10) )
+            Vt0_H2O = R_H2O / P0_H2O * ( &
+                  DBLE(N_H2O(6)) * A_H2O(6) * alpha_H2O**(N_H2O(6) + 1) + &
+                  DBLE(N_H2O(7)) * A_H2O(7) * alpha_H2O**(N_H2O(7) + 1) + &
+                  DBLE(N_H2O(8)) * A_H2O(8) * alpha_H2O**(N_H2O(8) + 1) + &
+                  DBLE(N_H2O(9)) * A_H2O(9) * alpha_H2O**(N_H2O(9) + 1) + &
+                  DBLE(N_H2O(10)) * A_H2O(10) * alpha_H2O**(N_H2O(10) + 1) - &
+                  DBLE(M_H2O(5)) * B_H2O(5) * beta_H2O**(M_H2O(5) + 1) - &
+                  DBLE(M_H2O(6)) * B_H2O(6) * beta_H2O**(M_H2O(6) + 1) - &
+                  DBLE(M_H2O(7)) * B_H2O(7) * beta_H2O**(M_H2O(7) + 1) - &
+                  DBLE(M_H2O(8)) * B_H2O(8) * beta_H2O**(M_H2O(8) + 1) - &
+                  DBLE(M_H2O(9)) * B_H2O(9) * beta_H2O**(M_H2O(9) + 1) - &
+                  DBLE(M_H2O(10)) * B_H2O(10) * beta_H2O**(M_H2O(10) + 1) )
+            B_tmp = Vt0_H2O / V0_H2O
         CASE DEFAULT
             B_tmp = 1.0_WP / (CoB_Na - T_tmp)  ! default IS Na.
     END SELECT
@@ -262,6 +353,7 @@ FUNCTION thermophysical_function_TH(T_tmp0, dim)
 
     INTEGER(4), INTENT(IN) :: dim
     REAL(WP) :: H_tmp, T_tmp
+    REAL (WP) :: T_H2O, alpha_H2O, beta_H2O, TX_H2O, G_H2O, S_H2O
 
     ! dim = 0 :: dimensionless
     ! dim = 1 :: dimensional
@@ -301,6 +393,35 @@ FUNCTION thermophysical_function_TH(T_tmp0, dim)
                     CoH_LBE(1) * (T_tmp - Tm0_LBE) + &
                     CoH_LBE(2) * (T_tmp**2 - Tm0_LBE**2) + &
                     CoH_LBE(3) * (T_tmp**3 - Tm0_LBE**3)
+        CASE (iLiquidH2O)
+            T_H2O = T_tmp / TR_H2O
+            alpha_H2O = TR_H2O / (TA_H2O - T_tmp)
+            beta_H2O = TR_H2O / (T_tmp - TB_H2O)
+            TX_H2O = T_tmp / TRX_H2O
+
+            G_H2O = R_H2O * TR_H2O * ( &
+                    C_H2O(1) + &
+                    C_H2O(2) * T_H2O + &
+                    C_H2O(3) * T_H2O * DLOG(T_H2O) + &
+                    A_H2O(1) * alpha_H2O**N_H2O(1) + &
+                    A_H2O(2) * alpha_H2O**N_H2O(2) + &
+                    A_H2O(3) * alpha_H2O**N_H2O(3) + &
+                    B_H2O(1) * beta_H2O**M_H2O(1) + &
+                    B_H2O(2) * beta_H2O**M_H2O(2) + &
+                    B_H2O(3) * beta_H2O**M_H2O(3) + &
+                    B_H2O(4) * beta_H2O**M_H2O(4) )
+            S_H2O = -R_H2O * (&
+                    C_H2O(2) + &
+                    C_H2O(3) * (1.0_WP + DLOG(T_H2O)) + &
+                    DBLE(N_H2O(1)) * A_H2O(1) * alpha_H2O**(N_H2O(1) + 1) + &
+                    DBLE(N_H2O(2)) * A_H2O(2) * alpha_H2O**(N_H2O(2) + 1) + &
+                    DBLE(N_H2O(3)) * A_H2O(3) * alpha_H2O**(N_H2O(3) + 1) - &
+                    DBLE(M_H2O(1)) * B_H2O(1) * beta_H2O**(M_H2O(1) + 1) - &
+                    DBLE(M_H2O(2)) * B_H2O(2) * beta_H2O**(M_H2O(2) + 1) - &
+                    DBLE(M_H2O(3)) * B_H2O(3) * beta_H2O**(M_H2O(3) + 1) - &
+                    DBLE(M_H2O(4)) * B_H2O(4) * beta_H2O**(M_H2O(4) + 1) )
+            H_tmp = G_H2O + T_tmp * S_H2O
+
         CASE DEFAULT
             H_tmp = Hm0_Na + &
                     CoH_Na(-1) * (1.0_WP / T_tmp - 1.0_WP / Tm0_Na) + &
@@ -367,6 +488,15 @@ SUBROUTINE thermophysical_function_DH_preparation
     CASE (iLiquidLBE)
         DO I = 1, N_LIST
             T = ( Tm0_LBE + (Tb0_LBE - Tm0_LBE) / DBLE(N_LIST) * DBLE(I) ) / T0
+            D = thermophysical_function_TD(T, dim)
+            H = thermophysical_function_TH(T, dim)
+            LIST_T(I) = T
+            LIST_H(I) = H
+            LIST_DH(I) = D * H
+        END DO
+    CASE (iLiquidH2O)
+        DO I = 1, N_LIST
+            T = ( Tm0_H2O + (Tb0_H2O - Tm0_H2O) / DBLE(N_LIST) * DBLE(I) ) / T0
             D = thermophysical_function_TD(T, dim)
             H = thermophysical_function_TH(T, dim)
             LIST_T(I) = T

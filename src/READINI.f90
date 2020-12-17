@@ -294,6 +294,7 @@ SUBROUTINE READINI
         IF(iFluidMedia == iLiquidLead)    CALL CHKHDL ('iFluidMedia = Liquid Lead', MYID)
         IF(iFluidMedia == iLiquidBismuth) CALL CHKHDL ('iFluidMedia = Liquid Bismuth', MYID)
         IF(iFluidMedia == iLiquidLBE)     CALL CHKHDL ('iFluidMedia = Liquid LBE', MYID)
+        IF(iFluidMedia == iLiquidH2O)     CALL CHKHDL ('iFluidMedia = Liquid Water', MYID)
 
         SELECT CASE (iFluidMedia)
         CASE (iScpWater)

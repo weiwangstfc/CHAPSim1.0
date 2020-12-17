@@ -1,0 +1,66 @@
+    Reference States (dimensional)
+                  REF P0 (Pa) =     0.000000000E+00
+              REF RHOU20 (Pa) =     1.414713634E+03
+                   REF L0 (m) =     2.000000000E-03
+                 REF U0 (m/s) =     1.183654707E+00
+              REF DU (Kg/m2s) =     1.195208050E+03
+            REF Mdot (Kg/m2s) =     1.195208050E+03
+                   REF T0 (K) =     3.000000000E+02
+                   REF H0 (J) =     1.126543498E+05
+               REF D0 (Kg/M3) =     1.009760737E+03
+              REF Cp (J/Kg/K) =     4.180751549E+03
+               REF K0 (W/M-K) =     6.094850004E-01
+                REF M0 (Pa-s) =     8.537200354E-04
+                 REF B0 (1/K) =     2.748070282E-04
+              Initial T_inlet =     1.000000000E+00
+              Initial H_inlet =     0.000000000E+00
+              Initial D_inlet =     1.000000000E+00
+              Initial K_inlet =     1.000000000E+00
+              Initial M_inlet =     1.000000000E+00
+             Initial CP_inlet =     1.000000000E+00
+             Initial DH_inlet =     0.000000000E+00
+   REF WALHFLX TOPWALL (W/M2) =     0.000000000E+00
+   REF WALHFLX BOTWALL (W/M2) =     0.000000000E+00
+    Reference States (dimensionless)
+                      REF CP0 =     4.180751549E+03
+                       REF RE =     2.800000000E+03
+                     REF PRT0 =     5.856077439E+00
+                    REF 1/Fr2 =     0.000000000E+00
+         REF Gr0(Bottom Wall) =     0.000000000E+00
+            REF Gr0(Top Wall) =     0.000000000E+00
+ REF Gr0/ RE^2.7(Bottom Wall) =     0.000000000E+00
+    REF Gr0/ RE^2.7(Top Wall) =     0.000000000E+00
+                        REF Gr0/ RE^3.425/Pr^0.8(Bottom Wall) =     0.000000000E+00
+                           REF Gr0/ RE^3.425/Pr^0.8(Top Wall) =     0.000000000E+00
+                               REF Q+ (WHFLUX0) (Bottom Wall) =     0.000000000E+00
+  REF Q+ (WHFLUX0) (Top Wall) =     0.000000000E+00
+    13. The main CFD solver Starts...
+    14. IO: Flow initialization from random velocity field
+    (1-2) IO: Generating random velocity
+    IO: VMV(1:3) In random velocity field
+                  Max U, V, W =     5.971074594E-01  5.948029846E-01  5.955834809E-01
+                  Min U, V, W =     5.542825208E-03  1.243720988E-01  2.687353572E-04
+    (2-2) IO: VMV(1:3) in random velocity after subtracting meanXZ 
+                  Max U, V, W =     5.884423572E-01  6.215919843E-01  5.888332554E-01
+                  Min U, V, W =     3.073038909E-04  1.275017742E-01  9.470513657E-05
+                             IO: The bulk velocity (original) =     1.000263384E+00
+                            IO: The bulk velocity (corrected) =     1.000000000E+00
+                               IO: The bulk velocity (scaled) =     1.000000000E+00
+        The initial mass flux =     1.000000000E+00
+            The unified Umean =     1.000000000E+00
+        The unified mass flux =     1.000000000E+00
+    (3-2) IO: VMV(1:3) in the real initial flow field 
+                  Max U, V, W =     2.082513791E+00  6.215919843E-01  5.888332554E-01
+                  Min U, V, W =     1.719646661E-05  1.275017742E-01  9.470513657E-05
+    (4-2) IO: Max divergence of initial flow field. main domain, inlet, outlet
+                Div(Velocity) =     8.425523709E+01  8.425523709E+01  8.425523709E+01
+    (4-2) IO: Initial flow field, calc QP...
+    (4-3) IO: Initial flow field before first calcuted velocity, VMAX(1:3)
+                  Max U, V, W =     2.082513791E+00  6.215919843E-01  5.888332554E-01
+                  Min U, V, W =     1.719646661E-05  1.275017742E-01  9.470513657E-05
+    (5-2) IO: Initial flow field in the first calcuted velocity, VMAX(1:3)
+                  Max U, V, W =     2.173482516E+00  7.441837894E-01  7.909411664E-01
+                  Min U, V, W =     3.795242953E-06  2.806736854E-02  2.912964462E-07
+    (6-2) IO: Max divergence of final flow field. main domain, inlet, outlet
+                Div(Velocity) =     1.404432126E-12  1.404432126E-12  1.404432126E-12
+#********** Mesh and flow details based on initial flow field******************************

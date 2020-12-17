@@ -1,0 +1,111 @@
+    **** CHAPSim DNS solver Starts******
+    1. Read ini file...
+    --------------------------------
+    Read in [flowtype]
+    iCase = Plane Channel (Cartesian Cooridnates) 
+    iDomain = The main flow domain only with periodic streamwise direction. 
+    iThermoDynamics = flow and thermal fields.
+    iCHT = conjugate Heat Transfer is not considered.
+    --------------------------------
+    Read in [geometry]
+                        HX_io =     6.000000000E+00
+                           HZ =     3.000000000E+00
+                 Y/R (bottom) =    -1.000000000E+00
+                    Y/R (top) =     1.000000000E+00
+    --------------------------------
+    Read in [mesh]
+                 NCL1(for IO) =            64
+                         NCL3 =            64
+                         NCL2 =            64
+       STR2 (mesh stretching) =     3.750000000E+00
+    --------------------------------
+    Read in [boundary]
+     Main Domain Inlet BC = Periodic
+     Main Domain Outlet BC = Periodic
+     Spanwise BC = Periodic
+     Y/Wall-normal BC = Dirichlet (specified value)
+    --------------------------------
+    Read in [fluid]
+              Reynolds number =     2.800000000E+03
+              Initial Re No.  =     2.800000000E+03
+              Time for Ini R  =     2.000000000E+01
+    iFlowDriven = Constant mass flux driven
+    --------------------------------
+    Read in [thermohydraulics]
+    iFluidMedia = Liquid Water
+    iThermoProperty = Thermodynamic properties by functions of Temperature
+    Gravity = Not considered
+              Ref: Length (m) =     2.000000000E-03
+      Ref: Temperature (K) T0 =     3.000000000E+02
+   Inlet: Temperature (K) Ti =      3.000000000E+02
+    iThermalWallType (bottom wall) = Constant Wall Heat Flux
+                     Wall Heat flux (W/M2) on the bottom walL =     0.000000000E+00
+    iThermalWallType (topwall) = Constant Wall Heat Flux
+                        Wall Heat flux (W/M2) on the top walL =     0.000000000E+00
+    --------------------------------
+    Read in [conjugateHeatTransfer]
+    [conjugateHeatTransfer] is not considered.
+    --------------------------------
+    Read in [initialisation]
+    iIniField_io = IO: Start from random flow field
+                       VPERG (initial velocity perturbation)  =     6.000000000E-01
+       SVPERG (initial velocity perturbuatio near 1/4 Y-wall) =     3.000000000E-01
+    --------------------------------
+    Read in [numerics]
+       Iteration No. for STOP =          1000
+       Physical Time for STOP =     1.000000000E+02
+      Time_thermosolver_Start =     2.000000000E+00
+        Time_flowsolver_Start =     0.000000000E+00
+                    Time Step =     1.000000000E-03
+            Minimum Time Step =     1.000000000E-06
+                      CFL No. =     1.000000000E+00
+    --------------------------------
+    Read in [methods]
+    iVisScheme = Explicit Viscous Discretization
+    iWeightedPre = Not Weighted Pressure
+    --------------------------------
+    Read in [statistics]
+                            Time Interval For Raw Data Saving =     5.000000000E-02
+                           Time From When For Running Average =     1.000000000E-01
+                     Reset Time From When For Running Average =     0.000000000E+00
+                Time Interval For Averaged Data Visualization =     2.000000000E-01
+                     Time Interval For Raw Data Visualization =     2.000000000E-01
+    Tecplot Zone Name For Data Visualization =  CHANNEL
+                       Iteration Interval For Data Monitoring =             1
+                        MGRID =             4
+                         JINI =             2
+    --------------------------------
+    Read in [postprocess]
+    iPostProcess = normal reStart
+    iPPInst = not postprocessing instantanous isosurface
+    iPPQuadrants = not postprocessing quadrants
+    iPPSpectra = not postprocessing energy spectra and correlations
+    iPPDimension = output only undim results
+    2. Mesh decomposition (both y-dir and z-dir)...
+    3. Allocate variables...
+       Allocating cell index ...
+       Allocating TDMA coefficients ...
+       Allocating X, Y, Z coordinates ...
+       Allocating IO instant flow variables ...
+       Allocating IO instantanous thermal variables...
+       Allocating IO instantanous thermoproperty variables ...
+       Allocating IO X -z averaged variables ...
+       Allocating IO X -z-t averaged variables...
+       Allocating IO X -z averaged DENSITY and vIScosity variables...
+       Allocating IO X -z averaged thermal variables...
+    4. Set up global and local index for MPI ...
+    5. Set up + 1 /- 1 index (all three directions) ...
+    6. Set up RK coefficients...
+          Time scheme: R- K 3rd order
+    7. Set up mesh information in x and z directions...
+    8. Set up mesh distribution in y direction...
+   inlet surface area (ideal) =     6.000000000E+00
+   inlet surface area (calcu) =     6.000000000E+00
+  Volume of IO region (ideal) =     3.600000000E+01
+  Volume of IO region (calcu) =     3.600000000E+01
+    9. Set up laminar (initial) velocity profile...
+        The given lamimar Poiseuille flow bulk velocitY =           1.000263384E+00
+        The given lamimar Poiseuille flow maxi velocitY =           1.498588754E+00
+    10. Set up mesh coefficient for TDMA...
+    11. Initialization of the FFT solver...
+    12. Initialization of thermal properties...

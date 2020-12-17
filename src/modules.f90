@@ -107,21 +107,51 @@ MODULE cparam
     INTEGER(4), PARAMETER :: iLiquidLead = 4
     INTEGER(4), PARAMETER :: iLiquidBismuth = 5
     INTEGER(4), PARAMETER :: iLiquidLBE = 6
+    INTEGER(4), PARAMETER :: iLiquidH2O = 7
 
+    ! below is for water only
+    ! ref: http://twt.mpei.ac.ru/mcs/worksheets/iapws/LiquidWater.xmcd
+    REAL(WP), PARAMETER :: P0_H2O = 101325.0 ! Pa
+    REAL(WP), PARAMETER :: TR_H2O = 10.0 ! K
+    REAL(WP), PARAMETER :: TA_H2O = 593.0 ! K
+    REAL(WP), PARAMETER :: TB_H2O = 232.0 ! K
+    REAL(WP), PARAMETER :: R_H2O = 461.51805 ! J/(Kg K)
+    REAL(WP), PARAMETER :: TRX_H2O = 300 ! K
+
+    
+    INTEGER(4), PARAMETER :: N_H2O(1:15) = (/4, 5, 7, 0, 0, 4, 5, 7, 8, 9, 1, 3, 5, 6, 7/)
+    INTEGER(4), PARAMETER :: M_H2O(1:17) = (/2, 3, 4, 5, 1, 2, 3, 4, 5, 6, 1, 3, 4, 5, 6, 7, 9/)
+    REAL(WP), PARAMETER :: A_H2O(1:15) = (/-166147.0539, 2708781.64, -155719154.4, 0.0, 0.0193763157, &
+                                6744.58446, -222521.604, 100231247.0, -1635521180.0, 8322996580.0, &
+                                -7.5245878E-06, -0.013767418, 10.627293, -204.57795, 1203.7414 /)
+    REAL(WP), PARAMETER :: B_H2O(1:17) = (/-0.8237426256, 1.908956353, -2.017597384, 0.8546361348, 0.00578545292, & 
+                                -0.0153195665, 0.0311337859, -0.0423546241, 0.0338713507, -0.0119946761, &
+                                -3.109147E-06, 2.8964919E-05, -0.00013112763, 0.00030410453, -0.00039034594, &
+                                0.00023403117, -4.8510101E-05/)
+    REAL(WP), PARAMETER :: C_H2O(1:3) = (/-245.2093414, 38.69269598, -8.983025854/)
+    REAL(WP), PARAMETER :: MA_H2O(1:4) = (/280.68, 511.45, 61.131, 0.45903/)
+    REAL(WP), PARAMETER :: MB_H2O(1:4) = (/-1.9, -7.7, -19.6, -40.0/)
+    REAL(WP), PARAMETER :: KA_H2O(1:4) = (/1.663, -1.7781, 1.1567, -0.432115/)
+    REAL(WP), PARAMETER :: KB_H2O(1:4) = (/-1.15, -3.4, -6.0, -7.6/)
+
+    !!!!!!!!!!!!
     REAL(WP), PARAMETER :: Tm0_Na = 371.0 ! unit: K, melting temperature at 1 atm for Na
     REAL(WP), PARAMETER :: Tm0_Pb = 600.6 ! unit: K, melting temperature at 1 atm for Lead
     REAL(WP), PARAMETER :: Tm0_BI = 544.6 ! unit: K, melting temperature at 1 atm for Bismuth
     REAL(WP), PARAMETER :: Tm0_LBE = 398.0 ! unit: K, melting temperature at 1 atm for LBE
+    REAL(WP), PARAMETER :: Tm0_H2O = 273.15 ! unit: K, melting temperature at 1 atm for water
 
     REAL(WP), PARAMETER :: Tb0_Na = 1155.0 ! unit: K, boling temperature at 1 atm for Na
     REAL(WP), PARAMETER :: Tb0_Pb = 2021.0 ! unit: K, boling temperature at 1 atm for Lead
     REAL(WP), PARAMETER :: Tb0_BI = 1831.0 ! unit: K, boling temperature at 1 atm for Bismuth
     REAL(WP), PARAMETER :: Tb0_LBE = 1927.0 ! unit: K, boling temperature at 1 atm for LBE
+    REAL(WP), PARAMETER :: Tb0_H2O = 372.76 ! unit: K, boling temperature at 1 atm for water
 
     REAL(WP), PARAMETER :: Hm0_Na = 113.0e3 ! unit: J / Kg, latent melting heat, enthalpy
     REAL(WP), PARAMETER :: Hm0_Pb = 23.07e3 ! unit: J / Kg, latent melting heat, enthalpy
     REAL(WP), PARAMETER :: Hm0_BI = 53.3e3 ! unit: J / Kg, latent melting heat, enthalpy
     REAL(WP), PARAMETER :: Hm0_LBE = 38.6e3 ! unit: J / Kg, latent melting heat, enthalpy
+
     ! D = CoD(0) + CoD(1) * T
     REAL(WP), PARAMETER :: CoD_Na(0:1) = (/1014.0, -0.235/)
     REAL(WP), PARAMETER :: CoD_Pb(0:1) = (/11441.0, -1.2795/)

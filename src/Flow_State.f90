@@ -298,6 +298,8 @@ SUBROUTINE thermal_init_write
                     T_tmp = Tm0_Bi + (Tb0_Bi - Tm0_Bi) / DBLE(N) * DBLE(I)
                 CASE (iLiquidLBE)
                     T_tmp = Tm0_LBE + (Tb0_LBE - Tm0_LBE) / DBLE(N) * DBLE(I)
+                CASE (iLiquidH2O)
+                    T_tmp = Tm0_H2O + (Tb0_H2O - Tm0_H2O) / DBLE(N) * DBLE(I)
                 CASE DEFAULT
                     T_tmp = Tm0_Na + (Tb0_Na - Tm0_Na) / DBLE(N) * DBLE(I)
             END SELECT
