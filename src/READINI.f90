@@ -97,8 +97,10 @@ SUBROUTINE READINI
     IF(TgFlowFlg .AND. iCase == IBox3P) &
     CALL ERRHDL('The Box Domain with 3 periodic BCs can only be in the main flow.', MYID)
 
-    IF(TgFlowFlg) OPEN(logflg_tg, FILE = TRIM(FilePath0) // 'monitor.tg.' //fllog)
-    IF(IoFlowFlg) OPEN(logflg_io, FILE = TRIM(FilePath0) // 'monitor.io.' //fllog)
+    LOGFIL_TG = TRIM(FilePath0) // 'monitor.tg.' //fllog
+    LOGFIL_IO = TRIM(FilePath0) // 'monitor.io.' //fllog
+    IF(TgFlowFlg) OPEN(logflg_tg, FILE = TRIM(LOGFIL_TG), status = 'new', action = 'write')
+    IF(IoFlowFlg) OPEN(logflg_io, FILE = TRIM(LOGFIL_IO), status = 'new', action = 'write')
 
     IF(iThermoDynamics == 0) THEN
         CALL CHKHDL    ('iThermoDynamics = only flow field, no thermodynamics.', MYID)

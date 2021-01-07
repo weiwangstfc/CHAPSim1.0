@@ -52,7 +52,9 @@ SUBROUTINE ERRHDL(MSG, RANK)
 
     CHARACTER(*) :: MSG
     INTEGER :: RANK
-
+    LOGICAL :: ex
+    INQUIRE(UNIT = logflg_pg, OPENED = ex)
+    if(.not. ex) write(*, *) 'The FULE/UNIT cannot be connected.'
     WRITE(logflg_pg, TRIM(FORMAT_ERROR)) '# Error in MYID ', RANK, MSG
 
     STOP
@@ -70,6 +72,9 @@ SUBROUTINE CHKHDL(MSG, RANK)
 
     CHARACTER(*) :: MSG
     INTEGER :: RANK
+    LOGICAL :: ex
+    INQUIRE(UNIT = logflg_pg, EXIST = ex)
+    if(.not. ex) write(*, *) 'The FULE/UNIT cannot be connected.'
 
     !WRITE(logflg_pg, '(A, I3.1, 5X, A)') '# MYID ', RANK, MSG
     WRITE(logflg_pg, TRIM(FORMAT_CHAR)) MSG
@@ -88,6 +93,9 @@ SUBROUTINE CHKINTHDL(MSG, RANK, N)
     CHARACTER(*) :: MSG
     INTEGER :: RANK
     INTEGER :: N
+    LOGICAL :: ex
+    INQUIRE(UNIT = logflg_pg, EXIST = ex)
+    if(.not. ex) write(*, *) 'The FULE/UNIT cannot be connected.'
 
     !WRITE(logflg_pg, '(A, I3.1, 5X, A, 5X, I11.1)') '# MYID ', RANK, MSG, N
     IF(LEN(TRIM(MSG)) < 32) THEN
@@ -107,6 +115,9 @@ SUBROUTINE CHK2INTHDL(MSG, RANK, N1, N2)
     CHARACTER(*) :: MSG
     INTEGER :: RANK
     INTEGER :: N1, N2
+    LOGICAL :: ex
+    INQUIRE(UNIT = logflg_pg, EXIST = ex)
+    if(.not. ex) write(*, *) 'The FULE/UNIT cannot be connected.'
 
     !WRITE(logflg_pg, '(A, I3.1, 5X, A, 5X, 2I11.1)') '# MYID ', RANK, MSG, N1, N2
     IF(LEN(TRIM(MSG)) < 32) THEN
@@ -129,6 +140,9 @@ SUBROUTINE CHKRLHDL(MSG, RANK, A)
     CHARACTER(*) :: MSG
     INTEGER :: RANK
     DOUBLE PRECISION :: A
+    LOGICAL :: ex
+    INQUIRE(UNIT = logflg_pg, EXIST = ex)
+    if(.not. ex) write(*, *) 'The FULE/UNIT cannot be connected.'
 
     !WRITE(logflg_pg, '(A, I3.1, 5X, A, 5X, ES17.9)') '# MYID ', RANK, MSG, A
 
@@ -149,6 +163,9 @@ SUBROUTINE CHK2RLHDL(MSG, RANK, A1, A2)
     CHARACTER(*) :: MSG
     INTEGER :: RANK
     DOUBLE PRECISION :: A1, A2
+    LOGICAL :: ex
+    INQUIRE(UNIT = logflg_pg, EXIST = ex)
+    if(.not. ex) write(*, *) 'The FULE/UNIT cannot be connected.'
 
     !WRITE(logflg_pg, '(A, I3.1, 5X, A, 5X, 2ES17.9)') '# MYID ', RANK, MSG, A1, a2
     IF(LEN(TRIM(MSG)) < 32) THEN
@@ -169,6 +186,9 @@ SUBROUTINE CHK3RLHDL(MSG, RANK, A1, A2, A3)
     CHARACTER(*) :: MSG
     INTEGER :: RANK
     DOUBLE PRECISION :: A1, A2, A3
+    LOGICAL :: ex
+    INQUIRE(UNIT = logflg_pg, EXIST = ex)
+    if(.not. ex) write(*, *) 'The FULE/UNIT cannot be connected.'
 
     !WRITE(logflg_pg, '(A, I3.1, 5X, A, 5X, 2ES17.9)') '# MYID ', RANK, MSG, A1, a2
     IF(LEN(TRIM(MSG)) < 32) THEN

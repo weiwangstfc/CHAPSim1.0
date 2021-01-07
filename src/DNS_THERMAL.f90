@@ -61,7 +61,9 @@ PROGRAM CHAPSim_DNS_Solver
     IF (MYID == 0) THEN
         CALL date_and_time(DATE = date, TIME = time)
         fllog = date(1:4) // '.' // Date(5:8) // '.' // Time(1:4) // '.log'
-        OPEN(logflg_pg, FILE = TRIM(FilePath0) // 'CHAPSim_Solver.' //fllog)
+        LOGFIL_PG = TRIM(FilePath0) // 'CHAPSim_Solver.' //fllog
+        OPEN (logflg_pg, FILE = TRIM(LOGFIL_PG), &
+              status = 'new', action = 'write')
         CALL CHKHDL('**** CHAPSim DNS solver Starts******', MYID)
     END IF
 
