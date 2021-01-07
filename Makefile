@@ -24,7 +24,7 @@ DIR_FISHPACK= ../lib/fishpack4.1
 DIR_EIGENV33= ../lib/eigen33
 
 #FC = mpifort #-vt, for intel
-FC = mpifort
+FC = mpif90 #mpifort
 
 
 #-------------------------------------------------------------------------------------#

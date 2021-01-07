@@ -4,8 +4,7 @@ bin/
 docs/
 obj/
 scripts/
-test_cases/
-test_cases_additional/
+ignore/
 test_loop/
 .vscode/
 
