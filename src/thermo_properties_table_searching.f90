@@ -1015,10 +1015,10 @@ SUBROUTINE SPLINE_COEFFICIENTS_FOR_DH
     DO I = 2, N_LIST - 1
         dDHdt1 = ( LIST_DH(I) - LIST_DH(I - 1) ) /  ( LIST_T(I) - LIST_T(I - 1) )
         dDHdt2 = ( LIST_DH(I + 1) - LIST_DH(I) ) /  ( LIST_T(I + 1) - LIST_T(I) )
-        IF ( dDHdt1 * dDHdt2 < 0.0_WP) CALL ERRHDL(' Error. The relation (rho * h) = FUNCTION (T) is not monotonicity.')
+        IF ( dDHdt1 * dDHdt2 < 0.0_WP) CALL ERRHDL(' Error. The relation (rho * h) = FUNCTION (T) is not monotonicity.', myid)
         dDHdh1 = ( LIST_DH(I) - LIST_DH(I - 1) ) /  ( LIST_H(I) - LIST_H(I - 1) )
         dDHdh2 = ( LIST_DH(I + 1) - LIST_DH(I) ) /  ( LIST_H(I + 1) - LIST_H(I) )
-        IF ( dDHdh1 * dDHdh2 < 0.0_WP) CALL ERRHDL(' Error. The relation (rho * h) = FUNCTION (h) is not monotonicity.')
+        IF ( dDHdh1 * dDHdh2 < 0.0_WP) CALL ERRHDL(' Error. The relation (rho * h) = FUNCTION (h) is not monotonicity.', myid)
     END DO
 
     RETURN

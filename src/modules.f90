@@ -220,9 +220,9 @@ MODULE WRT_INFO
     CHARACTER(10) :: time
 
     CHARACTER(18) :: fllog
-    INTEGER(4) :: logflg_pg = 20
-    INTEGER(4) :: logflg_tg = 21
-    INTEGER(4) :: logflg_io = 22
+    INTEGER(4) :: logflg_pg = 71
+    INTEGER(4) :: logflg_tg = 72
+    INTEGER(4) :: logflg_io = 73
 
     CHARACTER(LEN = 256) :: LOGFIL_PG
     CHARACTER(LEN = 256) :: LOGFIL_TG
