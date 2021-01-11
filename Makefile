@@ -31,7 +31,7 @@ FC = mpif90 #mpifort
 # CAUTION: After this line, NOTHING should be really changed!!!                       #
 #-------------------------------------------------------------------------------------#
 
-FOPT = -fdefault-double-8 # for gfortran
+FOPT = -fdefault-real-8 -fdefault-double-8 # for gfortran
 #OPT = -r8 # for intel
 ifeq ($(cfg), gnu)
 #-O0 -DDEBUG -fbacktrace -fbounds-check -fcheck=all -fdump-core -ffpe-trap=invalid,zero,overflow -finit-real=nan -fsignaling-nans -Warray-temporaries -Wall -Waliasing -Wampersand -Warray-bounds -Warray-temporaries -Wcharacter-truncation -Wconversion -Wconversion-extra -Wextra -Wline-truncation -Wintrinsics-std -Wintrinsic-shadow -Wno-align-commons -Wreal-q-constant -Wunused-parameter -Wsurprising -Wunderflow -pedantic -pedantic-errors
