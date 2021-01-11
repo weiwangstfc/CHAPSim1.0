@@ -46,6 +46,9 @@ MODULE cparam
     INTEGER(4), PARAMETER ::  NDV = 3
     !>      @pARam NDV IS three directions
 
+    LOGICAL, PARAMETER :: is_FFT_FISHPACK = .true.
+    LOGICAL, PARAMETER :: is_FFT_FFT99 = .false.
+
     INTEGER(4), PARAMETER :: IniField_random = 0
     INTEGER(4), PARAMETER :: IniField_extrapolation = 1
     INTEGER(4), PARAMETER :: IniField_reStart = 2

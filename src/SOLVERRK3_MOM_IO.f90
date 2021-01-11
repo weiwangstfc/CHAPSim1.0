@@ -88,8 +88,8 @@ SUBROUTINE SOLVERRK3_MOM_io(NS)
     IF(TgFlowFlg) THEN
         CALL FISHPACK_POIS3D_SIMPLE
     ELSE
-        CALL FFT99_POIS3D_periodicxz(IIO) !Method One
-        !CALL FISHPACK_POIS3D_SIMPLE ! Method Two,  good
+      if(is_FFT_FFT99) CALL FFT99_POIS3D_periodicxz(IIO) !Method One
+      if(is_FFT_FISHPACK) CALL FISHPACK_POIS3D_SIMPLE ! Method Two,  good
     END IF
 
     CALL INTFC_VARS1(1, NCL1_io, NCL1S, NCL1E, DPH_io)

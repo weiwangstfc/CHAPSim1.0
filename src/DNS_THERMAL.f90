@@ -120,8 +120,11 @@ PROGRAM CHAPSim_DNS_Solver
     ELSE
         IF(TgFlowFlg) CALL FFT99_POIS3D_INIT(ITG)
         IF(IoFlowFlg) THEN
-            CALL FFT99_POIS3D_INIT(IIO) !Method One
-            !CALL FISHPACK_POIS3D_INIT  !Metthod Two, good
+            if (is_FFT_FFT99 .and. is_FFT_FISHPACK) &
+            call ERRHDL("Please specify one FFT lib", myid)
+
+            if(is_FFT_FFT99) CALL FFT99_POIS3D_INIT(IIO) !Method One
+            if(is_FFT_FISHPACK) CALL FISHPACK_POIS3D_INIT  !Metthod Two, good
         END IF
     END IF
 

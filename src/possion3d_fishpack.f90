@@ -80,7 +80,7 @@ SUBROUTINE FISHPACK_POIS3D_INIT
     C2 = DZQI
 
     WSZ = 30 + L + M + 2 * NG + MAX(L, M, NG) + &
-    7* (INT((L+ 1) / 2) + INT((M + 1) / 2)) + 128
+                7*(INT((L+1)/2) + INT((M+1)/2)) + 128
 
     ALLOCATE (A (NG) ) ; A = 0.0_WP
     ALLOCATE (B (NG) ) ; B = 0.0_WP
@@ -122,9 +122,9 @@ SUBROUTINE FFTPACK_ROOT
         IMPLICIT NONE
 
         REAL(WP) :: PI
-        REAL(WP) :: DUM
+        !REAL(WP) :: DUM
         REAL(WP) :: DY, DJ
-        REAL(WP),external :: PIMACH
+        !REAL(WP),external :: PIMACH
         REAL(WP) :: DX, DI
 
         INTEGER(4) :: I, J
@@ -132,7 +132,7 @@ SUBROUTINE FFTPACK_ROOT
         INTEGER(4) :: MRDEL
         INTEGER(4) :: LR, MR
 
-        PI = PIMACH(DUM)
+        PI = 2.0_WP*DASIN(1.0_WP) !PIMACH(DUM)
         LR = L
         MR = M
 !C
@@ -149,7 +149,7 @@ SUBROUTINE FFTPACK_ROOT
         GO TO 104
   103   DI = 0.00_WP
   104   DO 105 I = 1, LR
-            XRT(I) = -4.0_WP * C1 * (SIN((DBLE(I) - DI) * DX))**2
+            XRT(I) = -4.0_WP * C1 * (DSIN((DBLE(I) - DI) * DX))**2
   105   CONTINUE
         SCALX = 2.0_WP * SCALX
         GO TO (112, 106, 110, 107, 111), LP
@@ -160,7 +160,7 @@ SUBROUTINE FFTPACK_ROOT
   108   XRT(1) = 0.0_WP
         XRT(LR) = -4.0_WP * C1
         DO 109 I = 3,LR, 2
-            XRT(I - 1) = -4.0_WP * C1 * (SIN(DBLE((I - 1)) * DX))**2
+            XRT(I - 1) = -4.0_WP * C1 * (DSIN(DBLE((I - 1)) * DX))**2
             XRT(I) = XRT(I - 1)
   109   CONTINUE
         CALL RFFTI (LR, WX)
@@ -169,7 +169,6 @@ SUBROUTINE FFTPACK_ROOT
         GO TO 112
   111   CALL COSQI (LR, WX)
   112   CONTINUE
-
 !C
 !C     GENERATE TRANSFORM ROOTS FOR Y direction (Z IN REAL)
 !C
@@ -184,7 +183,7 @@ SUBROUTINE FFTPACK_ROOT
       GO TO 116
   115 DJ = 0.00_WP
   116 DO 117 J = 1, MR
-         YRT(J) = -4.0_WP * C2 * (SIN((DBLE(J) - DJ) * DY))**2
+         YRT(J) = -4.0_WP * C2 * (DSIN((DBLE(J) - DJ) * DY))**2
   117 CONTINUE
       SCALY = 2.0_WP * SCALY
       GO TO (124, 118, 122, 119, 123), MP
@@ -195,7 +194,7 @@ SUBROUTINE FFTPACK_ROOT
   120 YRT(1) = 0.0_WP
       YRT(MR) = -4.0_WP * C2
       DO 121 J = 3, MR, 2
-         YRT(J - 1) = -4.0_WP * C2 * (SIN(DBLE((J - 1)) * DY))**2
+         YRT(J - 1) = -4.0_WP * C2 * (DSIN(DBLE((J - 1)) * DY))**2
          YRT(J) = YRT(J - 1)
   121 CONTINUE
       CALL RFFTI (MR, WY)
@@ -445,7 +444,8 @@ SUBROUTINE TRID0
          T(I) = (T(I) - A(I) * T(I - 1)) * Z
   101 CONTINUE
       Z = BB(NR) - A(NR) * D(MM1)
-      IF (Z /= 0.0_WP) GO TO 102
+      !IF (Z /= 0.0_WP) GO TO 102
+      IF (DABS(Z) > 1.0E-14_WP) GO TO 102
       T(NR) = 0.0_WP
       GO TO 103
   102 T(NR) = (T(NR) - A(NR) * T(MM1)) /Z
