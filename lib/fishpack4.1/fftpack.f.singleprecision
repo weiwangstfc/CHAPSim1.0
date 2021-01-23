@@ -363,7 +363,7 @@ C                  C(K)*EXP(I*K*(J-1)*2*PI/N)
 C
 C             WHERE
 C
-C                  C(K) = 0.5_WP*CMPLX(A(K),-B(K))   FOR K=1,...,KMAX
+C                  C(K) = .5*CMPLX(A(K),-B(K))   FOR K=1,...,KMAX
 C
 C                  C(-K) = CONJG(C(K))
 C
@@ -403,7 +403,7 @@ C             IS MOST EFFICIENT WHEN N+1 IS A PRODUCT OF SMALL PRIMES.
 C
 C     OUTPUT PARAMETER
 C
-C     WSAVE   A WORK ARRAY WITH AT LEAST INT(20.5_WP*N+15) LOCATIONS.
+C     WSAVE   A WORK ARRAY WITH AT LEAST INT(2.5*N+15) LOCATIONS.
 C             DIFFERENT WSAVE ARRAYS ARE REQUIRED FOR DIFFERENT VALUES
 C             OF N. THE CONTENTS OF WSAVE MUST NOT BE CHANGED BETWEEN
 C             CALLS OF SINT.
@@ -431,7 +431,7 @@ C
 C     X       AN ARRAY WHICH CONTAINS THE SEQUENCE TO BE TRANSFORMED
 C
 C
-C     WSAVE   A WORK ARRAY WITH DIMENSION AT LEAST INT(20.5_WP*N+15)
+C     WSAVE   A WORK ARRAY WITH DIMENSION AT LEAST INT(2.5*N+15)
 C             IN THE PROGRAM THAT CALLS SINT. THE WSAVE ARRAY MUST BE
 C             INITIALIZED BY CALLING SUBROUTINE SINTI(N,WSAVE) AND A
 C             DIFFERENT WSAVE ARRAY MUST BE USED FOR EACH DIFFERENT
@@ -875,33 +875,22 @@ C
 C     WSAVE   CONTAINS INITIALIZATION CALCULATIONS WHICH MUST NOT BE
 C             DESTROYED BETWEEN CALLS OF SUBROUTINE CFFTF OR CFFTB
 C **********************************************************************
-      MODULE WPFISHPACK
-        INTEGER, PARAMETER :: WP = 8 !KIND(0.0D0) !WORKING PRECESION
-      END MODULE WPFISHPACK
-C **********************************************************************
       SUBROUTINE EZFFTF (N,R,AZERO,A,B,WSAVE)
-      USE WPFISHPACK
-      
-      INTEGER(4), INTENT(IN)  :: N
-      REAL(WP), INTENT(OUT)   :: AZERO
-      REAL(WP), INTENT(IN)    :: R(*) 
-      REAL(WP), INTENT(OUT)   :: A(*) 
-      REAL(WP), INTENT(OUT)   :: B(*) 
-      REAL(WP), INTENT(INOUT) :: WSAVE(*)
+      DIMENSION       R(*)       ,A(*)       ,B(*)       ,WSAVE(*)
 C
       IF (N-2) 101,102,103
   101 AZERO = R(1)
       RETURN
-  102 AZERO = 0.5_WP*(R(1)+R(2))
-      A(1) = 0.5_WP*(R(1)-R(2))
+  102 AZERO = .5*(R(1)+R(2))
+      A(1) = .5*(R(1)-R(2))
       RETURN
   103 DO 104 I=1,N
          WSAVE(I) = R(I)
   104 CONTINUE
       CALL RFFTF (N,WSAVE,WSAVE(N+1))
-      CF = 2.0_WP/DBLE(N)
+      CF = 2./FLOAT(N)
       CFM = -CF
-      AZERO = 0.5_WP*CF*WSAVE(1)
+      AZERO = .5*CF*WSAVE(1)
       NS2 = (N+1)/2
       NS2M = NS2-1
       DO 105 I=1,NS2M
@@ -909,20 +898,12 @@ C
          B(I) = CFM*WSAVE(2*I+1)
   105 CONTINUE
       IF (MOD(N,2) .EQ. 1) RETURN
-      A(NS2) = 0.5_WP*CF*WSAVE(N)
-      B(NS2) = 0._WP
+      A(NS2) = .5*CF*WSAVE(N)
+      B(NS2) = 0.
       RETURN
-      END SUBROUTINE
-C **********************************************************************
+      END
       SUBROUTINE EZFFTB (N,R,AZERO,A,B,WSAVE)
-      USE WPFISHPACK
-      
-      INTEGER(4), INTENT(IN) :: N
-      REAL(WP), INTENT(IN)   :: AZERO
-      REAL(WP), INTENT(OUT)  :: R(*) 
-      REAL(WP), INTENT(IN)   :: A(*) 
-      REAL(WP), INTENT(IN)   :: B(*) 
-      REAL(WP), INTENT(IN)   :: WSAVE(*)
+      DIMENSION       R(*)       ,A(*)       ,B(*)       ,WSAVE(*)
 C
       IF (N-2) 101,102,103
   101 R(1) = AZERO
@@ -932,36 +913,25 @@ C
       RETURN
   103 NS2 = (N-1)/2
       DO 104 I=1,NS2
-         R(2*I) = 0.5_WP*A(I)
-         R(2*I+1) = -0.5_WP*B(I)
+         R(2*I) = .5*A(I)
+         R(2*I+1) = -.5*B(I)
   104 CONTINUE
       R(1) = AZERO
       IF (MOD(N,2) .EQ. 0) R(N) = A(NS2+1)
       CALL RFFTB (N,R,WSAVE(N+1))
       RETURN
-      END SUBROUTINE
-C **********************************************************************
+      END
       SUBROUTINE EZFFTI (N,WSAVE)
-      USE WPFISHPACK
-      
-      INTEGER(4), INTENT(IN) :: N
-      REAL(WP), INTENT(OUT)  :: WSAVE(*)
+      DIMENSION       WSAVE(*)
 C
       IF (N .EQ. 1) RETURN
       CALL EZFFT1 (N,WSAVE(2*N+1),WSAVE(3*N+1))
       RETURN
-      END SUBROUTINE
-C **********************************************************************
+      END
       SUBROUTINE EZFFT1 (N,WA,IFAC)
-      USE WPFISHPACK
-      
-      INTEGER(4), INTENT(IN) :: N
-      REAL(WP), INTENT(OUT)  :: WA(*)
-      REAL(WP), INTENT(OUT)  :: IFAC(*)
-      INTEGER(4) :: NTRYH(4)
+      DIMENSION       WA(*)      ,IFAC(*)    ,NTRYH(4)
       DATA NTRYH(1),NTRYH(2),NTRYH(3),NTRYH(4)/4,2,3,5/
-
-      TPI = 2.0_WP*PIMACH(DUM)
+      TPI = 2.0*PIMACH(DUM)
       NL = N
       NF = 0
       J = 0
@@ -986,7 +956,7 @@ C **********************************************************************
   107 IF (NL .NE. 1) GO TO 104
       IFAC(1) = N
       IFAC(2) = NF
-      ARGH = TPI/DBLE(N)
+      ARGH = TPI/FLOAT(N)
       IS = 0
       NFM1 = NF-1
       L1 = 1
@@ -996,9 +966,9 @@ C **********************************************************************
          L2 = L1*IP
          IDO = N/L2
          IPM = IP-1
-         ARG1 = DBLE(L1)*ARGH
-         CH1 = 1.0_WP
-         SH1 = 0.0_WP
+         ARG1 = FLOAT(L1)*ARGH
+         CH1 = 1.
+         SH1 = 0.
          DCH1 = COS(ARG1)
          DSH1 = SIN(ARG1)
          DO 110 J=1,IPM
@@ -1019,37 +989,28 @@ C **********************************************************************
          L1 = L2
   111 CONTINUE
       RETURN
-      END SUBROUTINE
-C **********************************************************************
+      END
       SUBROUTINE COSTI (N,WSAVE)
-      USE WPFISHPACK
-      
-      INTEGER(4), INTENT(IN) :: N
-      REAL(WP), INTENT(OUT)  :: WSAVE(*)
+      DIMENSION       WSAVE(*)
 C
       PI = PIMACH(DUM)
       IF (N .LE. 3) RETURN
       NM1 = N-1
       NP1 = N+1
       NS2 = N/2
-      DT = PI/DBLE(NM1)
-      FK = 0.0_WP
+      DT = PI/FLOAT(NM1)
+      FK = 0.
       DO 101 K=2,NS2
          KC = NP1-K
-         FK = FK+1.0_WP
-         WSAVE(K) = 2.0_WP*SIN(FK*DT)
-         WSAVE(KC) = 2.0_WP*COS(FK*DT)
+         FK = FK+1.
+         WSAVE(K) = 2.*SIN(FK*DT)
+         WSAVE(KC) = 2.*COS(FK*DT)
   101 CONTINUE
       CALL RFFTI (NM1,WSAVE(N+1))
       RETURN
       END
-C **********************************************************************
       SUBROUTINE COST (N,X,WSAVE)
-      USE WPFISHPACK
-      
-      INTEGER(4), INTENT(IN) :: N
-      REAL(WP), INTENT(INOUT)  :: WSAVE(*)
-      REAL(WP), INTENT(INOUT)  :: X(*)
+      DIMENSION       X(*)       ,WSAVE(*)
 C
       NM1 = N-1
       NP1 = N+1
@@ -1091,31 +1052,22 @@ C
       IF (MODN .NE. 0) X(N) = XIM2
   106 RETURN
       END
-C **********************************************************************
       SUBROUTINE SINTI (N,WSAVE)
-      USE WPFISHPACK
-      
-      INTEGER(4), INTENT(IN) :: N
-      REAL(WP), INTENT(OUT)  :: WSAVE(*)
+      DIMENSION       WSAVE(*)
 C
       PI = PIMACH(DUM)
       IF (N .LE. 1) RETURN
       NS2 = N/2
       NP1 = N+1
-      DT = PI/DBLE(NP1)
+      DT = PI/FLOAT(NP1)
       DO 101 K=1,NS2
-         WSAVE(K) = 2.0_WP*SIN(K*DT)
+         WSAVE(K) = 2.*SIN(K*DT)
   101 CONTINUE
       CALL RFFTI (NP1,WSAVE(NS2+1))
       RETURN
       END
-C **********************************************************************
       SUBROUTINE SINT (N,X,WSAVE)
-      USE WPFISHPACK
-      
-      INTEGER(4), INTENT(IN) :: N
-      REAL(WP), INTENT(INOUT)  :: WSAVE(*)
-      REAL(WP), INTENT(INOUT)  :: X(*)
+      DIMENSION       X(*)       ,WSAVE(*)
 C
       NP1 = N+1
       IW1 = N/2+1
@@ -1124,19 +1076,9 @@ C
       CALL SINT1(N,X,WSAVE,WSAVE(IW1),WSAVE(IW2),WSAVE(IW3))
       RETURN
       END
-C **********************************************************************
       SUBROUTINE SINT1(N,WAR,WAS,XH,X,IFAC)
-      USE WPFISHPACK
-      
-      INTEGER(4), INTENT(IN) :: N
-      REAL(WP), INTENT(INOUT)  :: WAR(*)
-      REAL(WP), INTENT(INOUT)  :: WAS(*)
-      REAL(WP), INTENT(INOUT)  :: XH(*)
-      REAL(WP), INTENT(INOUT)  :: X(*)
-      REAL(WP), INTENT(INOUT)  :: IFAC(*)
-
-      DATA SQRT3 /1.73205080756888_WP/
-
+      DIMENSION WAR(*),WAS(*),X(*),XH(*),IFAC(*)
+      DATA SQRT3 /1.73205080756888/
       DO 100 I=1,N
       XH(I) = WAR(I)
       WAR(I) = X(I)
@@ -1150,7 +1092,7 @@ C **********************************************************************
       GO TO 106
   103 NP1 = N+1
       NS2 = N/2
-      X(1) = 0._WP
+      X(1) = 0.
       DO 104 K=1,NS2
          KC = NP1-K
          T1 = XH(K)-XH(KC)
@@ -1159,9 +1101,9 @@ C **********************************************************************
          X(KC+1) = T2-T1
   104 CONTINUE
       MODN = MOD(N,2)
-      IF (MODN .NE. 0) X(NS2+2) = 4._WP*XH(NS2+1)
+      IF (MODN .NE. 0) X(NS2+2) = 4.*XH(NS2+1)
       CALL RFFTF1 (NP1,X,XH,WAR,IFAC)
-      XH(1) = 0.5_WP*X(1)
+      XH(1) = .5*X(1)
       DO 105 I=3,N,2
          XH(I-1) = -X(I)
          XH(I) = XH(I-2)+X(I-1)
@@ -1174,32 +1116,22 @@ C **********************************************************************
   107 CONTINUE
       RETURN
       END
-C **********************************************************************
       SUBROUTINE COSQI (N,WSAVE)
-        USE WPFISHPACK
-        
-        INTEGER(4), INTENT(IN) :: N
-        REAL(WP), INTENT(INOUT)  :: WSAVE(*)
+      DIMENSION       WSAVE(*)
 C
-      PIH = 0.5_WP*PIMACH(DUM)
-      DT = PIH/DBLE(N)
-      FK = 0._WP
+      PIH = 0.5*PIMACH(DUM)
+      DT = PIH/FLOAT(N)
+      FK = 0.
       DO 101 K=1,N
-         FK = FK+1._WP
+         FK = FK+1.
          WSAVE(K) = COS(FK*DT)
   101 CONTINUE
       CALL RFFTI (N,WSAVE(N+1))
       RETURN
       END
-C **********************************************************************
       SUBROUTINE COSQF (N,X,WSAVE)
-      USE WPFISHPACK
-      
-      INTEGER(4), INTENT(IN) :: N
-      REAL(WP), INTENT(INOUT)  :: WSAVE(*)
-      REAL(WP), INTENT(INOUT)  :: X(*)
-      
-      DATA SQRT2 /1.4142135623731_WP/
+      DIMENSION       X(*)       ,WSAVE(*)
+      DATA SQRT2 /1.4142135623731/
 C
       IF (N-2) 102,101,103
   101 TSQX = SQRT2*X(2)
@@ -1209,15 +1141,8 @@ C
   103 CALL COSQF1 (N,X,WSAVE,WSAVE(N+1))
       RETURN
       END
-C **********************************************************************
       SUBROUTINE COSQF1 (N,X,W,XH)
-        USE WPFISHPACK
-        
-        INTEGER(4), INTENT(IN) :: N
-        REAL(WP), INTENT(INOUT)  :: X(*)
-        REAL(WP), INTENT(INOUT)  :: W(*)
-        REAL(WP), INTENT(INOUT)  :: XH(*)
-
+      DIMENSION       X(*)       ,W(*)       ,XH(*)
       NS2 = (N+1)/2
       NP2 = N+2
       DO 101 K=2,NS2
@@ -1241,35 +1166,22 @@ C **********************************************************************
   103 CONTINUE
       RETURN
       END
-C **********************************************************************
       SUBROUTINE COSQB (N,X,WSAVE)
-        USE WPFISHPACK
-        
-        INTEGER(4), INTENT(IN) :: N
-        REAL(WP), INTENT(INOUT)  :: WSAVE(*)
-        REAL(WP), INTENT(INOUT)  :: X(*)
-
-      DATA TSQRT2 /2.82842712474619_WP/
+      DIMENSION       X(*)       ,WSAVE(*)
+      DATA TSQRT2 /2.82842712474619/
 C
       IF (N-2) 101,102,103
-  101 X(1) = 4._WP*X(1)
+  101 X(1) = 4.*X(1)
       RETURN
-  102 X1 = 4._WP*(X(1)+X(2))
+  102 X1 = 4.*(X(1)+X(2))
       X(2) = TSQRT2*(X(1)-X(2))
       X(1) = X1
       RETURN
   103 CALL COSQB1 (N,X,WSAVE,WSAVE(N+1))
       RETURN
       END
-C **********************************************************************
       SUBROUTINE COSQB1 (N,X,W,XH)
-        USE WPFISHPACK
-        
-        INTEGER(4), INTENT(IN) :: N
-        REAL(WP), INTENT(INOUT)  :: X(*)
-        REAL(WP), INTENT(INOUT)  :: W(*)
-        REAL(WP), INTENT(INOUT)  :: XH(*)
-
+      DIMENSION       X(*)       ,W(*)       ,XH(*)
       NS2 = (N+1)/2
       NP2 = N+2
       DO 101 I=3,N,2
@@ -1295,23 +1207,14 @@ C **********************************************************************
       X(1) = X(1)+X(1)
       RETURN
       END
-C **********************************************************************
       SUBROUTINE SINQI (N,WSAVE)
-      USE WPFISHPACK
-      
-      INTEGER(4), INTENT(IN) :: N
-      REAL(WP), INTENT(INOUT)  :: WSAVE(*)
+      DIMENSION       WSAVE(*)
 C
       CALL COSQI (N,WSAVE)
       RETURN
       END
-C **********************************************************************
       SUBROUTINE SINQF (N,X,WSAVE)
-        USE WPFISHPACK
-        
-        INTEGER(4), INTENT(IN) :: N
-        REAL(WP), INTENT(INOUT)  :: WSAVE(*)
-        REAL(WP), INTENT(INOUT)  :: X(*)
+      DIMENSION       X(*)       ,WSAVE(*)
 C
       IF (N .EQ. 1) RETURN
       NS2 = N/2
@@ -1327,16 +1230,11 @@ C
   102 CONTINUE
       RETURN
       END
-C **********************************************************************
       SUBROUTINE SINQB (N,X,WSAVE)
-        USE WPFISHPACK
-        
-        INTEGER(4), INTENT(IN) :: N
-        REAL(WP), INTENT(INOUT)  :: WSAVE(*)
-        REAL(WP), INTENT(INOUT)  :: X(*)
+      DIMENSION       X(*)       ,WSAVE(*)
 C
       IF (N .GT. 1) GO TO 101
-      X(1) = 4.0_WP*X(1)
+      X(1) = 4.*X(1)
       RETURN
   101 NS2 = N/2
       DO 102 K=2,N,2
@@ -1351,12 +1249,8 @@ C
   103 CONTINUE
       RETURN
       END
-C **********************************************************************
       SUBROUTINE CFFTI (N,WSAVE)
-        USE WPFISHPACK
-        
-        INTEGER(4), INTENT(IN) :: N
-        REAL(WP), INTENT(INOUT)  :: WSAVE(*)
+      DIMENSION       WSAVE(*)
 C
       IF (N .EQ. 1) RETURN
       IW1 = N+N+1
@@ -1364,16 +1258,8 @@ C
       CALL CFFTI1 (N,WSAVE(IW1),WSAVE(IW2))
       RETURN
       END
-C **********************************************************************
       SUBROUTINE CFFTI1 (N,WA,IFAC)
-        USE WPFISHPACK
-        
-        INTEGER(4), INTENT(IN) :: N
-        REAL(WP), INTENT(INOUT)  :: WA(*)
-        REAL(WP), INTENT(INOUT) :: IFAC(*)
-
-        INTEGER(4) :: NTRYH(4)
-
+      DIMENSION       WA(*)      ,IFAC(*)    ,NTRYH(4)
       DATA NTRYH(1),NTRYH(2),NTRYH(3),NTRYH(4)/3,4,2,5/
       NL = N
       NF = 0
@@ -1399,8 +1285,8 @@ C **********************************************************************
   107 IF (NL .NE. 1) GO TO 104
       IFAC(1) = N
       IFAC(2) = NF
-      TPI = 2.0_WP*PIMACH(DUM)
-      ARGH = TPI/DBLE(N)
+      TPI = 2.*PIMACH(DUM)
+      ARGH = TPI/FLOAT(N)
       I = 2
       L1 = 1
       DO 110 K1=1,NF
@@ -1412,14 +1298,14 @@ C **********************************************************************
          IPM = IP-1
          DO 109 J=1,IPM
             I1 = I
-            WA(I-1) = 1.0_WP
-            WA(I) = 0.0_WP
+            WA(I-1) = 1.
+            WA(I) = 0.
             LD = LD+L1
-            FI = 0.0_WP
-            ARGLD = DBLE(LD)*ARGH
+            FI = 0.
+            ARGLD = FLOAT(LD)*ARGH
             DO 108 II=4,IDOT,2
                I = I+2
-               FI = FI+1.0_WP
+               FI = FI+1.
                ARG = FI*ARGLD
                WA(I-1) = COS(ARG)
                WA(I) = SIN(ARG)
@@ -1432,13 +1318,8 @@ C **********************************************************************
   110 CONTINUE
       RETURN
       END
-C **********************************************************************
       SUBROUTINE CFFTB (N,C,WSAVE)
-        USE WPFISHPACK
-        
-        INTEGER(4), INTENT(IN) :: N
-        REAL(WP), INTENT(INOUT)  :: C(*)
-        REAL(WP), INTENT(INOUT) :: WSAVE(*)
+      DIMENSION       C(*)       ,WSAVE(*)
 C
       IF (N .EQ. 1) RETURN
       IW1 = N+N+1
@@ -1446,16 +1327,8 @@ C
       CALL CFFTB1 (N,C,WSAVE,WSAVE(IW1),WSAVE(IW2))
       RETURN
       END
-C **********************************************************************
       SUBROUTINE CFFTB1 (N,C,CH,WA,IFAC)
-        USE WPFISHPACK
-        
-        INTEGER(4), INTENT(IN) :: N
-        REAL(WP), INTENT(INOUT)  :: C(*)
-        REAL(WP), INTENT(INOUT)  :: CH(*)
-        REAL(WP), INTENT(INOUT)  :: WA(*)
-        REAL(WP), INTENT(INOUT) :: IFAC(*)
-
+      DIMENSION       CH(*)      ,C(*)       ,WA(*)      ,IFAC(*)
       NF = IFAC(2)
       NA = 0
       L1 = 1
@@ -1515,16 +1388,9 @@ C **********************************************************************
   117 CONTINUE
       RETURN
       END
-C **********************************************************************
       SUBROUTINE PASSB2 (IDO,L1,CC,CH,WA1)
-        USE WPFISHPACK
-        
-        INTEGER(4), INTENT(IN) :: IDO, L1
-        REAL(WP), INTENT(INOUT)  :: CC(IDO,2,L1)
-        REAL(WP), INTENT(INOUT)  :: CH(IDO,L1,2)
-        REAL(WP), INTENT(INOUT)  :: WA1(1)
-
-     
+      DIMENSION       CC(IDO,2,L1)           ,CH(IDO,L1,2)           ,
+     1                WA1(1)
       IF (IDO .GT. 2) GO TO 102
       DO 101 K=1,L1
          CH(1,K,1) = CC(1,1,K)+CC(1,2,K)
@@ -1545,16 +1411,10 @@ C **********************************************************************
   104 CONTINUE
       RETURN
       END
-C **********************************************************************
       SUBROUTINE PASSB3 (IDO,L1,CC,CH,WA1,WA2)
-        USE WPFISHPACK
-        
-        INTEGER(4), INTENT(IN) :: IDO, L1
-        REAL(WP), INTENT(INOUT)  :: CC(IDO,3,L1)
-        REAL(WP), INTENT(INOUT)  :: CH(IDO,L1,3)
-        REAL(WP), INTENT(INOUT)  :: WA1(*), WA2(*)
-
-      DATA TAUR,TAUI /-0.5_WP,0.866025403784439_WP/
+      DIMENSION       CC(IDO,3,L1)           ,CH(IDO,L1,3)           ,
+     1                WA1(*)     ,WA2(*)
+      DATA TAUR,TAUI /-.5,.866025403784439/
       IF (IDO .NE. 2) GO TO 102
       DO 101 K=1,L1
          TR2 = CC(1,2,K)+CC(1,3,K)
@@ -1593,15 +1453,9 @@ C **********************************************************************
   104 CONTINUE
       RETURN
       END
-C **********************************************************************
       SUBROUTINE PASSB4 (IDO,L1,CC,CH,WA1,WA2,WA3)
-        USE WPFISHPACK
-        
-        INTEGER(4), INTENT(IN) :: IDO, L1
-        REAL(WP), INTENT(INOUT)  :: CC(IDO,4,L1)
-        REAL(WP), INTENT(INOUT)  :: CH(IDO,L1,4)
-        REAL(WP), INTENT(INOUT)  :: WA1(*), WA2(*), WA3(*)
-
+      DIMENSION       CC(IDO,4,L1)           ,CH(IDO,L1,4)           ,
+     1                WA1(*)     ,WA2(*)     ,WA3(*)
       IF (IDO .NE. 2) GO TO 102
       DO 101 K=1,L1
          TI1 = CC(2,1,K)-CC(2,3,K)
@@ -1650,21 +1504,11 @@ C **********************************************************************
   104 CONTINUE
       RETURN
       END
-C **********************************************************************
       SUBROUTINE PASSB5 (IDO,L1,CC,CH,WA1,WA2,WA3,WA4)
-        USE WPFISHPACK
-        
-        INTEGER(4), INTENT(IN) :: IDO, L1
-        REAL(WP), INTENT(INOUT)  :: CC(IDO,5,L1)
-        REAL(WP), INTENT(INOUT)  :: CH(IDO,L1,5)
-        REAL(WP), INTENT(INOUT)  :: WA1(*), WA2(*), WA3(*), WA4(*)
-
-
-        TR11 = 0.309016994374947_WP
-        TI11 = 0.951056516295154_WP
-        TR12 = -0.809016994374947_WP
-        TI12 = 0.587785252292473_WP
-
+      DIMENSION       CC(IDO,5,L1)           ,CH(IDO,L1,5)           ,
+     1                WA1(*)     ,WA2(*)     ,WA3(*)     ,WA4(*)
+      DATA TR11,TI11,TR12,TI12 /.309016994374947,.951056516295154,
+     1-.809016994374947,.587785252292473/
       IF (IDO .NE. 2) GO TO 102
       DO 101 K=1,L1
          TI5 = CC(2,2,K)-CC(2,5,K)
@@ -1735,19 +1579,10 @@ C **********************************************************************
   104 CONTINUE
       RETURN
       END
-C **********************************************************************
       SUBROUTINE PASSB (NAC,IDO,IP,L1,IDL1,CC,C1,C2,CH,CH2,WA)
-        USE WPFISHPACK
-        
-        INTEGER(4), INTENT(IN) :: IDO,IP,L1,IDL1
-        INTEGER(4), INTENT(INOUT) :: NAC
-        REAL(WP), INTENT(INOUT)  :: CC(IDO,IP,L1)
-        REAL(WP), INTENT(INOUT)  :: C1(IDO,L1,IP)
-        REAL(WP), INTENT(INOUT)  :: C2(IDL1,IP)
-        REAL(WP), INTENT(INOUT)  :: CH(IDO,L1,IP)
-        REAL(WP), INTENT(INOUT)  :: CH2(IDL1,IP)
-        REAL(WP), INTENT(INOUT)  :: WA(*)
-
+      DIMENSION       CH(IDO,L1,IP)          ,CC(IDO,IP,L1)          ,
+     1                C1(IDO,L1,IP)          ,WA(*)      ,C2(IDL1,IP),
+     2                CH2(IDL1,IP)
       IDOT = IDO/2
       NT = IP*IDL1
       IPP2 = IP+2
@@ -1860,13 +1695,8 @@ C
   130 CONTINUE
       RETURN
       END
-C **********************************************************************
       SUBROUTINE CFFTF (N,C,WSAVE)
-        USE WPFISHPACK
-        
-        INTEGER(4), INTENT(IN) :: N
-        REAL(WP), INTENT(INOUT)  :: C(*)
-        REAL(WP), INTENT(INOUT)  :: WSAVE(*)
+      DIMENSION       C(*)       ,WSAVE(*)
 C
       IF (N .EQ. 1) RETURN
       IW1 = N+N+1
@@ -1874,16 +1704,8 @@ C
       CALL CFFTF1 (N,C,WSAVE,WSAVE(IW1),WSAVE(IW2))
       RETURN
       END
-C **********************************************************************
       SUBROUTINE CFFTF1 (N,C,CH,WA,IFAC)
-        USE WPFISHPACK
-        
-        INTEGER(4), INTENT(IN) :: N
-        REAL(WP), INTENT(IN) :: IFAC(*)
-        REAL(WP), INTENT(INOUT)  :: C(*)
-        REAL(WP), INTENT(INOUT)  :: CH(*)
-        REAL(WP), INTENT(INOUT)  :: WA(*)
-
+      DIMENSION       CH(*)      ,C(*)       ,WA(*)      ,IFAC(*)
       NF = IFAC(2)
       NA = 0
       L1 = 1
@@ -1943,15 +1765,9 @@ C **********************************************************************
   117 CONTINUE
       RETURN
       END
-C **********************************************************************
       SUBROUTINE PASSF2 (IDO,L1,CC,CH,WA1)
-        USE WPFISHPACK
-        
-        INTEGER(4), INTENT(IN) :: IDO, L1
-        REAL(WP), INTENT(INOUT)  :: CC(IDO,2,L1)
-        REAL(WP), INTENT(INOUT)  :: CH(IDO,L1,2)
-        REAL(WP), INTENT(INOUT)  :: WA1(*)
-
+      DIMENSION       CC(IDO,2,L1)           ,CH(IDO,L1,2)           ,
+     1                WA1(*)
       IF (IDO .GT. 2) GO TO 102
       DO 101 K=1,L1
          CH(1,K,1) = CC(1,1,K)+CC(1,2,K)
@@ -1972,16 +1788,10 @@ C **********************************************************************
   104 CONTINUE
       RETURN
       END
-C **********************************************************************
       SUBROUTINE PASSF3 (IDO,L1,CC,CH,WA1,WA2)
-        USE WPFISHPACK
-        
-        INTEGER(4), INTENT(IN) :: IDO, L1
-        REAL(WP), INTENT(INOUT)  :: CC(IDO,3,L1)
-        REAL(WP), INTENT(INOUT)  :: CH(IDO,L1,3)
-        REAL(WP), INTENT(INOUT)  :: WA1(*), WA2(*)
-
-      DATA TAUR,TAUI /-0.5_WP, -0.866025403784439_WP/
+      DIMENSION       CC(IDO,3,L1)           ,CH(IDO,L1,3)           ,
+     1                WA1(*)     ,WA2(*)
+      DATA TAUR,TAUI /-.5,-.866025403784439/
       IF (IDO .NE. 2) GO TO 102
       DO 101 K=1,L1
          TR2 = CC(1,2,K)+CC(1,3,K)
@@ -2020,16 +1830,9 @@ C **********************************************************************
   104 CONTINUE
       RETURN
       END
-C **********************************************************************
       SUBROUTINE PASSF4 (IDO,L1,CC,CH,WA1,WA2,WA3)
-        USE WPFISHPACK
-        
-        INTEGER(4), INTENT(IN) :: IDO, L1
-        REAL(WP), INTENT(INOUT)  :: CC(IDO,4,L1)
-        REAL(WP), INTENT(INOUT)  :: CH(IDO,L1,4)
-        REAL(WP), INTENT(INOUT)  :: WA1(*), WA2(*), WA3(*)
-
-     
+      DIMENSION       CC(IDO,4,L1)           ,CH(IDO,L1,4)           ,
+     1                WA1(*)     ,WA2(*)     ,WA3(*)
       IF (IDO .NE. 2) GO TO 102
       DO 101 K=1,L1
          TI1 = CC(2,1,K)-CC(2,3,K)
@@ -2078,20 +1881,11 @@ C **********************************************************************
   104 CONTINUE
       RETURN
       END
-C **********************************************************************
       SUBROUTINE PASSF5 (IDO,L1,CC,CH,WA1,WA2,WA3,WA4)
-        USE WPFISHPACK
-        
-        INTEGER(4), INTENT(IN) :: IDO, L1
-        REAL(WP), INTENT(INOUT)  :: CC(IDO,5,L1)
-        REAL(WP), INTENT(INOUT)  :: CH(IDO,L1,5)
-        REAL(WP), INTENT(INOUT)  :: WA1(*), WA2(*), WA3(*), WA4(*)
-
-        TR11 = .309016994374947_WP
-        TI11 = -.951056516295154_WP
-        TR12 = -.809016994374947_WP
-        TI12 = -.587785252292473_WP
-     
+      DIMENSION       CC(IDO,5,L1)           ,CH(IDO,L1,5)           ,
+     1                WA1(*)     ,WA2(*)     ,WA3(*)     ,WA4(*)
+      DATA TR11,TI11,TR12,TI12 /.309016994374947,-.951056516295154,
+     1-.809016994374947,-.587785252292473/
       IF (IDO .NE. 2) GO TO 102
       DO 101 K=1,L1
          TI5 = CC(2,2,K)-CC(2,5,K)
@@ -2162,19 +1956,10 @@ C **********************************************************************
   104 CONTINUE
       RETURN
       END
-C **********************************************************************
       SUBROUTINE PASSF (NAC,IDO,IP,L1,IDL1,CC,C1,C2,CH,CH2,WA)
-        USE WPFISHPACK
-        
-        INTEGER(4), INTENT(IN) :: IDO,IP,L1,IDL1
-        INTEGER(4), INTENT(INOUT) :: NAC
-        REAL(WP), INTENT(INOUT)  :: CC(IDO,IP,L1)
-        REAL(WP), INTENT(INOUT)  :: C1(IDO,L1,IP)
-        REAL(WP), INTENT(INOUT)  :: C2(IDL1,IP)
-        REAL(WP), INTENT(INOUT)  :: CH(IDO,L1,IP)
-        REAL(WP), INTENT(INOUT)  :: CH2(IDL1,IP)
-        REAL(WP), INTENT(INOUT)  :: WA(*)
-             
+      DIMENSION       CH(IDO,L1,IP)          ,CC(IDO,IP,L1)          ,
+     1                C1(IDO,L1,IP)          ,WA(*)      ,C2(IDL1,IP),
+     2                CH2(IDL1,IP)
       IDOT = IDO/2
       NT = IP*IDL1
       IPP2 = IP+2
@@ -2287,29 +2072,16 @@ C
   130 CONTINUE
       RETURN
       END
-C **********************************************************************
       SUBROUTINE RFFTI (N,WSAVE)
-        USE WPFISHPACK
-        
-        INTEGER(4), INTENT(IN) :: N
-        REAL(WP), INTENT(INOUT)  ::  WSAVE(*)
+      DIMENSION       WSAVE(*)
 C
       IF (N .EQ. 1) RETURN
       CALL RFFTI1 (N,WSAVE(N+1),WSAVE(2*N+1))
       RETURN
       END
-C **********************************************************************
       SUBROUTINE RFFTI1 (N,WA,IFAC)
-        USE WPFISHPACK
-        
-        INTEGER(4), INTENT(IN) :: N
-        REAL(WP), INTENT(INOUT) :: IFAC(*)
-        REAL(WP), INTENT(INOUT)  ::  WA(*)
-
-        INTEGER(4) :: NTRYH(4)
-
+      DIMENSION       WA(*)      ,IFAC(*)    ,NTRYH(4)
       DATA NTRYH(1),NTRYH(2),NTRYH(3),NTRYH(4)/4,2,3,5/
-
       NL = N
       NF = 0
       J = 0
@@ -2334,8 +2106,8 @@ C **********************************************************************
   107 IF (NL .NE. 1) GO TO 104
       IFAC(1) = N
       IFAC(2) = NF
-      TPI = 2.0_WP*PIMACH(DUM)
-      ARGH = TPI/DBLE(N)
+      TPI = 2.0*PIMACH(DUM)
+      ARGH = TPI/FLOAT(N)
       IS = 0
       NFM1 = NF-1
       L1 = 1
@@ -2349,11 +2121,11 @@ C **********************************************************************
          DO 109 J=1,IPM
             LD = LD+L1
             I = IS
-            ARGLD = DBLE(LD)*ARGH
-            FI = 0.0_WP
+            ARGLD = FLOAT(LD)*ARGH
+            FI = 0.
             DO 108 II=3,IDO,2
                I = I+2
-               FI = FI+1.0_WP
+               FI = FI+1.
                ARG = FI*ARGLD
                WA(I-1) = COS(ARG)
                WA(I) = SIN(ARG)
@@ -2364,29 +2136,15 @@ C **********************************************************************
   110 CONTINUE
       RETURN
       END
-C **********************************************************************
       SUBROUTINE RFFTB (N,R,WSAVE)
-        USE WPFISHPACK
-        
-        INTEGER(4), INTENT(IN) :: N
-        REAL(WP), INTENT(INOUT)  ::  R(*)
-        REAL(WP), INTENT(INOUT)  ::  WSAVE(*)
-
+      DIMENSION       R(*)       ,WSAVE(*)
 C
       IF (N .EQ. 1) RETURN
       CALL RFFTB1 (N,R,WSAVE,WSAVE(N+1),WSAVE(2*N+1))
       RETURN
       END
-C **********************************************************************
       SUBROUTINE RFFTB1 (N,C,CH,WA,IFAC)
-        USE WPFISHPACK
-        
-        INTEGER(4), INTENT(IN) :: N
-        REAL(WP), INTENT(INOUT) :: IFAC(*)
-        REAL(WP), INTENT(INOUT)  ::  C(*)
-        REAL(WP), INTENT(INOUT)  ::  CH(*)
-        REAL(WP), INTENT(INOUT)  ::  WA(*)
-
+      DIMENSION       CH(*)      ,C(*)       ,WA(*)      ,IFAC(*)
       NF = IFAC(2)
       NA = 0
       L1 = 1
@@ -2444,15 +2202,9 @@ C **********************************************************************
   117 CONTINUE
       RETURN
       END
-C **********************************************************************
       SUBROUTINE RADB2 (IDO,L1,CC,CH,WA1)
-        USE WPFISHPACK
-        
-        INTEGER(4), INTENT(IN) :: IDO, L1
-        REAL(WP), INTENT(INOUT) :: CC(IDO,2,L1)
-        REAL(WP), INTENT(INOUT) :: CH(IDO,L1,2)
-        REAL(WP), INTENT(INOUT) :: WA1(*)
-
+      DIMENSION       CC(IDO,2,L1)           ,CH(IDO,L1,2)           ,
+     1                WA1(*)
       DO 101 K=1,L1
          CH(1,K,1) = CC(1,1,K)+CC(IDO,2,K)
          CH(1,K,2) = CC(1,1,K)-CC(IDO,2,K)
@@ -2477,16 +2229,10 @@ C **********************************************************************
   106 CONTINUE
   107 RETURN
       END
-C **********************************************************************
       SUBROUTINE RADB3 (IDO,L1,CC,CH,WA1,WA2)
-        USE WPFISHPACK
-        
-        INTEGER(4), INTENT(IN) :: IDO, L1
-        REAL(WP), INTENT(INOUT) :: CC(IDO,3,L1)
-        REAL(WP), INTENT(INOUT) :: CH(IDO,L1,3)
-        REAL(WP), INTENT(INOUT) :: WA1(*),WA2(*) 
-
-      DATA TAUR,TAUI /-0.5_WP,0.866025403784439_WP/
+      DIMENSION       CC(IDO,3,L1)           ,CH(IDO,L1,3)           ,
+     1                WA1(*)     ,WA2(*)
+      DATA TAUR,TAUI /-.5,.866025403784439/
       DO 101 K=1,L1
          TR2 = CC(IDO,2,K)+CC(IDO,2,K)
          CR2 = CC(1,1,K)+TAUR*TR2
@@ -2520,16 +2266,10 @@ C **********************************************************************
   103 CONTINUE
       RETURN
       END
-C **********************************************************************
       SUBROUTINE RADB4 (IDO,L1,CC,CH,WA1,WA2,WA3)
-        USE WPFISHPACK
-        
-        INTEGER(4), INTENT(IN) :: IDO, L1
-        REAL(WP), INTENT(INOUT) :: CC(IDO,4,L1)
-        REAL(WP), INTENT(INOUT) :: CH(IDO,L1,4)
-        REAL(WP), INTENT(INOUT) :: WA1(*),WA2(*),WA3(*)
-
-      DATA SQRT2 /1.414213562373095_WP/
+      DIMENSION       CC(IDO,4,L1)           ,CH(IDO,L1,4)           ,
+     1                WA1(*)     ,WA2(*)     ,WA3(*)
+      DATA SQRT2 /1.414213562373095/
       DO 101 K=1,L1
          TR1 = CC(1,1,K)-CC(IDO,4,K)
          TR2 = CC(1,1,K)+CC(IDO,4,K)
@@ -2583,17 +2323,11 @@ C **********************************************************************
   106 CONTINUE
   107 RETURN
       END
-C **********************************************************************
       SUBROUTINE RADB5 (IDO,L1,CC,CH,WA1,WA2,WA3,WA4)
-        USE WPFISHPACK
-        
-        INTEGER(4), INTENT(IN) :: IDO, L1
-        REAL(WP), INTENT(INOUT) :: CC(IDO,5,L1)
-        REAL(WP), INTENT(INOUT) :: CH(IDO,L1,5)
-        REAL(WP), INTENT(INOUT) :: WA1(*),WA2(*),WA3(*),WA4(*)
-
-      DATA TR11,TI11,TR12,TI12 /.309016994374947_WP,.951056516295154_WP,
-     1 -.809016994374947_WP,.587785252292473_WP/
+      DIMENSION       CC(IDO,5,L1)           ,CH(IDO,L1,5)           ,
+     1                WA1(*)     ,WA2(*)     ,WA3(*)     ,WA4(*)
+      DATA TR11,TI11,TR12,TI12 /.309016994374947,.951056516295154,
+     1-.809016994374947,.587785252292473/
       DO 101 K=1,L1
          TI5 = CC(1,3,K)+CC(1,3,K)
          TI4 = CC(1,5,K)+CC(1,5,K)
@@ -2652,20 +2386,12 @@ C **********************************************************************
   103 CONTINUE
       RETURN
       END
-C **********************************************************************
       SUBROUTINE RADBG (IDO,IP,L1,IDL1,CC,C1,C2,CH,CH2,WA)
-        USE WPFISHPACK
-        
-        INTEGER(4), INTENT(IN) :: IDO,IP,L1,IDL1
-        REAL(WP), INTENT(INOUT) :: CC(IDO,IP,L1)
-        REAL(WP), INTENT(INOUT) :: C1(IDO,L1,IP)
-        REAL(WP), INTENT(INOUT) :: C2(IDL1,IP)
-        REAL(WP), INTENT(INOUT) :: CH(IDO,L1,IP)
-        REAL(WP), INTENT(INOUT) :: CH2(IDL1,IP)
-        REAL(WP), INTENT(INOUT) :: WA(*)
-
-      TPI = 2.0_WP*PIMACH(DUM)
-      ARG = TPI/DBLE(IP)
+      DIMENSION       CH(IDO,L1,IP)          ,CC(IDO,IP,L1)          ,
+     1                C1(IDO,L1,IP)          ,C2(IDL1,IP),
+     2                CH2(IDL1,IP)           ,WA(*)
+      TPI = 2.0*PIMACH(DUM)
+      ARG = TPI/FLOAT(IP)
       DCP = COS(ARG)
       DSP = SIN(ARG)
       IDP2 = IDO+2
@@ -2719,8 +2445,8 @@ C **********************************************************************
   113       CONTINUE
   114    CONTINUE
   115 CONTINUE
-  116 AR1 = 1._WP
-      AI1 = 0._WP
+  116 AR1 = 1.
+      AI1 = 0.
       DO 120 L=2,IPPH
          LC = IPP2-L
          AR1H = DCP*AR1-DSP*AI1
@@ -2820,28 +2546,15 @@ C **********************************************************************
   142 CONTINUE
   143 RETURN
       END
-C **********************************************************************
       SUBROUTINE RFFTF (N,R,WSAVE)
-        USE WPFISHPACK
-        
-        INTEGER(4), INTENT(IN) :: N
-        REAL(WP), INTENT(INOUT) :: R(*)
-        REAL(WP), INTENT(INOUT) :: WSAVE(*)
+      DIMENSION       R(*)       ,WSAVE(*)
 C
       IF (N .EQ. 1) RETURN
       CALL RFFTF1 (N,R,WSAVE,WSAVE(N+1),WSAVE(2*N+1))
       RETURN
       END
-C **********************************************************************
       SUBROUTINE RFFTF1 (N,C,CH,WA,IFAC)
-        USE WPFISHPACK
-        
-        INTEGER(4), INTENT(IN) :: N
-        REAL(WP), INTENT(IN) :: IFAC(*)
-        REAL(WP), INTENT(INOUT) :: C(*)
-        REAL(WP), INTENT(INOUT) :: CH(*)
-        REAL(WP), INTENT(INOUT) :: WA(*)
-
+      DIMENSION       CH(*)      ,C(*)       ,WA(*)      ,IFAC(*)
       NF = IFAC(2)
       NA = 1
       L2 = N
@@ -2899,15 +2612,9 @@ C **********************************************************************
   112 CONTINUE
       RETURN
       END
-C **********************************************************************
       SUBROUTINE RADF2 (IDO,L1,CC,CH,WA1)
-        USE WPFISHPACK
-        
-        INTEGER(4), INTENT(IN) :: IDO,L1
-        REAL(WP), INTENT(INOUT) :: CH(IDO,2,L1)
-        REAL(WP), INTENT(INOUT) :: CC(IDO,L1,2)
-        REAL(WP), INTENT(INOUT) :: WA1(*)
-        
+      DIMENSION       CH(IDO,2,L1)           ,CC(IDO,L1,2)           ,
+     1                WA1(*)
       DO 101 K=1,L1
          CH(1,1,K) = CC(1,K,1)+CC(1,K,2)
          CH(IDO,2,K) = CC(1,K,1)-CC(1,K,2)
@@ -2932,16 +2639,10 @@ C **********************************************************************
   106 CONTINUE
   107 RETURN
       END
-C **********************************************************************
       SUBROUTINE RADF3 (IDO,L1,CC,CH,WA1,WA2)
-        USE WPFISHPACK
-        
-        INTEGER(4), INTENT(IN) :: IDO,L1
-        REAL(WP), INTENT(INOUT) :: CH(IDO,3,L1)
-        REAL(WP), INTENT(INOUT) :: CC(IDO,L1,3)
-        REAL(WP), INTENT(INOUT) :: WA1(*),WA2(*)
-
-      DATA TAUR,TAUI /-0.5_WP,.866025403784439_WP/
+      DIMENSION       CH(IDO,3,L1)           ,CC(IDO,L1,3)           ,
+     1                WA1(*)     ,WA2(*)
+      DATA TAUR,TAUI /-.5,.866025403784439/
       DO 101 K=1,L1
          CR2 = CC(1,K,2)+CC(1,K,3)
          CH(1,1,K) = CC(1,K,1)+CR2
@@ -2973,16 +2674,10 @@ C **********************************************************************
   103 CONTINUE
       RETURN
       END
-C **********************************************************************
       SUBROUTINE RADF4 (IDO,L1,CC,CH,WA1,WA2,WA3)
-        USE WPFISHPACK
-        
-        INTEGER(4), INTENT(IN) :: IDO,L1
-        REAL(WP), INTENT(INOUT) :: CC(IDO,L1,4)
-        REAL(WP), INTENT(INOUT) :: CH(IDO,4,L1)
-        REAL(WP), INTENT(INOUT) :: WA1(*),WA2(*),WA3(*)
-
-      DATA HSQT2 /.7071067811865475_WP/
+      DIMENSION       CC(IDO,L1,4)           ,CH(IDO,4,L1)           ,
+     1                WA1(*)     ,WA2(*)     ,WA3(*)
+      DATA HSQT2 /.7071067811865475/
       DO 101 K=1,L1
          TR1 = CC(1,K,2)+CC(1,K,4)
          TR2 = CC(1,K,1)+CC(1,K,3)
@@ -3032,17 +2727,11 @@ C **********************************************************************
   106 CONTINUE
   107 RETURN
       END
-C **********************************************************************
       SUBROUTINE RADF5 (IDO,L1,CC,CH,WA1,WA2,WA3,WA4)
-        USE WPFISHPACK
-        
-        INTEGER(4), INTENT(IN)  :: IDO,L1
-        REAL(WP), INTENT(INOUT) :: CC(IDO,L1,5)
-        REAL(WP), INTENT(INOUT) :: CH(IDO,5,L1)
-        REAL(WP), INTENT(INOUT) :: WA1(*),WA2(*),WA3(*),WA4(*)
-  
-      DATA TR11,TI11,TR12,TI12 /.309016994374947_WP,.951056516295154_WP,
-     1 -.809016994374947_WP,.587785252292473_WP/
+      DIMENSION       CC(IDO,L1,5)           ,CH(IDO,5,L1)           ,
+     1                WA1(*)     ,WA2(*)     ,WA3(*)     ,WA4(*)
+      DATA TR11,TI11,TR12,TI12 /.309016994374947,.951056516295154,
+     1-.809016994374947,.587785252292473/
       DO 101 K=1,L1
          CR2 = CC(1,K,5)+CC(1,K,2)
          CI5 = CC(1,K,5)-CC(1,K,2)
@@ -3097,21 +2786,12 @@ C **********************************************************************
   103 CONTINUE
       RETURN
       END
-C **********************************************************************
       SUBROUTINE RADFG (IDO,IP,L1,IDL1,CC,C1,C2,CH,CH2,WA)
-        USE WPFISHPACK
-        
-        INTEGER(4), INTENT(IN)  :: IDO,L1
-        REAL(WP), INTENT(INOUT) :: CH(IDO,L1,IP)
-        REAL(WP), INTENT(INOUT) :: CC(IDO,IP,L1)
-        REAL(WP), INTENT(INOUT) :: C1(IDO,L1,IP)
-        REAL(WP), INTENT(INOUT) :: C2(IDL1,IP)
-        REAL(WP), INTENT(INOUT) :: CH2(IDL1,IP) 
-        REAL(WP), INTENT(INOUT) :: WA(*)
-
-
-      TPI = 2.0_WP*PIMACH(DUM)
-      ARG = TPI/DBLE(IP)
+      DIMENSION       CH(IDO,L1,IP)          ,CC(IDO,IP,L1)          ,
+     1                C1(IDO,L1,IP)          ,C2(IDL1,IP),
+     2                CH2(IDL1,IP)           ,WA(*)
+      TPI = 2.0*PIMACH(DUM)
+      ARG = TPI/FLOAT(IP)
       DCP = COS(ARG)
       DSP = SIN(ARG)
       IPPH = (IP+1)/2
@@ -3189,8 +2869,8 @@ C **********************************************************************
   122    CONTINUE
   123 CONTINUE
 C
-      AR1 = 1.0_WP
-      AI1 = 0.0_WP
+      AR1 = 1.
+      AI1 = 0.
       DO 127 L=2,IPPH
          LC = IPP2-L
          AR1H = DCP*AR1-DSP*AI1
@@ -3272,13 +2952,10 @@ C
   144 CONTINUE
       RETURN
       END
-C **********************************************************************
-      FUNCTION PIMACH (DUM)  
-        USE WPFISHPACK
-                                                   
+      FUNCTION PIMACH (DUM)                                             
 C     PI=3.1415926535897932384626433832795028841971693993751058209749446
 C                                                                       
-      PIMACH = 4.0_WP*ATAN(1.0_WP)
+      PIMACH = 4.*ATAN(1.0)
       RETURN                                                            
 C SEPTEMBER 1973    VERSION 1
 C APRIL     1976    VERSION 2
