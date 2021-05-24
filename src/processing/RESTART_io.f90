@@ -97,7 +97,7 @@ SUBROUTINE ReStart_INSTANT_VARS_io(TFM)  ! FOR BOTH KINDS OF DOMAINS....
         DO N = 1, 3
             IF(N == 1)  WRITE(WRT_RST_FNM, '(A)') TRIM(FilePath1) // TRIM(FLNAME) // TRIM(PNTIM) // '_T.D'
             IF(N == 2)  WRITE(WRT_RST_FNM, '(A)') TRIM(FilePath1) // TRIM(FLNAME) // TRIM(PNTIM) // '_D.D'
-            IF(N == 3)  WRITE(WRT_RST_FNM, '(A)') TRIM(FilePath1) // TRIM(FLNAME) // TRIM(PNTIM) // '_E.D'
+            IF(N == 3)  WRITE(WRT_RST_FNM, '(A)') TRIM(FilePath1) // TRIM(FLNAME) // TRIM(PNTIM) // '_H.D'
 
             CALL READ_3D_VARS(NCL1E, NCL2, NCL3, N2DO(MYID), JCL2G(1) - 1, ITERG0_io, PhyTIME_io, DUMMY, WRT_RST_FNM)
 

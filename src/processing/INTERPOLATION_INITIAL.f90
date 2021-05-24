@@ -419,7 +419,7 @@ SUBROUTINE INITIAL_INTERP_io
             !========== (1) FILE NAME ===========
             IF(N == 1)  WRITE(WRT_RST_FNM, '(A)') TRIM(FilePath3) // 'DNS_perixz_INSTANT_T' // TRIM(PNTIM) // '_T.D'
             IF(N == 2)  WRITE(WRT_RST_FNM, '(A)') TRIM(FilePath3) // 'DNS_perixz_INSTANT_T' // TRIM(PNTIM) // '_D.D'
-            IF(N == 3)  WRITE(WRT_RST_FNM, '(A)') TRIM(FilePath3) // 'DNS_perixz_INSTANT_T' // TRIM(PNTIM) // '_E.D'
+            IF(N == 3)  WRITE(WRT_RST_FNM, '(A)') TRIM(FilePath3) // 'DNS_perixz_INSTANT_T' // TRIM(PNTIM) // '_H.D'
 
             !========== (2) READ IN DATA===========
             CALL READ_3D_VARS(NCLOO1, NCLO2, NCLOO3, N2DOO(MYID), N2DOO(0) * MYID, ITERG0_IO, PhyTIME_IO, DUMMY, WRT_RST_FNM)
