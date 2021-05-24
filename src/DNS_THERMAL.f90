@@ -53,6 +53,7 @@
 
 PROGRAM CHAPSim_DNS_Solver
     USE init_info
+    USE FISHPACK_POIS3D
     IMPLICIT NONE
 
     !====PREPARE DIR PATH AND FILE NAME ==========

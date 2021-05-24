@@ -18,10 +18,11 @@
 !> @todo
 ! REVISION HISTORY:
 ! 04/2014- created, by Wei Wang (wei.wang@sheffield.ac.uk)
+! 05/2021 - updated by Wei Wang
 !**********************************************************************************************************************************
-MODULE FISHPACK_POIS3D_INFO
+MODULE FISHPACK_POIS3D
     USE WPRECISION
-
+    
     INTEGER(4) :: LPEROD, MPEROD, NPEROD
     INTEGER(4) :: LP, MP, NP
     INTEGER(4) :: L, M, NG, NL, ML
@@ -35,90 +36,17 @@ MODULE FISHPACK_POIS3D_INFO
     REAL(WP), ALLOCATABLE :: FR(:, :, :), FK(:, :, :), T(:)
     REAL(WP), ALLOCATABLE :: F_io   (:, :, :)
 
-END MODULE
+    private
+    private :: FFTPACK_ROOT
+    private :: TRID0
+    private :: FFTPACK_XZ
+    public :: FISHPACK_POIS3D_INIT
+    public :: FISHPACK_POIS3D_SIMPLE
 
-!**********************************************************************************************************************************
-SUBROUTINE FISHPACK_POIS3D_INIT
-    !    SHOULD BE CALLED IN SLAVES BEFORE FIRSTLY
-    USE mesh_info
-    USE flow_info
-    USE init_info
-    USE FISHPACK_POIS3D_INFO
-    IMPLICIT NONE
-
-    INTEGER(4) :: K
-
-
-    IF(BCX_io(1) == 3 .AND. BCX_io(2) == 3 )  LPEROD = 0
-    IF(BCX_io(1) == 1 .AND. BCX_io(2) == 1 )  LPEROD = 1
-    IF(BCX_io(1) == 1 .AND. BCX_io(2) == 2 )  LPEROD = 2
-    IF(BCX_io(1) == 2 .AND. BCX_io(2) == 2 )  LPEROD = 3
-    IF(BCX_io(1) == 2 .AND. BCX_io(2) == 1 )  LPEROD = 4
-
-    IF(BCZ(1) == 3 .AND. BCZ(2) == 3 )  MPEROD = 0
-    IF(BCZ(1) == 1 .AND. BCZ(2) == 1 )  MPEROD = 1
-    IF(BCZ(1) == 1 .AND. BCZ(2) == 2 )  MPEROD = 2
-    IF(BCZ(1) == 2 .AND. BCZ(2) == 2 )  MPEROD = 3
-    IF(BCZ(1) == 2 .AND. BCZ(2) == 1 )  MPEROD = 4
-
-    NPEROD = 1
-
-    LP = LPEROD + 1
-    MP = MPEROD + 1
-    NP = NPEROD + 1
-
-    L  = NCL1_io
-    M  = NCL3
-    NG = NCL2
-    NL = N2DO(MYID)
-    ML = N3DO(MYID)
-
-    IF( (L <= 3) .OR. (M <= 3) .OR. (NG <= 3) ) &
-    CALL ERRHDL('Dimensions in poISson solver should be lARger than 3!', MYID)
-
-    C1 = DXQI
-    C2 = DZQI
-
-    WSZ = 30 + L + M + 2 * NG + MAX(L, M, NG) + &
-                7*(INT((L+1)/2) + INT((M+1)/2)) + 128
-
-    ALLOCATE (A (NG) ) ; A = 0.0_WP
-    ALLOCATE (B (NG) ) ; B = 0.0_WP
-    ALLOCATE (C (NG) ) ; C = 0.0_WP
-    ALLOCATE (D (NG) ) ; D = 0.0_WP
-    ALLOCATE (BB(NG) ) ; BB = 0.0_WP
-
-    MEMPC_Byte = MEMPC_Byte + NG*10 *8
-
-    ALLOCATE (XRT(L))  ; XRT = 0.0_WP
-    ALLOCATE (YRT(M))  ; YRT = 0.0_WP
-    ALLOCATE (WX(WSZ)) ; WX = 0.0_WP
-    ALLOCATE (WY(WSZ)) ; WY = 0.0_WP
-    ALLOCATE (FR(L, M, NL) ) ; FR = 0.0_WP
-    ALLOCATE (FK(L, ML, NG) ) ; FK = 0.0_WP
-    ALLOCATE (T(MAX0(L, M, NG)) ) ; T = 0.0_WP
-
-    ALLOCATE ( F_io   (NCL1_io, NCL2, N3DO(0) )     )       ;  F_io = 0.0_WP
-
-    MEMPC_Byte = MEMPC_Byte + (L+M + WSZ*2 +L * M * NL+L * ML * NG+MAX0(L, M, NG)) *8
-
-    DO K = 1, NG
-        A(K) = AMPH(K)
-        B(K) = ACPH(K)
-        C(K) = APPH(K)
-    END DO
-
-    CALL FFTPACK_ROOT
-
-    RETURN
-
-END SUBROUTINE
-
-!**********************************************************************************************************************************
-SUBROUTINE FFTPACK_ROOT
-!       CALLED IN SLAVES AFTER FFT_INITIALIZATION
-
-        USE FISHPACK_POIS3D_INFO
+  contains
+  !**********************************************************************************************************************************
+  SUBROUTINE FFTPACK_ROOT
+  !       CALLED IN SLAVES AFTER FFT_INITIALIZATION
         IMPLICIT NONE
 
         REAL(WP) :: PI
@@ -183,7 +111,7 @@ SUBROUTINE FFTPACK_ROOT
       GO TO 116
   115 DJ = 0.00_WP
   116 DO 117 J = 1, MR
-         YRT(J) = -4.0_WP * C2 * (DSIN((DBLE(J) - DJ) * DY))**2
+          YRT(J) = -4.0_WP * C2 * (DSIN((DBLE(J) - DJ) * DY))**2
   117 CONTINUE
       SCALY = 2.0_WP * SCALY
       GO TO (124, 118, 122, 119, 123), MP
@@ -194,8 +122,8 @@ SUBROUTINE FFTPACK_ROOT
   120 YRT(1) = 0.0_WP
       YRT(MR) = -4.0_WP * C2
       DO 121 J = 3, MR, 2
-         YRT(J - 1) = -4.0_WP * C2 * (DSIN(DBLE((J - 1)) * DY))**2
-         YRT(J) = YRT(J - 1)
+          YRT(J - 1) = -4.0_WP * C2 * (DSIN(DBLE((J - 1)) * DY))**2
+          YRT(J) = YRT(J - 1)
   121 CONTINUE
       CALL RFFTI (MR, WY)
       GO TO 124
@@ -204,20 +132,220 @@ SUBROUTINE FFTPACK_ROOT
   123 CALL COSQI (MR, WY)
   124 CONTINUE
 
-     RETURN
+      RETURN
 
-END SUBROUTINE
+  END SUBROUTINE
 
-!**********************************************************************************************************************************
-SUBROUTINE FISHPACK_POIS3D_SIMPLE
-    !    CALLED IN SLAVES EVERY RK STAGE TO CALCULATE pressure CORRECTION TERMS.
-
-    USE FISHPACK_POIS3D_INFO
+  SUBROUTINE FISHPACK_POIS3D_INIT
+    !    SHOULD BE CALLED IN SLAVES BEFORE FIRSTLY
     USE mesh_info
     USE flow_info
     USE init_info
     IMPLICIT NONE
 
+    INTEGER(4) :: K
+
+    IF(BCX_io(1) == 3 .AND. BCX_io(2) == 3 )  LPEROD = 0
+    IF(BCX_io(1) == 1 .AND. BCX_io(2) == 1 )  LPEROD = 1
+    IF(BCX_io(1) == 1 .AND. BCX_io(2) == 2 )  LPEROD = 2
+    IF(BCX_io(1) == 2 .AND. BCX_io(2) == 2 )  LPEROD = 3
+    IF(BCX_io(1) == 2 .AND. BCX_io(2) == 1 )  LPEROD = 4
+
+    IF(BCZ(1) == 3 .AND. BCZ(2) == 3 )  MPEROD = 0
+    IF(BCZ(1) == 1 .AND. BCZ(2) == 1 )  MPEROD = 1
+    IF(BCZ(1) == 1 .AND. BCZ(2) == 2 )  MPEROD = 2
+    IF(BCZ(1) == 2 .AND. BCZ(2) == 2 )  MPEROD = 3
+    IF(BCZ(1) == 2 .AND. BCZ(2) == 1 )  MPEROD = 4
+
+    NPEROD = 1
+
+    LP = LPEROD + 1
+    MP = MPEROD + 1
+    NP = NPEROD + 1
+
+    L  = NCL1_io
+    M  = NCL3
+    NG = NCL2
+    NL = N2DO(MYID)
+    ML = N3DO(MYID)
+
+    IF( (L <= 3) .OR. (M <= 3) .OR. (NG <= 3) ) &
+    CALL ERRHDL('Dimensions in poISson solver should be lARger than 3!', MYID)
+
+    C1 = DXQI
+    C2 = DZQI
+
+    WSZ = 30 + L + M + 2 * NG + MAX(L, M, NG) + &
+                7*(INT((L+1)/2) + INT((M+1)/2)) + 128
+
+    ALLOCATE (A (NG) ) ; A = 0.0_WP
+    ALLOCATE (B (NG) ) ; B = 0.0_WP
+    ALLOCATE (C (NG) ) ; C = 0.0_WP
+    ALLOCATE (D (NG) ) ; D = 0.0_WP
+    ALLOCATE (BB(NG) ) ; BB = 0.0_WP
+
+    MEMPC_Byte = MEMPC_Byte + NG*10 *8
+
+    ALLOCATE (XRT(L))  ; XRT = 0.0_WP
+    ALLOCATE (YRT(M))  ; YRT = 0.0_WP
+    ALLOCATE (WX(WSZ)) ; WX = 0.0_WP
+    ALLOCATE (WY(WSZ)) ; WY = 0.0_WP
+    ALLOCATE (FR(L, M, NL) ) ; FR = 0.0_WP
+    ALLOCATE (FK(L, ML, NG) ) ; FK = 0.0_WP
+    ALLOCATE (T(MAX0(L, M, NG)) ) ; T = 0.0_WP
+
+    ALLOCATE ( F_io   (NCL1_io, NCL2, N3DO(0) )     )       ;  F_io = 0.0_WP
+
+    MEMPC_Byte = MEMPC_Byte + (L+M + WSZ*2 +L * M * NL+L * ML * NG+MAX0(L, M, NG)) *8
+
+    DO K = 1, NG
+        A(K) = AMPH(K)
+        B(K) = ACPH(K)
+        C(K) = APPH(K)
+    END DO
+
+    CALL FFTPACK_ROOT
+
+    RETURN
+
+  END SUBROUTINE
+
+  !**********************************************************************************************************************************
+  SUBROUTINE FFTPACK_XZ(IFWRD)
+!     FOR FFT TRANSFORM FROM SPACE TO WAVENUMBER, IFWRD = 1, IS = 1
+!     FOR FFT TRANSFORM FROM WAVENUMBER TO SPACE, IFWRD = 2, IS = -1
+      IMPLICIT NONE
+      INTEGER(4) :: IFWRD
+      INTEGER(4) :: I, J, K
+      INTEGER(4) :: LR, MR, NR
+
+      LR = L
+      MR = M
+      NR = NL
+
+      GO TO(125, 142) IFWRD
+
+  125 CONTINUE
+!
+!     TRANSFORM X
+!
+      DO 141 J = 1, MR
+          DO 140 k = 1, NR
+            DO 126 I = 1, LR  
+                T(I) = FR(I, J, K)
+  126       CONTINUE
+            GO TO (127, 130, 131, 134, 135), LP
+  127       GO TO (128, 129), IFWRD
+  128       CALL RFFTF (LR, T, WX)
+            GO TO 138
+  129       CALL RFFTB (LR, T, WX)
+            GO TO 138
+  130       CALL SINT (LR, T, WX)
+            GO TO 138
+  131       GO TO (132, 133), IFWRD
+  132       CALL SINQF (LR, T, WX)
+            GO TO 138
+  133       CALL SINQB (LR, T, WX)
+            GO TO 138
+  134       CALL COST (LR, T, WX)
+            GO TO 138
+  135       GO TO (136, 137), IFWRD
+  136       CALL COSQF (LR, T, WX)
+            GO TO 138
+  137       CALL COSQB (LR, T, WX)
+  138       CONTINUE
+            DO 139 I = 1, LR
+                FR(I, J, K) = T(I)
+  139       CONTINUE
+  140    CONTINUE
+  141 CONTINUE
+      GO TO (142, 159), IFWRD
+
+
+!C
+!C     TRANSFORM Y
+!C
+  142 CONTINUE
+      DO 158 I = 1, LR
+          DO 157 k = 1, NR
+            DO 143 J = 1, MR
+                T(J) = FR(I, J, K)
+  143       CONTINUE
+            GO TO (144, 147, 148, 151, 152), MP
+  144       GO TO (145, 146), IFWRD
+  145       CALL RFFTF (MR, T, WY)
+            GO TO 155
+  146       CALL RFFTB (MR, T, WY)
+            GO TO 155
+  147       CALL SINT (MR, T, WY)
+            GO TO 155
+  148       GO TO (149, 150), IFWRD
+  149       CALL SINQF (MR, T, WY)
+            GO TO 155
+  150       CALL SINQB (MR, T, WY)
+            GO TO 155
+  151       CALL COST (MR, T, WY)
+            GO TO 155
+  152       GO TO (153, 154), IFWRD
+  153       CALL COSQF (MR, T, WY)
+            GO TO 155
+  154       CALL COSQB (MR, T, WY)
+  155       CONTINUE
+            DO 156 J = 1, MR
+                FR(I, J, K) = T(J)
+  156       CONTINUE
+  157    CONTINUE
+  158 CONTINUE
+      GO TO (159, 125), IFWRD
+
+  159 CONTINUE
+
+
+    RETURN
+
+  END SUBROUTINE
+
+
+!**********************************************************************************************************************************
+  SUBROUTINE TRID0
+      IMPLICIT NONE
+
+      INTEGER(4) :: NR, MM1
+      REAL(WP) :: Z
+      INTEGER(4) :: I, IP
+
+      NR = NG
+      MM1 = NR- 1
+      Z = 1.0_WP / BB(1)
+      D(1) = C(1) * Z
+      T(1) = T(1) * Z
+      DO 101 I = 2, MM1
+          Z = 1.0_WP / (BB(I) - A(I) * D(I - 1))
+          D(I) = C(I) * Z
+          T(I) = (T(I) - A(I) * T(I - 1)) * Z
+  101 CONTINUE
+      Z = BB(NR) - A(NR) * D(MM1)
+      !IF (Z /= 0.0_WP) GO TO 102
+      IF (DABS(Z) > 1.0E-14_WP) GO TO 102
+      T(NR) = 0.0_WP
+      GO TO 103
+  102 T(NR) = (T(NR) - A(NR) * T(MM1)) /Z
+  103 CONTINUE
+      DO 104 IP = 1, MM1
+          I = NR-IP
+          T(I) = T(I) - D(I) * T(I + 1)
+  104 CONTINUE
+      RETURN
+
+  END SUBROUTINE
+
+  SUBROUTINE FISHPACK_POIS3D_SIMPLE(RHS, VAR)
+    !    CALLED IN SLAVES EVERY RK STAGE TO CALCULATE pressure CORRECTION TERMS.
+    USE mesh_info
+    USE init_info
+    IMPLICIT NONE
+    REAL(WP), INTENT(INOUT) :: RHS (NCL1_io, N2DO(0), NCL3 )
+    REAL(WP), INTENT(OUT) :: VAR (NCL1_io, N2DO(0), NCL3 )
     INTEGER(4) :: IFWRD
     INTEGER(4) :: I, J, K, JJ
 
@@ -225,7 +353,7 @@ SUBROUTINE FISHPACK_POIS3D_SIMPLE
     DO I = 1, L
         DO K = 1, M
             DO J = 1, NL
-                FR(I, K, J) = RHSLLPHI_io(I, J, K)
+                FR(I, K, J) = RHS(I, J, K)
             END DO
         END DO
     END DO
@@ -238,14 +366,14 @@ SUBROUTINE FISHPACK_POIS3D_SIMPLE
     DO I = 1, L
         DO K = 1, M
             DO J = 1, NL
-                RHSLLPHI_io(I, J, K) = FR(I, K, J)
+              RHS(I, J, K) = FR(I, K, J)
             END DO
         END DO
     END DO
 
     !   ======== TRANSPORT Y- DECOMP TO K - DECOMP ========
     !CALL TRASP_Y2Z_RHSLLPHI_io
-    CALL TRASP23_Y2Z(NCL1_io, 1, N2DO(0), RHSLLPHI_io, F_io)
+    CALL TRASP23_Y2Z(NCL1_io, 1, N2DO(0), RHS, F_io)
 
     !   ========CONSTRUCT DATA FOR TDMA========
     DO I = 1, L
@@ -285,13 +413,13 @@ SUBROUTINE FISHPACK_POIS3D_SIMPLE
 
     !   ======== TRANSPORT Z - DECOMP TO Y- DECOMP ========
     !CALL TRASP_Z2Y_RHSLLPHI_io
-    CALL TRASP23_Z2Y(NCL1_io, 1, N2DO(0), RHSLLPHI_io, F_io)
+    CALL TRASP23_Z2Y(NCL1_io, 1, N2DO(0), RHS, F_io)
 
     !   ======== RESTORE RHSLLPHI ========
     DO I = 1, L
         DO K = 1, M
             DO J = 1, NL
-                FR(I, K, J) = RHSLLPHI_io(I, J, K)
+                FR(I, K, J) = RHS(I, J, K)
             END DO
         END DO
     END DO
@@ -311,149 +439,29 @@ SUBROUTINE FISHPACK_POIS3D_SIMPLE
 
 
     !   ======== RE -STORE AND ASSIGN DATA TO DPH ========
-    DPH_io = 0.0_WP
+    VAR = 0.0_WP
     DO I = 1, L
         DO K = 1, M
             DO J = 1, NL
-                DPH_io(I, J, K) = FR(I, K, J)
+              VAR(I, J, K) = FR(I, K, J)
             END DO
         END DO
     END DO
 
     RETURN
 
-END SUBROUTINE
+  END SUBROUTINE
+
+
+
+END MODULE
+
+
+
 
 
 !**********************************************************************************************************************************
-SUBROUTINE FFTPACK_XZ(IFWRD)
-!     FOR FFT TRANSFORM FROM SPACE TO WAVENUMBER, IFWRD = 1, IS = 1
-!     FOR FFT TRANSFORM FROM WAVENUMBER TO SPACE, IFWRD = 2, IS = -1
-      USE FISHPACK_POIS3D_INFO
-      IMPLICIT NONE
-      INTEGER(4) :: IFWRD
-      INTEGER(4) :: I, J, K
-      INTEGER(4) :: LR, MR, NR
 
 
 
-      LR = L
-      MR = M
-      NR = NL
 
-      GO TO(125, 142) IFWRD
-
-  125 CONTINUE
-!
-!     TRANSFORM X
-!
-      DO 141 J = 1, MR
-         DO 140 k = 1, NR
-            DO 126 I = 1, LR
-               T(I) = FR(I, J, K)
-  126       CONTINUE
-            GO TO (127, 130, 131, 134, 135), LP
-  127       GO TO (128, 129), IFWRD
-  128       CALL RFFTF (LR, T,WX)
-            GO TO 138
-  129       CALL RFFTB (LR, T,WX)
-            GO TO 138
-  130       CALL SINT (LR, T,WX)
-            GO TO 138
-  131       GO TO (132, 133), IFWRD
-  132       CALL SINQF (LR, T,WX)
-            GO TO 138
-  133       CALL SINQB (LR, T,WX)
-            GO TO 138
-  134       CALL COST (LR, T,WX)
-            GO TO 138
-  135       GO TO (136, 137), IFWRD
-  136       CALL COSQF (LR, T,WX)
-            GO TO 138
-  137       CALL COSQB (LR, T,WX)
-  138       CONTINUE
-            DO 139 I = 1, LR
-               FR(I, J, K) = T(I)
-  139       CONTINUE
-  140    CONTINUE
-  141 CONTINUE
-      GO TO (142, 159), IFWRD
-
-
-!C
-!C     TRANSFORM Y
-!C
-  142 CONTINUE
-      DO 158 I = 1, LR
-         DO 157 k = 1, NR
-            DO 143 J = 1, MR
-               T(J) = FR(I, J, K)
-  143       CONTINUE
-            GO TO (144, 147, 148, 151, 152), MP
-  144       GO TO (145, 146), IFWRD
-  145       CALL RFFTF (MR, T,WY)
-            GO TO 155
-  146       CALL RFFTB (MR, T,WY)
-            GO TO 155
-  147       CALL SINT (MR, T,WY)
-            GO TO 155
-  148       GO TO (149, 150), IFWRD
-  149       CALL SINQF (MR, T,WY)
-            GO TO 155
-  150       CALL SINQB (MR, T,WY)
-            GO TO 155
-  151       CALL COST (MR, T,WY)
-            GO TO 155
-  152       GO TO (153, 154), IFWRD
-  153       CALL COSQF (MR, T,WY)
-            GO TO 155
-  154       CALL COSQB (MR, T,WY)
-  155       CONTINUE
-            DO 156 J = 1, MR
-               FR(I, J, K) = T(J)
-  156       CONTINUE
-  157    CONTINUE
-  158 CONTINUE
-      GO TO (159, 125), IFWRD
-
-  159 CONTINUE
-
-
-    RETURN
-
-END SUBROUTINE
-
-
-!**********************************************************************************************************************************
-SUBROUTINE TRID0
-      USE FISHPACK_POIS3D_INFO
-      IMPLICIT NONE
-
-      INTEGER(4) :: NR, MM1
-      REAL(WP) :: Z
-      INTEGER(4) :: I, IP
-
-      NR = NG
-      MM1 = NR- 1
-      Z = 1.0_WP / BB(1)
-      D(1) = C(1) * Z
-      T(1) = T(1) * Z
-      DO 101 I = 2, MM1
-         Z = 1.0_WP / (BB(I) - A(I) * D(I - 1))
-         D(I) = C(I) * Z
-         T(I) = (T(I) - A(I) * T(I - 1)) * Z
-  101 CONTINUE
-      Z = BB(NR) - A(NR) * D(MM1)
-      !IF (Z /= 0.0_WP) GO TO 102
-      IF (DABS(Z) > 1.0E-14_WP) GO TO 102
-      T(NR) = 0.0_WP
-      GO TO 103
-  102 T(NR) = (T(NR) - A(NR) * T(MM1)) /Z
-  103 CONTINUE
-      DO 104 IP = 1, MM1
-         I = NR-IP
-         T(I) = T(I) - D(I) * T(I + 1)
-  104 CONTINUE
-      RETURN
-
-END SUBROUTINE

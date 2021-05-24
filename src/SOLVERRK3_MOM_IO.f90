@@ -14,6 +14,7 @@ SUBROUTINE SOLVERRK3_MOM_io(NS)
     USE mesh_info
     USE flow_info
     USE init_info
+    USE FISHPACK_POIS3D
     IMPLICIT NONE
     INTEGER(4), INTENT(IN) :: NS
     INTEGER(4) :: IDR
@@ -86,10 +87,10 @@ SUBROUTINE SOLVERRK3_MOM_io(NS)
     !CALL DEBUG_WRT_LOCAL(RHSLLPHI_io, 1, N2DO(MYID), 'divg') !test
 
     IF(TgFlowFlg) THEN
-        CALL FISHPACK_POIS3D_SIMPLE
+        CALL FISHPACK_POIS3D_SIMPLE(RHSLLPHI_io, DPH_io)
     ELSE
       if(is_FFT_FFT99) CALL FFT99_POIS3D_periodicxz(IIO) !Method One
-      if(is_FFT_FISHPACK) CALL FISHPACK_POIS3D_SIMPLE ! Method Two,  good
+      if(is_FFT_FISHPACK) CALL FISHPACK_POIS3D_SIMPLE(RHSLLPHI_io, DPH_io) ! Method Two,  good
     END IF
 
     CALL INTFC_VARS1(1, NCL1_io, NCL1S, NCL1E, DPH_io)
