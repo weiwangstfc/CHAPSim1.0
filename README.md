@@ -35,7 +35,7 @@ Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  021
 ## Source Download and Compilation
 Acquire the source code by cloning the git repository:
 ```
-git clone git@github.com:WeiWangSTFC/CHAPSim1.0.git
+git clone git@github.com:CHAPSim/CHAPSim1.0.git​
 ```
 Compile the codes:
 ```
